@@ -23,6 +23,8 @@ import model.card.wild.Saver;
 
 public class Deck {
     private static final String CARDS_FILE = "Cards.csv";
+    
+    // Arraylist to store the available cards.
     static private ArrayList<Card> cardsPool;
 
 
@@ -75,7 +77,7 @@ public class Deck {
 			}	
         }
     }
-
+	// Shuffles the cardsPool, then removes and re turns the first four cards from it.
     public static ArrayList<Card> drawCards() {
         Collections.shuffle(cardsPool);
         ArrayList<Card> cards = new ArrayList<>(cardsPool.subList(0, 4));

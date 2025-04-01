@@ -12,6 +12,7 @@ import model.card.Card;
 public class Player {
     private final String name;
     private final Colour colour;
+    // representing the marbles each player has in their Home Zone.
     private ArrayList<Card> hand;
     private final ArrayList<Marble> marbles;
     private Card selectedCard;

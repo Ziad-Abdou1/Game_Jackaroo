@@ -15,8 +15,11 @@ import model.player.*;
 public class Game implements GameManager {
     private final Board board;
     private final ArrayList<Player> players;
+    // representing which of the players should play next.
 	private int currentPlayerIndex;
+	//  representing the cards that have been played / discarded in the game.
     private final ArrayList<Card> firePit;
+    
     private int turn;
 
     public Game(String playerName) throws IOException {
@@ -30,8 +33,10 @@ public class Game implements GameManager {
         
         Collections.shuffle(colourOrder);
         
+        // how he send "this" 
         this.board = new Board(colourOrder, this);
         
+        // Loads the card pool from the deck to ensure all cards are ready for gameplay
         Deck.loadCardPool(this.board, (GameManager)this);
         
         this.players = new ArrayList<>();
