@@ -26,6 +26,13 @@ public class Standard extends Card {
     public Suit getSuit() {
         return suit;
     }
+
+	@Override
+	public void act(ArrayList<Marble> marbles) throws ActionException,
+			InvalidMarbleException {
+		// TODO Auto-generated method stub
+		
+	}
    
   
 }

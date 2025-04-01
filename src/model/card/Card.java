@@ -24,34 +24,20 @@ public abstract class Card {
     }
     
     // M2  it's not completed 
-    // Default implementation that must be overridden by each subclasses
     
     public boolean validateMarbleSize(ArrayList<Marble> marbles) {
+    	// i think i handle Jack in wrong way 
         if (this instanceof model.card.standard.Jack || this instanceof model.card.standard.Seven) {
             return (marbles.size() == 1 || marbles.size() == 2); 
         } 
-        else if (this instanceof model.card.standard.King || this instanceof model.card.standard.Ten) {
+        else if (this instanceof model.card.standard.King || this instanceof model.card.standard.Ten || this instanceof model.card.standard.Queen || this instanceof model.card.standard.Ace) {
             return (marbles.size() == 0 || marbles.size() == 1); 
         } 
         else {
             return marbles.size() == 1; 
         }
     }
-//    public  boolean validateMarbleColours(ArrayList<Marble> marbles){
-//    	
-//    	if (marbles == null || marbles.isEmpty()) {
-//            return true; 
-//        }
-//        
-//    	Colour playerColour = gameManager.getActivePlayerColour();
-//        for (Marble marble : marbles) {
-//            if (marble.getColour() != activeColour) {
-//                return false; 
-//            }
-//        }
-//        return true;
-//    	
-//    }
+
     public boolean validateMarbleColours(ArrayList<Marble> marbles) {	
     	if (marbles == null || marbles.isEmpty()) {
             return true; 
@@ -63,10 +49,8 @@ public abstract class Card {
                 return false; 
             }
         }
-        return true;
-    	
+        return true;	
     }
-
 
     public abstract void act(ArrayList<Marble> marbles) throws ActionException,InvalidMarbleException;
    

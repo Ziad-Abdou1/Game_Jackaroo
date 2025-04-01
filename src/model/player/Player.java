@@ -8,6 +8,7 @@ import exception.InvalidCardException;
 import exception.InvalidMarbleException;
 import model.Colour;
 import model.card.Card;
+import engine.GameManager;
 
 
 public class Player {
@@ -41,34 +42,32 @@ public class Player {
     // M2
     //  Adds a specified marble to the player’s collection of marbles 
     public void regainMarble(Marble marble){
-    	marbles.add(marble);
+    	if (marble.getColour() != this.colour) {
+            throw new IllegalArgumentException("Marble color must match player's color");
+        }
+        marbles.add(marble);
     }
     
     //  Returns the first marble without removing it form marbles ArrayList
-    public Marble getOneMarble(){
-    	if(marbles.isEmpty()){
-    		return null ;
-    	}else{
-    		return marbles.get(0);
-    	}
+    public Marble getOneMarble() {
+        return marbles.isEmpty() ? null : marbles.get(0);
     }
     
     //  Checks if the given card is available in the player’s hand and sets it to the selectedCard
-    public void selectCard(Card card) throws InvalidCardException{
-    	if (!hand.contains(card)) {
-            throw new InvalidCardException("Card not found in player's hand");
+    public void selectCard(Card card) throws InvalidCardException {
+        if (!hand.contains(card)) {
+            throw new InvalidCardException("Card not in player's hand");
         }
-        
         this.selectedCard = card;
     }
-    
     // Selects a marble to be used in the game by adding it to the selectedMarbles.
     public void selectMarble(Marble marble) throws InvalidMarbleException {
         if (selectedMarbles.size() >= 2) {
             throw new InvalidMarbleException("Cannot select more than two marbles");
         }
         // he don't say to add it , i don't sure if it ok 
-        if (!marbles.contains(marble)) {
+        Colour marbleColour = marble.getColour();
+        if (colour!= marbleColour) {
             throw new InvalidMarbleException("Marble does not belong to player");
         }
         selectedMarbles.add(marble);
@@ -81,24 +80,32 @@ public class Player {
     }
     
     public void play() throws GameException {
-        // Check if a card has been selected
-        if (selectedCard == null) {
+    	if (selectedCard == null) {
             throw new InvalidCardException("No card selected");
         }
-        
         if (!selectedCard.validateMarbleSize(selectedMarbles)) {
-            throw new InvalidMarbleException("Invalid number of marbles selected for this card");
+            throw new InvalidMarbleException("Invalid number of marbles for this card");
         }
-        
         if (!selectedCard.validateMarbleColours(selectedMarbles)) {
-            throw new InvalidMarbleException("Invalid marble colors selected for this card");
+            throw new InvalidMarbleException("Invalid marble colors for this card");
         }
         
+        ///   not sure this is right 
         try {
             selectedCard.act(selectedMarbles);
         } catch (ActionException | InvalidMarbleException e) {
-            throw e;
+            deselectAll(); // Clean up on failure
+            throw e; // Re-throw for game to handle
         }
+
+        if (selectedCard instanceof model.card.standard.Ace || selectedCard instanceof model.card.standard.King) {
+            if (selectedMarbles.isEmpty()) {
+                if (!marbles.isEmpty()) {
+                    marbles.remove(0);
+                }
+            }
+        }
+        deselectAll();
     }
 
     //

@@ -19,11 +19,9 @@ public class Five extends Standard {
     public boolean validateMarbleSize(ArrayList<Marble> marbles) {
         return marbles != null && marbles.size() == 1;
     }
-
     @Override
     public boolean validateMarbleColours(ArrayList<Marble> marbles) {
-        //  it can act on any marble (own or opponent) i am not sure he said "any"
-        return marbles != null && marbles.size() == 1;
+        return true ; 
     }
 
     @Override

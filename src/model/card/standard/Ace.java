@@ -16,23 +16,7 @@ public class Ace extends Standard {
     }
     // M2
     
-    
-
-    public boolean validateMarbleColours(ArrayList<Marble> marbles) {
-    	
-    	if (marbles == null || marbles.isEmpty()) {
-            return true; 
-        }
-        
-        Colour activeColour = gameManager.getActivePlayerColour();
-        for (Marble marble : marbles) {
-            if (marble.getColour() != activeColour) {
-                return false; 
-            }
-        }
-        return true;
-    }
-
+  
 
     //
 
