@@ -7,7 +7,7 @@ import exception.*;
 
 public interface BoardManager { 
     int getSplitDistance();
-    
+    // M2 
 	void moveBy(Marble marble, int steps, boolean destroy) throws
 	 IllegalMovementException, IllegalDestroyException;
 	
@@ -20,4 +20,5 @@ public interface BoardManager {
 	void sendToSafe(Marble marble) throws InvalidMarbleException;
 	
 	ArrayList<Marble> getActionableMarbles();
+	//
 }
