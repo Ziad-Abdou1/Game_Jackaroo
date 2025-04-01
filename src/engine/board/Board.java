@@ -1,11 +1,14 @@
 package engine.board;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 import engine.GameManager;
 import exception.*;
 import model.Colour;
 import model.player.Marble;
+import model.player.Player;
 
 public class Board implements BoardManager {
     private final ArrayList<Cell> track;
@@ -173,8 +176,7 @@ public class Board implements BoardManager {
 		}
     }
     private void move(Marble marble, ArrayList<Cell> fullPath, boolean destroy) throws IllegalDestroyException{ 
-    	//I have not finished this function yet
-    	ArrayList<Marble> destroyed=new ArrayList<Marble>(); //I think until now how to handle the destroyed marbles
+    	ArrayList<Marble> destroyed=new ArrayList<Marble>(); 
     	Cell last=fullPath.get(fullPath.size()-1);
 
     	fullPath.get(0).setMarble(null);
@@ -204,7 +206,127 @@ public class Board implements BoardManager {
     		last.setMarble(marble);
     	}
     	
+    	for(int i=0;i<destroyed.size();i++){
+    		Marble m=destroyed.get(i);
+    		gameManager.sendHome(m);
+    	}
     }
+    
+    private void validateSwap(Marble marble_1, Marble marble_2) throws IllegalSwapException{
+    	// I assumed that marble_1 is my marble , and marble_2 is my opponent marble
+    	int idx1=getPositionInPath(track, marble_1);
+    	int idx2=getPositionInPath(track, marble_2);
+    	if(idx1==-1 || idx2==-1){
+    		throw new IllegalSwapException(); 
+    	}
+    	int base1=getBasePosition(marble_1.getColour());
+    	int base2=getBasePosition(marble_2.getColour());
+    	
+    	if(base2==idx2){ //if my opponent marble in its base cell 
+    		throw new IllegalSwapException();
+    	}
+    	
+    	//this is not mentioned in the milestone , but rather in the game description
+    	//it says that the 2 marbles should not be to the same player
+    	if(marble_1.getColour()==marble_2.getColour()){
+    		throw new IllegalSwapException();
+    	}
+    }
+    
+    private void validateDestroy(int positionInPath) throws IllegalDestroyException{
+    	if(positionInPath==-1){
+    		throw new IllegalDestroyException();
+    	}
+    	Cell c=track.get(positionInPath);
+    	Marble m=c.getMarble();
+//    	if(m==null){          //He didn't mention this. I write it myself. because it has no meaning that I destroy an empty cell
+//    		                   also it handles the next if condition, in case of m==null , null pointer exception
+//    		throw new IllegalDestroyException(); 
+//    	}
+    	if(m==null) return; //I changed my mind. if m==null .
+    	//I think in real use of this function , if m=null , then postionInPath will =-1. So this condition is not important anymore(and not do what is expected)
+    	if(getBasePosition(m.getColour())==positionInPath){
+    		throw new IllegalDestroyException();
+    	}
+    	
+    }
+    private void validateFielding(Cell occupiedBaseCell) throws CannotFieldException{
+    	Marble m=occupiedBaseCell.getMarble();
+    	if(m!=null){
+    		int idxbase=getBasePosition(m.getColour());
+    		if(track.get(idxbase)==occupiedBaseCell) throw new CannotFieldException();
+    	}
+    }
+    private void validateSaving(int positionInSafeZone, int positionOnTrack) throws InvalidMarbleException{
+    	if(positionOnTrack==-1) throw new InvalidMarbleException();
+    }
+    
+    public void moveBy(Marble marble, int steps, boolean destroy) throws IllegalMovementException, IllegalDestroyException{
+    	//PLEASE: don't use this method inside Game.sendHome(Marble marble) function
+    	ArrayList<Cell> fullPath=validateSteps(marble, steps);
+    	validatePath(marble, fullPath, destroy);
+    	move(marble, fullPath, destroy);
+    }
+    public void swap(Marble marble_1, Marble marble_2) throws IllegalSwapException{
+    	validateSwap(marble_1, marble_2);
+    	int idx1=getPositionInPath(track, marble_1);
+    	int idx2=getPositionInPath(track, marble_2);
+    	
+    	Cell c1=track.get(idx1);
+    	Cell c2=track.get(idx2);
+    	
+    	Marble tmp=c1.getMarble();
+    	c1.setMarble(c2.getMarble());
+    	c2.setMarble(tmp);
+    }
+    public void destroyMarble(Marble marble) throws IllegalDestroyException{
+    	//PLEASE: check if marble is null or not before calling this function
+    	//PLEASE: don't use this function inside Game.sendHome(Marble marble) function
+    	int idx=getPositionInPath(track, marble);
+    	validateDestroy(idx);
+    	track.get(idx).setMarble(null);
+    	gameManager.sendHome(marble);
+    }
+    public void sendToBase(Marble marble) throws CannotFieldException,IllegalDestroyException{
+    	int baseidx=getBasePosition(marble.getColour());
+    	validateFielding(track.get(baseidx));
+    	Marble m=track.get(baseidx).getMarble();
+    	if(m!=null){
+    		destroyMarble(m);
+    	}
+    	track.get(baseidx).setMarble(marble);
+    	
+    }
+    public void sendToSafe(Marble marble) throws InvalidMarbleException{
+    	validateSaving(0, getPositionInPath(track, marble)); // 0 is any integer , because validateSaving() doesn't depend on position in safe zone
+    	Random r=new Random();
+    	ArrayList<Cell> sf=getSafeZone(marble.getColour());
+    	ArrayList<Cell> sfEmpty=new ArrayList<Cell>();
+    	for(int i=0;i<sf.size();i++){
+    		if(sf.get(i).getMarble()==null){
+    			sfEmpty.add(sf.get(i));
+    		}
+    	}
+    	Collections.shuffle(sfEmpty);
+    	if(sf.size()>0){//has no usage, because if it is =0 , then validateSaving() will throw exception , because all safe cells are full , so the marble is in safe zone   
+    		Cell target=sf.get(0);
+    		int idx=getPositionInPath(track, marble);
+    		track.get(idx).setMarble(null);
+    		target.setMarble(marble);
+    	}
+    }
+    public ArrayList<Marble> getActionableMarbles(){
+    	ArrayList<Marble> ans=new ArrayList<Marble>();
+    	Colour clrOfCurrentPlayer= gameManager.getActivePlayerColour()
+    	for(int i=0;i<track.size();i++){
+    		Marble m=track.get(i).getMarble();
+    		if(m!=null && m.getColour()==clrOfCurrentPlayer){
+    			ans.add(m);
+    		}
+    	}
+    	return ans;
+    }
+    
     //----------------------------------------------------------------------------------------------------------------------------------------
 
     public ArrayList<Cell> getTrack() {
