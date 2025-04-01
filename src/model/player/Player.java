@@ -38,9 +38,12 @@ public class Player {
     
     
     // M2
+    //  Adds a specified marble to the player’s collection of marbles 
     public void regainMarble(Marble marble){
     	marbles.add(marble);
     }
+    
+    //  Returns the first marble without removing it form marbles ArrayList
     public Marble getOneMarble(){
     	if(marbles.isEmpty()){
     		return null ;
@@ -48,6 +51,8 @@ public class Player {
     		return marbles.get(0);
     	}
     }
+    
+    //  Checks if the given card is available in the player’s hand and sets it to the selectedCard
     public void selectCard(Card card) throws InvalidCardException{
     	if (!hand.contains(card)) {
             throw new InvalidCardException("Card not found in player's hand");
@@ -55,6 +60,8 @@ public class Player {
         
         this.selectedCard = card;
     }
+    
+    // Selects a marble to be used in the game by adding it to the selectedMarbles.
     public void selectMarble(Marble marble) throws InvalidMarbleException {
         if (selectedMarbles.size() >= 2) {
             throw new InvalidMarbleException("Cannot select more than two marbles");
@@ -65,10 +72,13 @@ public class Player {
         }
         selectedMarbles.add(marble);
     }
+    
+    // Clears all selections 
     public void deselectAll() {
         selectedCard = null;
         selectedMarbles.clear();
     }
+    
     // not completed 
     public void play() throws GameException {
         if (selectedCard == null) {

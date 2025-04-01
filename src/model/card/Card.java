@@ -2,6 +2,12 @@ package model.card;
 
 import engine.GameManager;
 import engine.board.BoardManager;
+import exception.ActionException;
+import exception.InvalidMarbleException;
+
+import java.util.*;
+
+import model.player.Marble;
 
 public abstract class Card {
 	private final String name;
@@ -15,6 +21,18 @@ public abstract class Card {
         this.boardManager = boardManager;
         this.gameManager = gameManager;
     }
+    
+    // M2  it's not completed 
+    public  boolean validateMarbleSize(ArrayList<Marble> marbles){
+    	return false ;
+    }
+    public  boolean validateMarbleColours(ArrayList<Marble> marbles){
+		return false;
+    	
+    }
+    public abstract void act(ArrayList<Marble> marbles) throws ActionException,InvalidMarbleException;
+   
+    //
 
     public String getName() {
         return name;

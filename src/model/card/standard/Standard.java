@@ -1,8 +1,13 @@
 package model.card.standard;
 
+import java.util.ArrayList;
+
 import engine.GameManager;
 import engine.board.BoardManager;
+import exception.ActionException;
+import exception.InvalidMarbleException;
 import model.card.Card;
+import model.player.Marble;
 
 public class Standard extends Card {
     private final int rank;
@@ -21,4 +26,5 @@ public class Standard extends Card {
     public Suit getSuit() {
         return suit;
     }
+  
 }
