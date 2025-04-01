@@ -1,0 +1,33 @@
+# Ignore build output directories
+/bin/
+/build/
+/out/
+
+# Ignore IntelliJ IDEA files
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Ignore Eclipse files
+.classpath
+.project
+.settings/
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore log files
+*.log
+
+# Ignore compiled Java files
+*.class
+
+# Ignore Maven and Gradle output
+/target/
+/.gradle/
+/mvnw
+/.mvn/
+
+# Ignore version control metadata
+/.git/
