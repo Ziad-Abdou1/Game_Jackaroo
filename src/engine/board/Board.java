@@ -332,7 +332,7 @@ public class Board implements BoardManager {
     public ArrayList<Cell> getTrack() {
         return this.track;
     }
-
+ // ziad test 
     public ArrayList<SafeZone> getSafeZones() {
         return this.safeZones;
     }
