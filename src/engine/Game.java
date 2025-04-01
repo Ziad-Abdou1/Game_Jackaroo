@@ -6,6 +6,10 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import engine.board.Board;
+import exception.CannotDiscardException;
+import exception.CannotFieldException;
+import exception.IllegalDestroyException;
+import exception.InvalidCardException;
 import model.Colour;
 import model.card.Card;
 import model.card.Deck;
@@ -50,6 +54,50 @@ public class Game implements GameManager {
         
     }
     
+    // M2
+    public  void selectCard(Card card) throws InvalidCardException{
+		
+	}
+    @Override
+	public void sendHome(Marble marble) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void fieldMarble() throws CannotFieldException,
+			IllegalDestroyException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void discardCard(Colour colour) throws CannotDiscardException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void discardCard() throws CannotDiscardException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Colour getActivePlayerColour() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Colour getNextPlayerColour() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+    //
+    
     public Board getBoard() {
         return board;
     }
@@ -61,5 +109,7 @@ public class Game implements GameManager {
     public ArrayList<Card> getFirePit() {
         return firePit;
     }
+
+	
     
 }

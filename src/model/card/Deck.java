@@ -26,8 +26,21 @@ public class Deck {
     
     // Arraylist to store the available cards.
     static private ArrayList<Card> cardsPool;
+    
+    // M2
+    public static int getPoolSize(){
+    	return cardsPool.size();
+    }
+    public static void refillPool(ArrayList<Card> cards) {
+        if (cards == null || cards.isEmpty()) {
+            return; 
+        }
+        cardsPool.addAll(cards);
+    }
+    
+    //
 
-
+    //  reads the csv file and instantiates the right card based on the code 
 	public static void loadCardPool(BoardManager boardManager, GameManager gameManager) throws IOException {
         cardsPool = new ArrayList<>();
 

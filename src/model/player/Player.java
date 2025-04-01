@@ -2,6 +2,7 @@ package model.player;
 
 import java.util.ArrayList;
 
+import exception.ActionException;
 import exception.GameException;
 import exception.InvalidCardException;
 import exception.InvalidMarbleException;
@@ -79,16 +80,26 @@ public class Player {
         selectedMarbles.clear();
     }
     
-    // not completed 
     public void play() throws GameException {
+        // Check if a card has been selected
         if (selectedCard == null) {
             throw new InvalidCardException("No card selected");
         }
-
-       
+        
+        if (!selectedCard.validateMarbleSize(selectedMarbles)) {
+            throw new InvalidMarbleException("Invalid number of marbles selected for this card");
+        }
+        
+        if (!selectedCard.validateMarbleColours(selectedMarbles)) {
+            throw new InvalidMarbleException("Invalid marble colors selected for this card");
+        }
+        
+        try {
+            selectedCard.act(selectedMarbles);
+        } catch (ActionException | InvalidMarbleException e) {
+            throw e;
+        }
     }
-    
-  
 
     //
 

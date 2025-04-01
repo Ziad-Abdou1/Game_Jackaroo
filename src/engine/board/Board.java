@@ -386,7 +386,7 @@ public class Board implements BoardManager {
     }
     public ArrayList<Marble> getActionableMarbles(){
     	ArrayList<Marble> ans=new ArrayList<Marble>();
-    	Colour clrOfCurrentPlayer= gameManager.getActivePlayerColour()
+    	Colour clrOfCurrentPlayer= gameManager.getActivePlayerColour();
     	for(int i=0;i<track.size();i++){
     		Marble m=track.get(i).getMarble();
     		if(m!=null && m.getColour()==clrOfCurrentPlayer){

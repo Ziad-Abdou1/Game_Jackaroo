@@ -7,6 +7,7 @@ import exception.InvalidMarbleException;
 
 import java.util.*;
 
+import model.Colour;
 import model.player.Marble;
 
 public abstract class Card {
@@ -23,13 +24,50 @@ public abstract class Card {
     }
     
     // M2  it's not completed 
-    public  boolean validateMarbleSize(ArrayList<Marble> marbles){
-    	return false ;
+    // Default implementation that must be overridden by each subclasses
+    
+    public boolean validateMarbleSize(ArrayList<Marble> marbles) {
+        if (this instanceof model.card.standard.Jack || this instanceof model.card.standard.Seven) {
+            return (marbles.size() == 1 || marbles.size() == 2); 
+        } 
+        else if (this instanceof model.card.standard.King || this instanceof model.card.standard.Ten) {
+            return (marbles.size() == 0 || marbles.size() == 1); 
+        } 
+        else {
+            return marbles.size() == 1; 
+        }
     }
-    public  boolean validateMarbleColours(ArrayList<Marble> marbles){
-		return false;
+//    public  boolean validateMarbleColours(ArrayList<Marble> marbles){
+//    	
+//    	if (marbles == null || marbles.isEmpty()) {
+//            return true; 
+//        }
+//        
+//    	Colour playerColour = gameManager.getActivePlayerColour();
+//        for (Marble marble : marbles) {
+//            if (marble.getColour() != activeColour) {
+//                return false; 
+//            }
+//        }
+//        return true;
+//    	
+//    }
+    public boolean validateMarbleColours(ArrayList<Marble> marbles) {	
+    	if (marbles == null || marbles.isEmpty()) {
+            return true; 
+        }
+        
+    	Colour playerColour = gameManager.getActivePlayerColour();
+        for (Marble marble : marbles) {
+            if (marble.getColour() != playerColour) {
+                return false; 
+            }
+        }
+        return true;
     	
     }
+
+
     public abstract void act(ArrayList<Marble> marbles) throws ActionException,InvalidMarbleException;
    
     //
@@ -41,5 +79,6 @@ public abstract class Card {
     public String getDescription() {
         return description;
     }
+
     
 }
