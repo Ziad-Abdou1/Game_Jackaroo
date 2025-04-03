@@ -82,15 +82,8 @@ public class Player {
             throw new InvalidMarbleException("Invalid marble colors for this card");
         }
         
-        try {
-            selectedCard.act(selectedMarbles);
-        } catch (ActionException | InvalidMarbleException e) {
-            deselectAll(); 
-            throw e; // Re-throw for game to handle
-        }
-
-      
-        deselectAll();
+        selectedCard.act(selectedMarbles);
+        
     }
 
     //
