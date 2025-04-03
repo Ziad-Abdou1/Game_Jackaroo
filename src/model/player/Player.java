@@ -40,17 +40,14 @@ public class Player {
     
     
     // M2
-    //  Adds a specified marble to the player�s collection of marbles 
+    //  Adds a specified marble to the players collection of marbles 
     public void regainMarble(Marble marble){
-    	if (marble.getColour() != this.colour) {
-            throw new IllegalArgumentException("Marble color must match player's color");
-        }
         marbles.add(marble);
     }
     
     //  Returns the first marble without removing it form marbles ArrayList
     public Marble getOneMarble() {
-        return marbles.isEmpty() ? null : marbles.get(0);
+        return marbles.isEmpty() ? null : marbles.get(0);	
     }
     
     //  Checks if the given card is available in the player�s hand and sets it to the selectedCard
@@ -64,11 +61,6 @@ public class Player {
     public void selectMarble(Marble marble) throws InvalidMarbleException {
         if (selectedMarbles.size() > 2) {
             throw new InvalidMarbleException("Cannot select more than two marbles");
-        }
-        // he don't say to add it , i don't sure if it ok 
-        Colour marbleColour = marble.getColour();
-        if (colour!= marbleColour) {
-            throw new InvalidMarbleException("Marble does not belong to player");
         }
         selectedMarbles.add(marble);
     }
@@ -90,21 +82,14 @@ public class Player {
             throw new InvalidMarbleException("Invalid marble colors for this card");
         }
         
-        ///   not sure this is right 
         try {
             selectedCard.act(selectedMarbles);
         } catch (ActionException | InvalidMarbleException e) {
-            deselectAll(); // Clean up on failure
+            deselectAll(); 
             throw e; // Re-throw for game to handle
         }
 
-        if (selectedCard instanceof model.card.standard.Ace || selectedCard instanceof model.card.standard.King) {
-            if (selectedMarbles.isEmpty()) {
-                if (!marbles.isEmpty()) {
-                    marbles.remove(0);
-                }
-            }
-        }
+      
         deselectAll();
     }
 
