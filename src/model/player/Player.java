@@ -98,13 +98,7 @@ public class Player {
             throw e; // Re-throw for game to handle
         }
 
-        if (selectedCard instanceof model.card.standard.Ace || selectedCard instanceof model.card.standard.King) {
-            if (selectedMarbles.isEmpty()) {
-                if (!marbles.isEmpty()) {
-                    marbles.remove(0);
-                }
-            }
-        }
+
         deselectAll();
     }
 
