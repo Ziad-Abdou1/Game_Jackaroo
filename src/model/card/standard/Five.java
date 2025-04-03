@@ -16,9 +16,7 @@ public class Five extends Standard {
     }
     
     // M2
-    public boolean validateMarbleSize(ArrayList<Marble> marbles) {
-        return marbles != null && marbles.size() == 1;
-    }
+
     @Override
     public boolean validateMarbleColours(ArrayList<Marble> marbles) {
         return true ; 

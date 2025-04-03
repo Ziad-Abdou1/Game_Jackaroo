@@ -26,18 +26,19 @@ public abstract class Card {
     // M2  it's not completed 
     
     public boolean validateMarbleSize(ArrayList<Marble> marbles) {
-    	// i think i handle Jack in wrong way 
         if (this instanceof model.card.standard.Jack || this instanceof model.card.standard.Seven) {
             return (marbles.size() == 1 || marbles.size() == 2); 
         } 
-        else if (this instanceof model.card.standard.King || this instanceof model.card.standard.Ten || this instanceof model.card.standard.Queen || this instanceof model.card.standard.Ace) {
+        else if (this instanceof model.card.standard.King || this instanceof model.card.standard.Ten
+        		|| this instanceof model.card.standard.Queen || this instanceof model.card.standard.Ace) {
             return (marbles.size() == 0 || marbles.size() == 1); 
         } 
         else {
+        	// Wild and the rest form standard
             return marbles.size() == 1; 
         }
     }
-
+    // not for Jack , Five  and Burner 
     public boolean validateMarbleColours(ArrayList<Marble> marbles) {	
     	if (marbles == null || marbles.isEmpty()) {
             return true; 
