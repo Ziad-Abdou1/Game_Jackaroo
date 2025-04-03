@@ -77,21 +77,20 @@ public class Game implements GameManager {
     	
     }
     boolean canPlayTurn(){ // checks if the player still can play in this turn or not.
-    	if(turn <= 4-players.get(currentPlayerIndex).getHand().size()){
+    	if(turn+1 <= 4-players.get(currentPlayerIndex).getHand().size()){ //it was turn , but I make it turn+1 because it is 0 based
     		return false;
     	}
     	
     	return true;
     }
     void playPlayerTurn() throws GameException{ // starts the player's turn.
-    	if(!canPlayTurn()){
-    		throw new GameException("cant play");
-    	}
     	players.get(currentPlayerIndex).play();
     }
     void endPlayerTurn(){ // ends the player's turn.
-    	playPlayerTurn();
-    	firePit.add(players.get(currentPlayerIndex).getSelectedCard());
+    	Card c=players.get(currentPlayerIndex).getSelectedCard();
+    	firePit.add(c);
+    	//missed to remove the card from the hand of the player :      (this is the main change in this function)
+    	players.get(currentPlayerIndex).getHand().remove(c);
     	players.get(currentPlayerIndex).deselectAll();
     	currentPlayerIndex=currentPlayerIndex<4?currentPlayerIndex+1:0; 
     	if(currentPlayerIndex==0)
@@ -100,7 +99,7 @@ public class Game implements GameManager {
     		for(int i =0;i<4;i++){
     			if(Deck.getPoolSize()<4){
     				Deck.refillPool(firePit);
-    				firePit.removeAll(firePit);
+    				firePit.clear();
     			}
     			players.get(i).setHand(Deck.drawCards());
     		}
