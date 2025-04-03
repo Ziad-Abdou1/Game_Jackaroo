@@ -124,13 +124,12 @@ public class Game implements GameManager {
     	}
     }
     public void fieldMarble() throws CannotFieldException, IllegalDestroyException{ // tries to take a marble from the home zone and put it in the field(Base cell).
-    	Marble temp = players.get(currentPlayerIndex).getOneMarble();
-    	if(temp == null)
+    	Player p=players.get(currentPlayerIndex);
+    	Marble m=p.getOneMarble();
+    	if(m == null)
     		throw new CannotFieldException("No Marbles left in the Home!");
-    	board.sendToBase(temp);
-    	//not completed only remaining is to remove the marble from the homezone.
-    	
-    	
+    	board.sendToBase(m);
+    	p.getMarbles().remove(m);
     }
     public void discardCard(Colour colour) throws CannotDiscardException{ // removes a random card from the player with the given colour.
     	for(Player p : players){
