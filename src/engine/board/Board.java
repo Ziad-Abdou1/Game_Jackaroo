@@ -228,6 +228,12 @@ public class Board implements BoardManager {
     		}
     		for(int i=1;i<fullPath.size();i++){
     			Cell c=fullPath.get(i);
+    			if(c.getCellType()==CellType.ENTRY && c.getMarble()!=null && i<fullPath.size()-1 && fullPath.get(i+1).getCellType()==CellType.SAFE){
+    				throw new IllegalMovementException("Safe Zone Entry: cannot enter safe zone if any marble is in entry");
+    			}
+    		}
+    		for(int i=1;i<fullPath.size();i++){
+    			Cell c=fullPath.get(i);
     			if(c.getCellType()==CellType.BASE && c.getMarble()!=null && track.get(getBasePosition(c.getMarble().getColour()))==c){
     				throw new IllegalMovementException("Base Cell Blockage");
     			}
@@ -348,10 +354,7 @@ public class Board implements BoardManager {
     public void destroyMarble(Marble marble) throws IllegalDestroyException{
     	//PLEASE: check if marble is null or not before calling this function
     	//PLEASE: don't use this function inside Game.sendHome(Marble marble) function
-    	Colour clrCurrentPlayer=gameManager.getActivePlayerColour();
-    	if(marble.getColour()==clrCurrentPlayer){
-    		throw new IllegalDestroyException();
-    	}
+
     	int idx=getPositionInPath(track, marble);
     	validateDestroy(idx);
     	track.get(idx).setMarble(null);
