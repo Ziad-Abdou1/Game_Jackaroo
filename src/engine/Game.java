@@ -80,7 +80,6 @@ public class Game implements GameManager {
     	if(turn+1 <= 4-players.get(currentPlayerIndex).getHand().size()){ //it was turn , but I make it turn+1 because it is 0 based
     		return false;
     	}
-    	
     	return true;
     }
     void playPlayerTurn() throws GameException{ // starts the player's turn.
@@ -88,11 +87,12 @@ public class Game implements GameManager {
     }
     void endPlayerTurn(){ // ends the player's turn.
     	Card c=players.get(currentPlayerIndex).getSelectedCard();
-    	firePit.add(c);
-    	//missed to remove the card from the hand of the player :      (this is the main change in this function)
-    	players.get(currentPlayerIndex).getHand().remove(c);
+    	if(c!=null){
+    		firePit.add(c);
+    		players.get(currentPlayerIndex).getHand().remove(c);
+    	}
     	players.get(currentPlayerIndex).deselectAll();
-    	currentPlayerIndex=currentPlayerIndex<4?currentPlayerIndex+1:0; 
+    	currentPlayerIndex=(currentPlayerIndex+1)%4; 
     	if(currentPlayerIndex==0)
     		turn++;
     	if(turn == 4){
@@ -138,8 +138,8 @@ public class Game implements GameManager {
     			if(temp.size()==0)
     				throw new CannotDiscardException("No Cards to be discarded!");
     			int randomindex = (int)(Math.random()*temp.size());
-    			temp.remove(randomindex);
-    			p.setHand(temp);
+    			Card c=temp.remove(randomindex);
+    			firePit.add(c);
     			break;
     		}
     		
@@ -156,8 +156,7 @@ public class Game implements GameManager {
     	return players.get(currentPlayerIndex).getColour();
     }
     public Colour getNextPlayerColour(){ // Returns the colour of the next player.
-    	int temp = currentPlayerIndex<4?currentPlayerIndex+1:0;
-    	return players.get(temp).getColour();
+    	return players.get((currentPlayerIndex+1)%4).getColour();
     }
 
 	
