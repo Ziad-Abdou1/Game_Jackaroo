@@ -85,68 +85,68 @@ public class Board implements BoardManager {
     	}
     	return -1;
     }
+//    private ArrayList<Cell> validateSteps(Marble marble, int steps) throws IllegalMovementException{
+//    	//question: if card is 4 , will he give me steps as 4 or as -4 ?
+//    	//I considered it 4
+//    	// if steps can be -ve ,  you as a programmer should set the boolean stepsCanBeNegative to be true
+//    	boolean stepsCanBeNegative=false;
+//    	if(stepsCanBeNegative){
+//    		return validateSteps2(marble, steps);
+//    	}
+//    	ArrayList<Cell> ans=new ArrayList<Cell>();
+//    	int cur=getPositionInPath(track, marble);
+//    	if(cur==-1){
+//    		ArrayList<Cell> sf=getSafeZone(marble.getColour()); //should I handle if it is null?
+//    		cur=getPositionInPath(sf, marble);
+//    		if(cur==-1) throw new IllegalMovementException("the marble cannot be moved.");
+//    		// marble now is in safe zone
+//    		if(steps==4) throw new IllegalMovementException("marble cannot move backwards in Safe Zone");
+//    		if(cur+steps>=4) throw new IllegalMovementException("the rank of the card played is too high."); //steps==5 is included here automatically
+//    		for(int i=0;i<=steps;i++){ 
+//    			ans.add(sf.get(cur+i));
+//    		}
+//    		return ans;
+//    	}
+//    	//marble now is on track
+//    	if(steps==4){
+//    		for(int i=0;i<=steps;i++){
+//    			ans.add( track.get( ((cur-i)%100+100)%100 ));
+//    		}
+//    		return ans;
+//    	}
+//    	Colour clrCurrentPlayer=gameManager.getActivePlayerColour();
+//    	if(steps==5){
+//    		for(int i=0;i<=steps;i++){
+//    			Cell cell=track.get((cur+i)%100);
+//    			ans.add(cell);
+//    			if(cell.getMarble()!=null && cell.getMarble().getColour()==clrCurrentPlayer){
+//    				throw new IllegalMovementException();
+//    			}
+//    		}
+//    		return ans;
+//    	}
+//    	int entry=getEntryPosition(marble.getColour());
+//    	int distanceToEnd=((entry-cur)%100+100)%100 +4;
+//    	if(distanceToEnd<steps) throw new IllegalMovementException("the rank of the card played is too high.");
+//    	int distanceToEntry=distanceToEnd-4;
+//    	
+//    	
+//    	int initialDistance=Math.min(distanceToEntry,steps);
+//    	for(int i=0;i<=initialDistance;i++){
+//    		ans.add(track.get((cur+i)%100)); 
+//    	}
+//    	if(distanceToEntry<steps){
+//    		int remainingSteps=steps-distanceToEntry;
+//    		ArrayList<Cell> sf=getSafeZone(marble.getColour()); //should I handle if it is null?
+//    		for(int i=0;i<remainingSteps;i++){
+//    			ans.add(sf.get(i));
+//    		}
+//    	}
+//    	return ans;
+//    }
     private ArrayList<Cell> validateSteps(Marble marble, int steps) throws IllegalMovementException{
-    	//question: if card is 4 , will he give me steps as 4 or as -4 ?
-    	//I considered it 4
-    	// if steps can be -ve ,  you as a programmer should set the boolean stepsCanBeNegative to be true
-    	boolean stepsCanBeNegative=false;
-    	if(stepsCanBeNegative){
-    		return validateSteps2(marble, steps);
-    	}
-    	ArrayList<Cell> ans=new ArrayList<Cell>();
-    	int cur=getPositionInPath(track, marble);
-    	if(cur==-1){
-    		ArrayList<Cell> sf=getSafeZone(marble.getColour()); //should I handle if it is null?
-    		cur=getPositionInPath(sf, marble);
-    		if(cur==-1) throw new IllegalMovementException("the marble cannot be moved.");
-    		// marble now is in safe zone
-    		if(steps==4) throw new IllegalMovementException("marble cannot move backwards in Safe Zone");
-    		if(cur+steps>=4) throw new IllegalMovementException("the rank of the card played is too high."); //steps==5 is included here automatically
-    		for(int i=0;i<=steps;i++){ 
-    			ans.add(sf.get(cur+i));
-    		}
-    		return ans;
-    	}
-    	//marble now is on track
-    	if(steps==4){
-    		for(int i=0;i<=steps;i++){
-    			ans.add( track.get( ((cur-i)%100+100)%100 ));
-    		}
-    		return ans;
-    	}
-    	Colour clrCurrentPlayer=gameManager.getActivePlayerColour();
-    	if(steps==5){
-    		for(int i=0;i<=steps;i++){
-    			Cell cell=track.get((cur+i)%100);
-    			ans.add(cell);
-    			if(cell.getMarble()!=null && cell.getMarble().getColour()==clrCurrentPlayer){
-    				throw new IllegalMovementException();
-    			}
-    		}
-    		return ans;
-    	}
-    	int entry=getEntryPosition(marble.getColour());
-    	int distanceToEnd=((entry-cur)%100+100)%100 +4;
-    	if(distanceToEnd<steps) throw new IllegalMovementException("the rank of the card played is too high.");
-    	int distanceToEntry=distanceToEnd-4;
-    	
-    	
-    	int initialDistance=Math.min(distanceToEntry,steps);
-    	for(int i=0;i<=initialDistance;i++){
-    		ans.add(track.get((cur+i)%100)); 
-    	}
-    	if(distanceToEntry<steps){
-    		int remainingSteps=steps-distanceToEntry;
-    		ArrayList<Cell> sf=getSafeZone(marble.getColour()); //should I handle if it is null?
-    		for(int i=0;i<remainingSteps;i++){
-    			ans.add(sf.get(i));
-    		}
-    	}
-    	return ans;
-    }
-    private ArrayList<Cell> validateSteps2(Marble marble, int steps) throws IllegalMovementException{
     	//I handled here if steps <0
-    	if(steps<0 && steps!=-4) throw new IllegalMovementException(); // not mentioned anywhere
+//    	if(steps<0 && steps!=-4) throw new IllegalMovementException(); // not mentioned anywhere
     	ArrayList<Cell> ans=new ArrayList<Cell>();
     	int cur=getPositionInPath(track, marble);
     	if(cur==-1){
