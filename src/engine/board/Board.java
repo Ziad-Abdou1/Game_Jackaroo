@@ -291,11 +291,12 @@ public class Board implements BoardManager {
     		throw new IllegalSwapException();
     	}
     	
-    	//this is not mentioned in the milestone , but rather in the game description
-    	//it says that the 2 marbles should not be to the same player
-    	if(marble_1.getColour()==marble_2.getColour()){
-    		throw new IllegalSwapException();
-    	}
+//    	//this is not mentioned in the milestone , but rather in the game description
+//    	//it says that the 2 marbles should not be to the same player
+//    	if(marble_1.getColour()==marble_2.getColour()){
+//    		throw new IllegalSwapException();
+//    	}                                      
+    	//this will be handled in the  boolean validateMarbleColours(ArrayList<Marble> marbles);
     }
     
     private void validateDestroy(int positionInPath) throws IllegalDestroyException{
