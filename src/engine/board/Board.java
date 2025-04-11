@@ -340,6 +340,12 @@ public class Board implements BoardManager {
     	move(marble, fullPath, destroy);
     }
     public void swap(Marble marble_1, Marble marble_2) throws IllegalSwapException{
+    	Colour ccc=gameManager.getActivePlayerColour();
+    	if(marble_2.getColour()==ccc){
+    		Marble tmp=marble_1;
+    		marble_1=marble_2;
+    		marble_2=tmp;
+    	}
     	validateSwap(marble_1, marble_2);
     	int idx1=getPositionInPath(track, marble_1);
     	int idx2=getPositionInPath(track, marble_2);
