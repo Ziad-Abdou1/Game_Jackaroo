@@ -6,6 +6,8 @@ import model.Colour;
 import model.player.Marble;
 import engine.GameManager;
 import engine.board.BoardManager;
+import exception.ActionException;
+import exception.InvalidMarbleException;
 
 public class Jack extends Standard {
 
@@ -30,9 +32,21 @@ public class Jack extends Standard {
     	}else{
     		return false ; 
     	}
-        
       
     }
+
+	@Override
+	public void act(ArrayList<Marble> marbles) throws ActionException,
+			InvalidMarbleException {
+		if (!validateMarbleColours(marbles)) throw new InvalidMarbleException("Invalid marble colours");
+		if (!validateMarbleSize(marbles)) throw new InvalidMarbleException("invalid marble count");
+		if (marbles.size()==1) {
+			super.act(marbles);
+		}
+		else if (marbles.size()==2) {
+			boardManager.swap(marbles.get(0),marbles.get(1));
+		}
+	}
     //
 
 }

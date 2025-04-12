@@ -34,8 +34,8 @@ public class Burner extends Wild {
 	@Override
 	public void act(ArrayList<Marble> marbles) throws ActionException,
 			InvalidMarbleException {
-		// TODO Auto-generated method stub
-		
+		if (!validateMarbleColours(marbles)) throw new InvalidMarbleException();
+		gameManager.sendHome(marbles.get(0));
 	}
 	// 
 

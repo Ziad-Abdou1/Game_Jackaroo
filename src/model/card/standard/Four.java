@@ -6,6 +6,7 @@ import engine.GameManager;
 import engine.board.BoardManager;
 import exception.ActionException;
 import exception.InvalidMarbleException;
+import model.player.Marble;
 
 public class Four  extends Standard {
 
@@ -13,4 +14,12 @@ public class Four  extends Standard {
         super(name, description, 4, suit, boardManager, gameManager);
     }
   
+    
+	@Override
+	public void act(ArrayList<Marble> marbles) throws ActionException,
+			InvalidMarbleException {
+		if (!validateMarbleSize(marbles)) throw new InvalidMarbleException("Invalid marble count");
+		boardManager.moveBy(marbles.get(0), -getRank(), false);
+        
+	}
 }

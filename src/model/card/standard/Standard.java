@@ -30,8 +30,9 @@ public class Standard extends Card {
 	@Override
 	public void act(ArrayList<Marble> marbles) throws ActionException,
 			InvalidMarbleException {
-		// TODO Auto-generated method stub
-		
+		if (!validateMarbleSize(marbles)) throw new InvalidMarbleException("Invalid marble count");
+		boardManager.moveBy(marbles.get(0), rank, false);
+        
 	}
    
   

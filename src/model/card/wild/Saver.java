@@ -14,4 +14,10 @@ public class Saver extends Wild {
         super(name, description, boardManager, gameManager);
     }
 
+	public void act(ArrayList<Marble> marbles) throws ActionException,
+			InvalidMarbleException {
+		if (!validateMarbleColours(marbles)) throw new InvalidMarbleException();
+		boardManager.sendToSafe(marbles.get(0));
+	}
+    
 }
