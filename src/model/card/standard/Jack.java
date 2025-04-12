@@ -24,13 +24,14 @@ public class Jack extends Standard {
     		
     	}else if (marbles.size() == 2 ){
     		Marble m1 = marbles.get(0); Marble m2 = marbles.get(1);
+    		//Morkos: do we need to handle if m1 or m2 is null?????????????????
 			// i considered both situations, first is mine second is not and first is not mine and second is
 			return (m1.getColour() == (playerColour) &&
 					!(m2.getColour() == (playerColour)) )  || (!(m1.getColour() == (playerColour)) &&
 					m2.getColour().equals(playerColour));
     		
     	}else{
-    		return false ; 
+    		return false ; //will not happen
     	}
       
     }
@@ -38,8 +39,8 @@ public class Jack extends Standard {
 	@Override
 	public void act(ArrayList<Marble> marbles) throws ActionException,
 			InvalidMarbleException {
+		if (!validateMarbleSize(marbles)) throw new InvalidMarbleException("Invalid marble count");
 		if (!validateMarbleColours(marbles)) throw new InvalidMarbleException("Invalid marble colours");
-		if (!validateMarbleSize(marbles)) throw new InvalidMarbleException("invalid marble count");
 		if (marbles.size()==1) {
 			super.act(marbles);
 		}

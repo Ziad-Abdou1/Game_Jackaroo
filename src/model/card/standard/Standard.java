@@ -30,7 +30,9 @@ public class Standard extends Card {
 	@Override
 	public void act(ArrayList<Marble> marbles) throws ActionException,
 			InvalidMarbleException {
-		if (!validateMarbleSize(marbles)) throw new InvalidMarbleException("Invalid marble count");
+		if (!validateMarbleSize(marbles)) throw new InvalidMarbleException("Invalid marble count"); // we need to ask about this
+		//if so , then we need to add also validateMarbleColours(marbles) , but I don't know which exception we should throw.
+		if(!validateMarbleColours(marbles)) throw new InvalidMarbleException("Invalid marble colours");
 		boardManager.moveBy(marbles.get(0), rank, false);
         
 	}

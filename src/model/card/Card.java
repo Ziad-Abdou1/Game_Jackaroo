@@ -25,7 +25,7 @@ public abstract class Card {
     
     // M2  it's not completed 
     
-    public boolean validateMarbleSize(ArrayList<Marble> marbles) {
+    public boolean validateMarbleSize(ArrayList<Marble> marbles) { //Morkos: we will change this, so that each class override this method.
         if (this instanceof model.card.standard.Jack || this instanceof model.card.standard.Seven) {
             return (marbles.size() == 1 || marbles.size() == 2); 
         } 
@@ -40,13 +40,13 @@ public abstract class Card {
     }
     // not for Jack , Five  and Burner 
     public boolean validateMarbleColours(ArrayList<Marble> marbles) {	
-    	if (marbles == null || marbles.isEmpty()) {
+    	if (marbles == null || marbles.isEmpty()) { //Morkos: does this happen?
             return true; 
         }
         
     	Colour playerColour = gameManager.getActivePlayerColour();
         for (Marble marble : marbles) {
-            if (marble.getColour() != playerColour) {
+            if (marble.getColour() != playerColour) {//Morkos: do we need to handle if marble is null?
                 return false; 
             }
         }

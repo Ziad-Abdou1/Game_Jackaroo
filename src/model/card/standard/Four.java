@@ -19,7 +19,8 @@ public class Four  extends Standard {
 	public void act(ArrayList<Marble> marbles) throws ActionException,
 			InvalidMarbleException {
 		if (!validateMarbleSize(marbles)) throw new InvalidMarbleException("Invalid marble count");
-		boardManager.moveBy(marbles.get(0), -getRank(), false);
+		if (!validateMarbleColours(marbles)) throw new InvalidMarbleException("Invalid marble colours");
+		boardManager.moveBy(marbles.get(0), -4, false);
         
 	}
 }

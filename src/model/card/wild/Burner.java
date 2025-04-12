@@ -19,7 +19,7 @@ public class Burner extends Wild {
     // M2
 	@Override
 	 public boolean validateMarbleColours(ArrayList<Marble> marbles) {	
-    	if (marbles == null || marbles.isEmpty()) {
+    	if (marbles == null || marbles.isEmpty()) {//Morkos: I think this if condition will not be entered, because this is checked already in validateMarbleSize() function
             return false; // i donot know what should i return 
         }
     	Colour playerColour = gameManager.getActivePlayerColour();
@@ -34,8 +34,9 @@ public class Burner extends Wild {
 	@Override
 	public void act(ArrayList<Marble> marbles) throws ActionException,
 			InvalidMarbleException {
-		if (!validateMarbleColours(marbles)) throw new InvalidMarbleException();
-		gameManager.sendHome(marbles.get(0));
+		if (!validateMarbleSize(marbles)) throw new InvalidMarbleException("Invalid marble count");
+		if (!validateMarbleColours(marbles)) throw new InvalidMarbleException("Invalid marble colours");
+		boardManager.destroyMarble(marbles.get(0));
 	}
 	// 
 

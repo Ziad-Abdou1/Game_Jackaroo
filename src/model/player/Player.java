@@ -59,7 +59,7 @@ public class Player {
     }
     // Selects a marble to be used in the game by adding it to the selectedMarbles.
     public void selectMarble(Marble marble) throws InvalidMarbleException {
-        if (selectedMarbles.size() > 2) {
+        if (selectedMarbles.size() >= 2) {
             throw new InvalidMarbleException("Cannot select more than two marbles");
         }
         selectedMarbles.add(marble);
