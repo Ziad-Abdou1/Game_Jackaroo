@@ -188,6 +188,7 @@ public class Board implements BoardManager {
     	}
     	int entry=getEntryPosition(marble.getColour());
     	int distanceToEnd=((entry-cur)%100+100)%100 +4;
+    	System.out.println(distanceToEnd+" "+steps);
     	if(distanceToEnd<steps) throw new IllegalMovementException("the rank of the card played is too high.");
     	int distanceToEntry=distanceToEnd-4;
     	
@@ -219,8 +220,10 @@ public class Board implements BoardManager {
 //    }
     private void validatePath(Marble marble, ArrayList<Cell> fullPath, boolean destroy) throws IllegalMovementException{
     	int startIdx;
-    	if(marble==fullPath.get(0).getMarble()) startIdx=1;
-    	else startIdx=0;
+//    	if(marble==fullPath.get(0).getMarble()) startIdx=1;
+//    	else startIdx=0;
+    	
+    	startIdx=1;
     	
     	Colour currClr=gameManager.getActivePlayerColour();
     	if(destroy){
@@ -273,12 +276,13 @@ public class Board implements BoardManager {
     	int startIdx;
     	boolean marbleIsAtFirstOfPath;
     	if(marble==fullPath.get(0).getMarble()){
-    		startIdx=1;
+//    		startIdx=1;
     		marbleIsAtFirstOfPath=true;
     	}else{
-    		startIdx=0;
+//    		startIdx=0;
     		marbleIsAtFirstOfPath=false;
     	}
+    	startIdx=1;
     	ArrayList<Marble> destroyed=new ArrayList<Marble>(); 
     	Cell last=fullPath.get(fullPath.size()-1);
 
