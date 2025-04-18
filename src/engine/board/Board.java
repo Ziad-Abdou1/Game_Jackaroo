@@ -1,11 +1,14 @@
 package engine.board;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 
 import javax.management.RuntimeErrorException;
 
+import engine.Game;
 import engine.GameManager;
 import exception.*;
 import model.Colour;
@@ -201,7 +204,18 @@ public class Board implements BoardManager {
     	}
     	return ans;
     }
-    
+//    public static void main(String[] args) throws IllegalMovementException,IOException{
+//    	ArrayList<Colour> colourOrder=new ArrayList(Arrays.asList(Colour.RED,Colour.GREEN,Colour.BLUE,Colour.YELLOW));
+//    	GameManager g=new Game("Morkos");
+//    	Marble marble=new Marble(Colour.RED);
+//    	Marble m1=new Marble(Colour.RED);
+//    	Cell c=new Cell(CellType.SAFE);
+//    	c.setMarble(m1);
+//    	ArrayList<Cell> fullPath=new ArrayList<Cell>();
+//    	fullPath.add(c);
+//    	Board b=new Board(colourOrder, g);
+//    	b.validatePath(marble, fullPath, false);
+//    }
     private void validatePath(Marble marble, ArrayList<Cell> fullPath, boolean destroy) throws IllegalMovementException{
     	int startIdx;
     	if(marble==fullPath.get(0).getMarble()) startIdx=1;
@@ -226,7 +240,7 @@ public class Board implements BoardManager {
     		int cntOtherMarbles=0;
     		for(int i=startIdx;i<fullPath.size()-1; i++){
     			Cell c=fullPath.get(i);
-    			if(c.getMarble()!=null && c.getMarble().getColour()!=currClr){
+    			if(c.getMarble()!=null){
     				cntOtherMarbles++;
     				if(cntOtherMarbles>1){
     					throw new IllegalMovementException("path Blockage");
@@ -323,7 +337,8 @@ public class Board implements BoardManager {
 //    		                   also it handles the next if condition, in case of m==null , null pointer exception
 //    		throw new IllegalDestroyException(); 
 //    	}
-    	if(m==null) return; //I changed my mind. if m==null .
+//    	if(m==null) throw new IllegalDestroyException("marble is not found in the track"); //I changed my mind. if m==null .
+    	if(m==null) return;
     	//I think in real use of this function , if m=null , then postionInPath will =-1. So this condition is not important anymore(and not do what is expected)
     	if(getBasePosition(m.getColour())==positionInPath){
     		throw new IllegalDestroyException();
@@ -334,11 +349,18 @@ public class Board implements BoardManager {
     	Marble m=occupiedBaseCell.getMarble();
     	if(m!=null){
     		int idxbase=getBasePosition(m.getColour());
-    		if(track.get(idxbase)==occupiedBaseCell) throw new CannotFieldException();
+    		if(m.getColour()==gameManager.getActivePlayerColour()) throw new CannotFieldException();
+//    		if(track.get(idxbase)==occupiedBaseCell) throw new CannotFieldException();
     	}
     }
     private void validateSaving(int positionInSafeZone, int positionOnTrack) throws InvalidMarbleException{
     	if(positionOnTrack==-1) throw new InvalidMarbleException();
+//    	Colour currClr=gameManager.getActivePlayerColour();
+//    	Marble m=track.get(positionOnTrack).getMarble();
+//    	ArrayList<Cell> sf=getSafeZone(currClr);
+//    	if(m!=null){
+//    		
+//    	}
     }
     
     public void moveBy(Marble marble, int steps, boolean destroy) throws IllegalMovementException, IllegalDestroyException{
