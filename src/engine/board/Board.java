@@ -269,28 +269,36 @@ public class Board implements BoardManager {
 		}
     }
     private void move(Marble marble, ArrayList<Cell> fullPath, boolean destroy) throws IllegalDestroyException{ 
+    	int startIdx;
+    	boolean marbleIsAtFirstOfPath;
+    	if(marble==fullPath.get(0).getMarble()){
+    		startIdx=1;
+    		marbleIsAtFirstOfPath=true;
+    	}else{
+    		startIdx=0;
+    		marbleIsAtFirstOfPath=false;
+    	}
     	ArrayList<Marble> destroyed=new ArrayList<Marble>(); 
     	Cell last=fullPath.get(fullPath.size()-1);
 
-    	fullPath.get(0).setMarble(null);
+    	if(marbleIsAtFirstOfPath) fullPath.get(0).setMarble(null);
     	if(destroy){
-    		for(int i=0;i<fullPath.size();i++){
+    		for(int i=startIdx;i<fullPath.size();i++){
     			Marble m=fullPath.get(i).getMarble();
     			if(m!=null){
-    				if(i!=0) destroyed.add(m);
-    				fullPath.get(i).setMarble(null);
+    				destroyMarble(m);
     			}
     		}
     	}else{
     		Marble m= last.getMarble();
     		if(m!=null){ 
-    			destroyed.add(m);
-    			last.setMarble(null);
+    			destroyMarble(m);
     		}
     	}
     	
     	
     	if(last.isTrap()){
+
     		last.setMarble(null); //no usage
     		last.setTrap(false);
     		destroyed.add(marble);
@@ -307,6 +315,13 @@ public class Board implements BoardManager {
     
     private void validateSwap(Marble marble_1, Marble marble_2) throws IllegalSwapException{
     	// I assumed that marble_1 is my marble , and marble_2 is my opponent marble
+    	Colour ccc=gameManager.getActivePlayerColour();
+    	if(marble_2.getColour()==ccc){
+    		Marble tmp=marble_1;
+    		marble_1=marble_2;
+    		marble_2=tmp;
+    	}
+    	
     	int idx1=getPositionInPath(track, marble_1);
     	int idx2=getPositionInPath(track, marble_2);
     	if(idx1==-1 || idx2==-1){
@@ -371,11 +386,11 @@ public class Board implements BoardManager {
     }
     public void swap(Marble marble_1, Marble marble_2) throws IllegalSwapException{
     	Colour ccc=gameManager.getActivePlayerColour();
-//    	if(marble_2.getColour()==ccc){
-//    		Marble tmp=marble_1;
-//    		marble_1=marble_2;
-//    		marble_2=tmp;
-//    	}
+    	if(marble_2.getColour()==ccc){
+    		Marble tmp=marble_1;
+    		marble_1=marble_2;
+    		marble_2=tmp;
+    	}
     	validateSwap(marble_1, marble_2);
     	int idx1=getPositionInPath(track, marble_1);
     	int idx2=getPositionInPath(track, marble_2);
