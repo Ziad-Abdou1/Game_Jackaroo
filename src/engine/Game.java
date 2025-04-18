@@ -77,7 +77,7 @@ public class Game implements GameManager {
     	
     }
     public boolean canPlayTurn(){ // checks if the player still can play in this turn or not.
-    	if(players.get(currentPlayerIndex).getHand().size()+turn != 4){ //it was turn , but I make it turn+1 because it is 0 based
+    	if(players.get(currentPlayerIndex).getHand().size()+turn != 4){
     		return false;
     	}
     	return true;
