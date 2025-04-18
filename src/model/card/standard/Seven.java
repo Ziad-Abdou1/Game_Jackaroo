@@ -25,8 +25,8 @@ public class Seven extends Standard {
 	@Override
 	public void act(ArrayList<Marble> marbles) throws ActionException,
 			InvalidMarbleException {
-		if (!validateMarbleSize(marbles)) throw new InvalidMarbleException("Invalid marble count");
-		if (!validateMarbleColours(marbles)) throw new InvalidMarbleException("Invalid marble colours");
+//		if (!validateMarbleSize(marbles)) throw new InvalidMarbleException("Invalid marble count");
+//		if (!validateMarbleColours(marbles)) throw new InvalidMarbleException("Invalid marble colours");
 		if(marbles.size()==1){
 			boardManager.moveBy(marbles.get(0), 7, false);
 		}else{
