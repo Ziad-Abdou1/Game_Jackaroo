@@ -340,7 +340,7 @@ public class Board implements BoardManager {
     	move(marble, fullPath, destroy);
     }
     public void swap(Marble marble_1, Marble marble_2) throws IllegalSwapException{
-//    	Colour ccc=gameManager.getActivePlayerColour();
+    	Colour ccc=gameManager.getActivePlayerColour();
 //    	if(marble_2.getColour()==ccc){
 //    		Marble tmp=marble_1;
 //    		marble_1=marble_2;

@@ -30,8 +30,10 @@ public class Jack extends Standard {
     		Marble m1 = marbles.get(0); Marble m2 = marbles.get(1);
     		//Morkos: do we need to handle if m1 or m2 is null?????????????????
 			// i considered both situations, first is mine second is not and first is not mine and second is
-			return (m1.getColour() == (playerColour) &&
-					!(m2.getColour() == (playerColour)) )  || (!(m1.getColour() == (playerColour)) &&
+			return (m1.getColour() == playerColour &&
+					m2.getColour() != playerColour )
+					
+					||( m1.getColour() != playerColour &&
 					m2.getColour().equals(playerColour));
     		
     	}else{

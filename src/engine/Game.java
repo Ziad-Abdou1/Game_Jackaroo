@@ -59,16 +59,16 @@ public class Game implements GameManager {
     }
     
   //------Milestone 2------
-    void selectCard(Card card) throws InvalidCardException{ // selects a card to the current player
+    public void selectCard(Card card) throws InvalidCardException{ // selects a card to the current player
     	players.get(currentPlayerIndex).selectCard(card); 
     }
-    void selectMarble(Marble marble) throws InvalidMarbleException{ // selects a marble to the current player
+    public void selectMarble(Marble marble) throws InvalidMarbleException{ // selects a marble to the current player
     	players.get(currentPlayerIndex).selectMarble(marble);
     }
-    void deselectAll(){
+    public void deselectAll(){
     	players.get(currentPlayerIndex).deselectAll();
     }
-    void editSplitDistance(int splitDistance) throws SplitOutOfRangeException{
+    public void editSplitDistance(int splitDistance) throws SplitOutOfRangeException{
     	if(splitDistance > 6 || splitDistance <1 ){
     		throw new SplitOutOfRangeException("The splitDistance is out of Range");
     	}
@@ -76,16 +76,16 @@ public class Game implements GameManager {
     	board.setSplitDistance(splitDistance); //The splitDistance represents how far the first marble moves, with the remainder applied to the second marble (7 - splitDistance).
     	
     }
-    boolean canPlayTurn(){ // checks if the player still can play in this turn or not.
+    public boolean canPlayTurn(){ // checks if the player still can play in this turn or not.
     	if(turn+1 <= 4-players.get(currentPlayerIndex).getHand().size()){ //it was turn , but I make it turn+1 because it is 0 based
     		return false;
     	}
     	return true;
     }
-    void playPlayerTurn() throws GameException{ // starts the player's turn.
+    public void playPlayerTurn() throws GameException{ // starts the player's turn.
     	players.get(currentPlayerIndex).play();
     }
-    void endPlayerTurn(){ // ends the player's turn.
+    public void endPlayerTurn(){ // ends the player's turn.
     	Card c=players.get(currentPlayerIndex).getSelectedCard();
     	if(c!=null){
     		firePit.add(c);
@@ -99,6 +99,7 @@ public class Game implements GameManager {
     		for(int i =0;i<4;i++){
     			if(Deck.getPoolSize()<4){
     				Deck.refillPool(firePit);
+    				firePit.clear();
     			}
     			players.get(i).setHand(Deck.drawCards());
     		}
@@ -106,7 +107,7 @@ public class Game implements GameManager {
     	}
     	
     }
-    Colour checkWin(){ //checks if anyone has won.
+    public Colour checkWin(){ //checks if anyone has won.
     	for(SafeZone s:board.getSafeZones()){
     		if(s.isFull())
     			return s.getColour();

@@ -36,7 +36,7 @@ public class Deck {
             return; 
         }
         cardsPool.addAll(cards);
-        cards.clear();
+//        cards.clear();
     }
     
     //
