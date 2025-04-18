@@ -262,7 +262,7 @@ public class Board implements BoardManager {
     		}
     		
     	}
-    	for(int i=startIdx;i<fullPath.size();i++){
+    	for(int i=1;i<fullPath.size();i++){
 			Cell c=fullPath.get(i);
 			if(c.getCellType()==CellType.SAFE && c.getMarble()!=null){
 				throw new IllegalMovementException("marbles in their Safe Zone are safe from any interference");
