@@ -91,7 +91,7 @@ public class Game implements GameManager {
     		firePit.add(c);
     		players.get(currentPlayerIndex).getHand().remove(c);
 //    	}
-    	System.out.println(firePit.size());
+//    	System.out.println(firePit.size());
     	players.get(currentPlayerIndex).deselectAll();
     	currentPlayerIndex=(currentPlayerIndex+1)%4; 
     	if(currentPlayerIndex==0)

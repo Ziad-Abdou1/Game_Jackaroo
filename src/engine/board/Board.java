@@ -174,13 +174,14 @@ public class Board implements BoardManager {
     		}
     		return ans;
     	}
+    	
     	Colour clrCurrentPlayer=gameManager.getActivePlayerColour();
     	if(steps==5 || clrCurrentPlayer!=marble.getColour()){
     		for(int i=0;i<=steps;i++){
     			Cell cell=track.get((cur+i)%100);
     			ans.add(cell);
-    			if(cell.getMarble()!=null && cell.getMarble().getColour()==clrCurrentPlayer){
-    				throw new IllegalMovementException();
+    			if(i!=0 && cell.getMarble()!=null && cell.getMarble().getColour()==clrCurrentPlayer){
+    				throw new IllegalMovementException("can not bypass or land your own marbles");
     			}
     		}
     		return ans;
@@ -343,7 +344,7 @@ public class Board implements BoardManager {
     
     private void validateDestroy(int positionInPath) throws IllegalDestroyException{
     	if(positionInPath==-1){
-    		throw new IllegalDestroyException();
+    		throw new IllegalDestroyException("marble isn't in the track");
     	}
     	Cell c=track.get(positionInPath);
     	Marble m=c.getMarble();
@@ -355,7 +356,7 @@ public class Board implements BoardManager {
     	if(m==null) return;
     	//I think in real use of this function , if m=null , then postionInPath will =-1. So this condition is not important anymore(and not do what is expected)
     	if(getBasePosition(m.getColour())==positionInPath){
-    		throw new IllegalDestroyException();
+    		throw new IllegalDestroyException("marble is safe in its base cell");
     	}
     	
     }
