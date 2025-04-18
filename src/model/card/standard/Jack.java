@@ -16,6 +16,10 @@ public class Jack extends Standard {
     }
     
     // M2 
+	@Override
+	public boolean validateMarbleSize(ArrayList<Marble> marbles) {
+        return (marbles.size() == 1 || marbles.size() == 2); 
+	}
     public boolean validateMarbleColours(ArrayList<Marble> marbles) {	
     	Colour playerColour = gameManager.getActivePlayerColour();
     	if( marbles.size() == 1){
@@ -35,6 +39,8 @@ public class Jack extends Standard {
     	}
       
     }
+
+
 
 	@Override
 	public void act(ArrayList<Marble> marbles) throws ActionException,

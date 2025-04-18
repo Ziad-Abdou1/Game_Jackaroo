@@ -17,6 +17,9 @@ public class Burner extends Wild {
 
     
     // M2
+    
+
+
 	@Override
 	 public boolean validateMarbleColours(ArrayList<Marble> marbles) {	
     	if (marbles == null || marbles.isEmpty()) {//Morkos: I think this if condition will not be entered, because this is checked already in validateMarbleSize() function
@@ -30,6 +33,8 @@ public class Burner extends Wild {
         }
         return true;	
     }
+
+
 
 	@Override
 	public void act(ArrayList<Marble> marbles) throws ActionException,

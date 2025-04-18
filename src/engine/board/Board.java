@@ -288,13 +288,13 @@ public class Board implements BoardManager {
     	int idx1=getPositionInPath(track, marble_1);
     	int idx2=getPositionInPath(track, marble_2);
     	if(idx1==-1 || idx2==-1){
-    		throw new IllegalSwapException(); 
+    		throw new IllegalSwapException("One of the marbles is not in the track"); 
     	}
     	int base1=getBasePosition(marble_1.getColour());
     	int base2=getBasePosition(marble_2.getColour());
     	
     	if(base2==idx2){ //if my opponent marble in its base cell 
-    		throw new IllegalSwapException();
+    		throw new IllegalSwapException("other player marble is on its base");
     	}
     	
 //    	//this is not mentioned in the milestone , but rather in the game description
@@ -340,12 +340,12 @@ public class Board implements BoardManager {
     	move(marble, fullPath, destroy);
     }
     public void swap(Marble marble_1, Marble marble_2) throws IllegalSwapException{
-    	Colour ccc=gameManager.getActivePlayerColour();
-    	if(marble_2.getColour()==ccc){
-    		Marble tmp=marble_1;
-    		marble_1=marble_2;
-    		marble_2=tmp;
-    	}
+//    	Colour ccc=gameManager.getActivePlayerColour();
+//    	if(marble_2.getColour()==ccc){
+//    		Marble tmp=marble_1;
+//    		marble_1=marble_2;
+//    		marble_2=tmp;
+//    	}
     	validateSwap(marble_1, marble_2);
     	int idx1=getPositionInPath(track, marble_1);
     	int idx2=getPositionInPath(track, marble_2);

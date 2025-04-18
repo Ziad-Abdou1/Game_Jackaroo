@@ -19,6 +19,10 @@ public class Seven extends Standard {
     
     // M2 
 	@Override
+	public boolean validateMarbleSize(ArrayList<Marble> marbles) {
+        return (marbles.size() == 1 || marbles.size() == 2); 
+	}
+	@Override
 	public void act(ArrayList<Marble> marbles) throws ActionException,
 			InvalidMarbleException {
 		if (!validateMarbleSize(marbles)) throw new InvalidMarbleException("Invalid marble count");
@@ -31,6 +35,10 @@ public class Seven extends Standard {
 			boardManager.moveBy(marbles.get(1), 7-splitdistance, false);
 		}
 	}
+
+
+
+
     
     
     //

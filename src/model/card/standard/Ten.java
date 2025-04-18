@@ -16,6 +16,7 @@ public class Ten extends Standard {
     
     //M2
     
+    
 	@Override
 	public void act(ArrayList<Marble> marbles) throws ActionException,
 			InvalidMarbleException {
@@ -28,6 +29,11 @@ public class Ten extends Standard {
 			super.act(marbles);
 		}
         
+	}
+
+	@Override
+	public boolean validateMarbleSize(ArrayList<Marble> marbles) {
+        return (marbles.size() == 0 || marbles.size() == 1); 
 	}
 		
 	//
