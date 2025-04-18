@@ -175,7 +175,7 @@ public class Board implements BoardManager {
     		return ans;
     	}
     	Colour clrCurrentPlayer=gameManager.getActivePlayerColour();
-    	if(steps==5){
+    	if(steps==5 || clrCurrentPlayer!=marble.getColour()){
     		for(int i=0;i<=steps;i++){
     			Cell cell=track.get((cur+i)%100);
     			ans.add(cell);
@@ -298,7 +298,6 @@ public class Board implements BoardManager {
     	
     	
     	if(last.isTrap()){
-
     		last.setMarble(null); //no usage
     		last.setTrap(false);
     		destroyed.add(marble);
