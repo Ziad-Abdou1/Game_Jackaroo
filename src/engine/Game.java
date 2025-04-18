@@ -87,10 +87,11 @@ public class Game implements GameManager {
     }
     public void endPlayerTurn(){ // ends the player's turn.
     	Card c=players.get(currentPlayerIndex).getSelectedCard();
-    	if(c!=null){
+//    	if(c!=null){
     		firePit.add(c);
     		players.get(currentPlayerIndex).getHand().remove(c);
-    	}
+//    	}
+    	System.out.println(firePit.size());
     	players.get(currentPlayerIndex).deselectAll();
     	currentPlayerIndex=(currentPlayerIndex+1)%4; 
     	if(currentPlayerIndex==0)
@@ -101,6 +102,7 @@ public class Game implements GameManager {
     				Deck.refillPool(firePit);
     				firePit.clear();
     			}
+//    			System.out.println(Deck.getPoolSize());
     			players.get(i).setHand(Deck.drawCards());
     		}
     		turn = 0;

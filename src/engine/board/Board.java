@@ -369,6 +369,7 @@ public class Board implements BoardManager {
     }
     private void validateSaving(int positionInSafeZone, int positionOnTrack) throws InvalidMarbleException{
     	if(positionOnTrack==-1) throw new InvalidMarbleException();
+
 //    	Colour currClr=gameManager.getActivePlayerColour();
 //    	Marble m=track.get(positionOnTrack).getMarble();
 //    	ArrayList<Cell> sf=getSafeZone(currClr);
