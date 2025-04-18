@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import javax.management.RuntimeErrorException;
+
 import engine.GameManager;
 import exception.*;
 import model.Colour;
@@ -212,14 +214,14 @@ public class Board implements BoardManager {
     	}else{
     		for(int i=1;i<fullPath.size();i++){
     			Cell c=fullPath.get(i);
-    			if(c.getMarble()!=null && c.getMarble().getColour()==fullPath.get(0).getMarble().getColour()){
+    			if(c.getMarble()!=null && c.getMarble().getColour()==marble.getColour()){
     				throw new IllegalMovementException("Self Blocking");
     			}
     		}
     		int cntOtherMarbles=0;
     		for(int i=1;i<fullPath.size()-1; i++){
     			Cell c=fullPath.get(i);
-    			if(c.getMarble()!=null && c.getMarble().getColour()!=fullPath.get(0).getMarble().getColour()){
+    			if(c.getMarble()!=null && c.getMarble().getColour()!=marble.getColour()){
     				cntOtherMarbles++;
     				if(cntOtherMarbles>1){
     					throw new IllegalMovementException("path Blockage");
@@ -238,6 +240,7 @@ public class Board implements BoardManager {
     				throw new IllegalMovementException("Base Cell Blockage");
     			}
     		}
+    		
     	}
     	for(int i=1;i<fullPath.size();i++){
 			Cell c=fullPath.get(i);
