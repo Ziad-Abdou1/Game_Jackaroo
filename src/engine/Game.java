@@ -158,6 +158,19 @@ public class Game implements GameManager {
     	return players.get((currentPlayerIndex+1)%4).getColour();
     }
 
+    //--------------------------------------------------------------------------
+	public ArrayList<Card> getFirePit() {
+		return firePit;
+	}
+
+	public Board getBoard() {
+		return board;
+	}
+
+	public ArrayList<Player> getPlayers() {
+		return players;
+	}
 	
+
     
 }
