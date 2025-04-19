@@ -307,14 +307,18 @@ public class Board implements BoardManager {
     	
     	if(last.isTrap()){
     		last.setMarble(null); //no usage
+    		
+    		last.setMarble(marble);
+//    		destroyed.add(marble);
+    		
+    		destroyMarble(marble);
     		last.setTrap(false);
-    		destroyed.add(marble);
     		assignTrapCell();
     	}else{
     		last.setMarble(marble);
     	}
     	
-    	for(int i=0;i<destroyed.size();i++){
+    	for(int i=0;i<destroyed.size();i++){ //has no usage
     		Marble m=destroyed.get(i);
     		gameManager.sendHome(m);
     	}
@@ -371,7 +375,7 @@ public class Board implements BoardManager {
     	Marble m=occupiedBaseCell.getMarble();
     	if(m!=null){
     		int idxbase=getBasePosition(m.getColour());
-    		if(m.getColour()==gameManager.getActivePlayerColour()) throw new CannotFieldException();
+    		if(m.getColour()==gameManager.getActivePlayerColour()) throw new CannotFieldException("a marble of same colour exist in your base cell");
 //    		if(track.get(idxbase)==occupiedBaseCell) throw new CannotFieldException();
     	}
     }
@@ -409,7 +413,7 @@ public class Board implements BoardManager {
     	//PLEASE: don't use this function inside Game.sendHome(Marble marble) function
 
     	int idx=getPositionInPath(track, marble);
-    	validateDestroy(idx);
+    	if(marble.getColour()!=gameManager.getActivePlayerColour()) validateDestroy(idx);
     	track.get(idx).setMarble(null);
     	gameManager.sendHome(marble);
     }
