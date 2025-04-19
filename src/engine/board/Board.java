@@ -174,15 +174,16 @@ public class Board implements BoardManager {
     		}
     		return ans;
     	}
-    	
+    	Colour clrCurrentPlayer=gameManager.getActivePlayerColour();
+
     	int entry=getEntryPosition(marble.getColour());
     	int distanceToEnd=((entry-cur)%100+100)%100 +4;
-    	System.out.println(distanceToEnd+" "+steps);
-    	if(distanceToEnd<steps) throw new IllegalMovementException("the rank of the card played is too high.");
-    	int distanceToEntry=distanceToEnd-4;
     	
-    	Colour clrCurrentPlayer=gameManager.getActivePlayerColour();
-    	if(steps==5 || clrCurrentPlayer!=marble.getColour()){
+    	//moving my own marble and steps is much higher than the end of the game
+    	if(distanceToEnd<steps && clrCurrentPlayer==marble.getColour()) throw new IllegalMovementException("the rank of the card played is too high.");
+    	
+    	//moving an opponent
+    	if(clrCurrentPlayer!=marble.getColour()){
     		for(int i=0;i<=steps;i++){
     			Cell cell=track.get((cur+i)%100);
     			ans.add(cell);
@@ -194,7 +195,7 @@ public class Board implements BoardManager {
     	}
     	
     	
-    	
+    	int distanceToEntry=distanceToEnd-4;
     	int initialDistance=Math.min(distanceToEntry,steps);
     	for(int i=0;i<=initialDistance;i++){
     		ans.add(track.get((cur+i)%100)); 
