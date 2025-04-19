@@ -119,7 +119,7 @@ public class Game implements GameManager {
     }
     public void sendHome(Marble marble){ // finds who's marble and send it to his home.
     	for(Player p :players){
-    		if(marble.getColour().equals(p.getColour())){
+    		if(marble.getColour()==(p.getColour())){
     			p.regainMarble(marble);
     			break;
     		}
@@ -135,7 +135,7 @@ public class Game implements GameManager {
     }
     public void discardCard(Colour colour) throws CannotDiscardException{ // removes a random card from the player with the given colour.
     	for(Player p : players){
-    		if(p.getColour().equals(colour)){
+    		if(p.getColour()==(colour)){
     			ArrayList<Card> temp = p.getHand();
     			if(temp.size()==0)
     				throw new CannotDiscardException("No Cards to be discarded!");
