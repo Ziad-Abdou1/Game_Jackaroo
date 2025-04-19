@@ -424,9 +424,9 @@ public class Board implements BoardManager {
     	
     }
     public void sendToSafe(Marble marble) throws InvalidMarbleException{
-    	validateSaving(-1, getPositionInPath(track, marble)); // 0 is any integer , because validateSaving() doesn't depend on position in safe zone
-    	Random r=new Random();
     	ArrayList<Cell> sf=getSafeZone(marble.getColour());
+    	validateSaving(getPositionInPath(sf, marble), getPositionInPath(track, marble)); // 0 is any integer , because validateSaving() doesn't depend on position in safe zone
+    	Random r=new Random();
     	ArrayList<Cell> sfEmpty=new ArrayList<Cell>();
     	for(int i=0;i<sf.size();i++){
     		if(sf.get(i).getMarble()==null){
