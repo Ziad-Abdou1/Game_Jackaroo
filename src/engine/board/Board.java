@@ -175,6 +175,12 @@ public class Board implements BoardManager {
     		return ans;
     	}
     	
+    	int entry=getEntryPosition(marble.getColour());
+    	int distanceToEnd=((entry-cur)%100+100)%100 +4;
+    	System.out.println(distanceToEnd+" "+steps);
+    	if(distanceToEnd<steps) throw new IllegalMovementException("the rank of the card played is too high.");
+    	int distanceToEntry=distanceToEnd-4;
+    	
     	Colour clrCurrentPlayer=gameManager.getActivePlayerColour();
     	if(steps==5 || clrCurrentPlayer!=marble.getColour()){
     		for(int i=0;i<=steps;i++){
@@ -186,11 +192,7 @@ public class Board implements BoardManager {
     		}
     		return ans;
     	}
-    	int entry=getEntryPosition(marble.getColour());
-    	int distanceToEnd=((entry-cur)%100+100)%100 +4;
-    	System.out.println(distanceToEnd+" "+steps);
-    	if(distanceToEnd<steps) throw new IllegalMovementException("the rank of the card played is too high.");
-    	int distanceToEntry=distanceToEnd-4;
+    	
     	
     	
     	int initialDistance=Math.min(distanceToEntry,steps);
@@ -374,8 +376,8 @@ public class Board implements BoardManager {
     }
     private void validateSaving(int positionInSafeZone, int positionOnTrack) throws InvalidMarbleException{
     	if(positionOnTrack==-1) throw new InvalidMarbleException();
-
 //    	Colour currClr=gameManager.getActivePlayerColour();
+    	
 //    	Marble m=track.get(positionOnTrack).getMarble();
 //    	ArrayList<Cell> sf=getSafeZone(currClr);
 //    	if(m!=null){
