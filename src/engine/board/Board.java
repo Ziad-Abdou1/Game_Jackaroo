@@ -376,14 +376,8 @@ public class Board implements BoardManager {
     	}
     }
     private void validateSaving(int positionInSafeZone, int positionOnTrack) throws InvalidMarbleException{
-    	if(positionOnTrack==-1) throw new InvalidMarbleException();
-//    	Colour currClr=gameManager.getActivePlayerColour();
-    	
-//    	Marble m=track.get(positionOnTrack).getMarble();
-//    	ArrayList<Cell> sf=getSafeZone(currClr);
-//    	if(m!=null){
-//    		
-//    	}
+    	if(positionOnTrack==-1 || positionInSafeZone!=-1) throw new InvalidMarbleException();
+//    	if(positionInSafeZone!=-1) throw new InvalidMarbleException();
     }
     
     public void moveBy(Marble marble, int steps, boolean destroy) throws IllegalMovementException, IllegalDestroyException{
@@ -430,7 +424,7 @@ public class Board implements BoardManager {
     	
     }
     public void sendToSafe(Marble marble) throws InvalidMarbleException{
-    	validateSaving(0, getPositionInPath(track, marble)); // 0 is any integer , because validateSaving() doesn't depend on position in safe zone
+    	validateSaving(-1, getPositionInPath(track, marble)); // 0 is any integer , because validateSaving() doesn't depend on position in safe zone
     	Random r=new Random();
     	ArrayList<Cell> sf=getSafeZone(marble.getColour());
     	ArrayList<Cell> sfEmpty=new ArrayList<Cell>();
