@@ -416,7 +416,7 @@ public class Board implements BoardManager {
     	}
     }
     private void validateSaving(int positionInSafeZone, int positionOnTrack) throws InvalidMarbleException{
-    	if(positionOnTrack==-1 || positionInSafeZone!=-1) throw new InvalidMarbleException();
+    	if(positionOnTrack==-1 || positionInSafeZone!=-1) throw new InvalidMarbleException("the selected marble is not in the track");
 //    	if(positionInSafeZone!=-1) throw new InvalidMarbleException();
     }
     
