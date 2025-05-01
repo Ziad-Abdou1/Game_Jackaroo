@@ -229,11 +229,18 @@ public class Board implements BoardManager {
     	startIdx=1;
     	
     	Colour currClr=gameManager.getActivePlayerColour();
+    	String s="";
+    	int mn=fullPath.size();
     	if(destroy){
     		for(int i=startIdx;i<fullPath.size();i++){
     			Cell c=fullPath.get(i);
     			if(c.getCellType()==CellType.BASE && c.getMarble()!=null && track.get(getBasePosition(c.getMarble().getColour()))==c){
-    				throw new IllegalMovementException("Base Cell Blockage");
+//    				throw new IllegalMovementException("Base Cell Blockage");
+    				if(i<mn) {
+    					s="Base Cell Blockage";
+    					mn=i;
+    					break;
+    				}
     			}
     		}
     		
@@ -241,7 +248,12 @@ public class Board implements BoardManager {
     		for(int i=startIdx;i<fullPath.size();i++){
     			Cell c=fullPath.get(i);
     			if(c.getMarble()!=null && c.getMarble().getColour()==currClr){
-    				throw new IllegalMovementException("Self Blocking");
+//    				throw new IllegalMovementException("Self Blocking");
+    				if(i<mn){
+    					s="Self Blocking";
+    					mn=i;
+    				}
+					break;
     			}
     		}
     		int cntOtherMarbles=0;
@@ -250,20 +262,35 @@ public class Board implements BoardManager {
     			if(c.getMarble()!=null){
     				cntOtherMarbles++;
     				if(cntOtherMarbles>1){
-    					throw new IllegalMovementException("path Blockage");
+//    					throw new IllegalMovementException("path Blockage");
+    					if(i<mn){
+    						s="path Blockage";
+    						mn=i;
+    					}
+    					break;
     				}
     			}
     		}
     		for(int i=startIdx;i<fullPath.size();i++){
     			Cell c=fullPath.get(i);
     			if(c.getCellType()==CellType.ENTRY && c.getMarble()!=null && i<fullPath.size()-1 && fullPath.get(i+1).getCellType()==CellType.SAFE){
-    				throw new IllegalMovementException("Safe Zone Entry: cannot enter safe zone if any marble is in entry");
+//    				throw new IllegalMovementException("Safe Zone Entry: cannot enter safe zone if any marble is in entry");
+    				if(i<mn){
+    					s="Safe Zone Entry: cannot enter safe zone if any marble is in entry";
+    					mn=i;
+    				}
+					break;
     			}
     		}
     		for(int i=startIdx;i<fullPath.size();i++){
     			Cell c=fullPath.get(i);
     			if(c.getCellType()==CellType.BASE && c.getMarble()!=null && track.get(getBasePosition(c.getMarble().getColour()))==c){
-    				throw new IllegalMovementException("Base Cell Blockage");
+//    				throw new IllegalMovementException("Base Cell Blockage");
+    				if(i<mn){
+    					s="Base Cell Blockage";
+    					mn=i;
+    				}
+					break;
     			}
     		}
     		
@@ -271,9 +298,18 @@ public class Board implements BoardManager {
     	for(int i=1;i<fullPath.size();i++){
 			Cell c=fullPath.get(i);
 			if(c.getCellType()==CellType.SAFE && c.getMarble()!=null){
-				throw new IllegalMovementException("marbles in their Safe Zone are safe from any interference");
+//				throw new IllegalMovementException("marbles in their Safe Zone are safe from any interference");
+				if(i<mn){
+					s="marbles in their Safe Zone are safe from any interference";
+					mn=i;
+				}
+				break;
 			}
 		}
+    	
+    	if(mn<fullPath.size()){
+    		throw new IllegalMovementException(s);
+    	}
     }
     private void move(Marble marble, ArrayList<Cell> fullPath, boolean destroy) throws IllegalDestroyException{ 
     	int startIdx;
