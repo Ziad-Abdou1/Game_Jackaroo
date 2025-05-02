@@ -22,12 +22,12 @@ public class Burner extends Wild {
 
 	@Override
 	 public boolean validateMarbleColours(ArrayList<Marble> marbles) {	
-    	if (marbles == null || marbles.isEmpty()) {//Morkos: I think this if condition will not be entered, because this is checked already in validateMarbleSize() function
+    	if (marbles == null) {// || marbles.isEmpty() --> Morkos: I think this if condition will not be entered, because this is checked already in validateMarbleSize() function
             return false; // i donot know what should i return 
         }
     	Colour playerColour = gameManager.getActivePlayerColour();
         for (Marble marble : marbles) {
-            if (marble.getColour() == playerColour) {
+            if (marble!=null && marble.getColour() == playerColour) { 
                 return false; 
             }
         }

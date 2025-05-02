@@ -24,13 +24,14 @@ public class Jack extends Standard {
     	Colour playerColour = gameManager.getActivePlayerColour();
     	if( marbles.size() == 1){
     		Marble m=marbles.get(0);
-    		return m.getColour() == playerColour ; 
+    		return (m!=null && m.getColour() == playerColour) ; 
     		
     	}else if (marbles.size() == 2 ){
     		Marble m1 = marbles.get(0); Marble m2 = marbles.get(1);
     		//Morkos: do we need to handle if m1 or m2 is null?????????????????
 			// i considered both situations, first is mine second is not and first is not mine and second is
-			return (m1.getColour() == playerColour &&
+			return (m1!=null && m2!=null) &&
+					(m1.getColour() == playerColour &&
 					m2.getColour() != playerColour )
 					
 					||( m1.getColour() != playerColour &&

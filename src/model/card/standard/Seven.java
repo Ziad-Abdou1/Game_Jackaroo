@@ -30,6 +30,7 @@ public class Seven extends Standard {
 		if(marbles.size()==1){
 			boardManager.moveBy(marbles.get(0), 7, false);
 		}else{
+			//notice that we didn't handle if a marble will bypass the other marble , as this is not mentioned in the game, and the gameroom didn't help on that.
 			int splitdistance=boardManager.getSplitDistance();
 			boardManager.moveBy(marbles.get(0), splitdistance, false);
 			boardManager.moveBy(marbles.get(1), 7-splitdistance, false);

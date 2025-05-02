@@ -150,6 +150,7 @@ public class Board implements BoardManager {
 //    	return ans;
 //    }
     private ArrayList<Cell> validateSteps(Marble marble, int steps) throws IllegalMovementException{
+    	if(marble==null) return new ArrayList<Cell>(); //this is to handle if there is strange test cases
     	//I handled here if steps <0
 //    	if(steps<0 && steps!=-4) throw new IllegalMovementException(); // not mentioned anywhere
     	ArrayList<Cell> ans=new ArrayList<Cell>();
@@ -313,19 +314,20 @@ public class Board implements BoardManager {
     }
     private void move(Marble marble, ArrayList<Cell> fullPath, boolean destroy) throws IllegalDestroyException{ 
     	int startIdx;
-    	boolean marbleIsAtFirstOfPath;
-    	if(marble==fullPath.get(0).getMarble()){
-//    		startIdx=1;
-    		marbleIsAtFirstOfPath=true;
-    	}else{
-//    		startIdx=0;
-    		marbleIsAtFirstOfPath=false;
-    	}
+//    	boolean marbleIsAtFirstOfPath;
+//    	if(marble==fullPath.get(0).getMarble()){
+////    		startIdx=1;
+//    		marbleIsAtFirstOfPath=true;
+//    	}else{
+////    		startIdx=0;
+//    		marbleIsAtFirstOfPath=false;
+//    	}
     	startIdx=1;
     	ArrayList<Marble> destroyed=new ArrayList<Marble>(); 
     	Cell last=fullPath.get(fullPath.size()-1);
 
-    	if(marbleIsAtFirstOfPath) fullPath.get(0).setMarble(null);
+//    	if(marbleIsAtFirstOfPath)
+    		fullPath.get(0).setMarble(null);
     	if(destroy){
     		for(int i=startIdx;i<fullPath.size();i++){
     			Marble m=fullPath.get(i).getMarble();
@@ -449,7 +451,8 @@ public class Board implements BoardManager {
     	//PLEASE: don't use this function inside Game.sendHome(Marble marble) function
 
     	int idx=getPositionInPath(track, marble);
-    	if(marble.getColour()!=gameManager.getActivePlayerColour()) validateDestroy(idx);
+    	if(marble.getColour()!=gameManager.getActivePlayerColour()) //note that this will happen in the real logic of the game because if the same color , the only way to handle exception is king and kill my own marble in its base cell , and this will not happen because validateSteps or validatePath
+    		validateDestroy(idx);
     	track.get(idx).setMarble(null);
     	gameManager.sendHome(marble);
     }
@@ -482,11 +485,20 @@ public class Board implements BoardManager {
     	}
     }
     public ArrayList<Marble> getActionableMarbles(){
+    	//the marbles on the track are returned , even if it is not my color , because I can use these marbles if I want to swap with them.
     	ArrayList<Marble> ans=new ArrayList<Marble>();
     	Colour clrOfCurrentPlayer= gameManager.getActivePlayerColour();
     	for(int i=0;i<track.size();i++){
     		Marble m=track.get(i).getMarble();
-    		if(m!=null && m.getColour()==clrOfCurrentPlayer){
+    		if(m!=null){ //  && m.getColour()==clrOfCurrentPlayer
+    			ans.add(m);
+    		}
+    	}
+    	ArrayList<Cell> s=getSafeZone(clrOfCurrentPlayer);
+    	for(int i=0;i<s.size();i++){
+    		Cell c=s.get(i);
+    		Marble m=c.getMarble();
+    		if(m!=null){
     			ans.add(m);
     		}
     	}
