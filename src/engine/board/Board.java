@@ -68,7 +68,7 @@ public class Board implements BoardManager {
     	if(path==null) return -1;            //I added this because validateSteps function
     	for(int i=0;i<path.size();i++){
     		Cell c=path.get(i);
-    		if(c.getMarble()==marble){
+    		if(c!=null && c.getMarble()==marble){
     			return i;
     		}
     	}
@@ -76,7 +76,7 @@ public class Board implements BoardManager {
     }
     private int getBasePosition(Colour colour){
     	for(int i=0;i<safeZones.size();i++){
-    		if(safeZones.get(i).getColour()==colour){
+    		if(safeZones.get(i)!=null && safeZones.get(i).getColour()==colour){
     			return 25*i;
     		}
     	}
@@ -84,7 +84,7 @@ public class Board implements BoardManager {
     }
     private int getEntryPosition(Colour colour){
     	for(int i=0;i<safeZones.size();i++){
-    		if(safeZones.get(i).getColour()==colour){
+    		if(safeZones.get(i)!=null && safeZones.get(i).getColour()==colour){
     			return ((25*i-2)+100)%100;
     		}
     	}
