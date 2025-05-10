@@ -32,30 +32,4 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
-public class test extends Application  {
-	private HPalyerCardView player ; 
-	public void start(Stage Stage) throws Exception {
 
-		
-		player = new HPalyerCardView();
-		Group  view = new Group();  
-        view.getChildren().add(player.getCardGrid());
-        String path = getClass().getResource("/cardss/101.png").toExternalForm();
-        String p2 = getClass().getResource("/cardss/93.png").toExternalForm();
-        String p3 = getClass().getResource("/cardss/54.png").toExternalForm();
-        String p4 = getClass().getResource("/cardss/61.png").toExternalForm();
-        player.addCard(path);
-        player.addCard(p2);
-        player.addCard(p3);
-        player.addCard(p4);
-        Scene scene = new Scene(view, 550, 200);
-        Stage.setScene(scene);
-        Stage.setTitle("CardView Test");
-        Stage.show();
-
-	}
-	public static void main(String[] args) {
-		launch(args);
-	}
-
-}

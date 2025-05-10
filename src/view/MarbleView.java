@@ -20,13 +20,12 @@ public class MarbleView {
 	}
 	public Button drawMarble(int x, int y, int r){
 		this.x = x;
-		this.y = y;
-		this.r = r;
-		Circle circ = new Circle();
-		circ.setCenterX(x);
-		circ.setCenterY(y);
-		circ.setRadius(r);
-		if (marble.getColour()==Colour.RED){
+	    this.y = y;
+	    this.r = r;
+
+	    Circle circ = new Circle();
+	    circ.setRadius(r);
+	    if (marble.getColour()==Colour.RED){
 			circ.setFill(Color.RED);
 		}
 		else if (marble.getColour()==Colour.GREEN){
@@ -38,9 +37,15 @@ public class MarbleView {
 		else if (marble.getColour()==Colour.BLUE){
 			circ.setFill(Color.BLUE);
 		}
-		Button bt = new Button();
-		bt.setShape(circ);
-		return bt;
+	    Button bt = new Button();
+	    bt.setShape(circ);
+	    bt.setMinSize(2 * r, 2 * r);
+	    bt.setMaxSize(2 * r, 2 * r);
+
+	    bt.setLayoutX(x - r); 
+	    bt.setLayoutY(y - r);
+
+	    return bt;
 	}
 	public Button drawMarble(){
 		return drawMarble(x,y,r);

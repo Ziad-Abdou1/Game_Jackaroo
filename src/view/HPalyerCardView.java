@@ -16,7 +16,7 @@ public class HPalyerCardView {
 	    
 	    public HPalyerCardView() {
 	        cardGrid = new GridPane();
-	        cardGrid.setPadding(new Insets(10));
+	        cardGrid.setPadding(new Insets(40));
 	        cardGrid.setHgap(10);
 	        cardGrid.setVgap(10);
 	        cardButtons = new ArrayList<>();
