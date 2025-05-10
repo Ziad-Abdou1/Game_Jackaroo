@@ -21,6 +21,19 @@ public class PalyerCardView {
 	        cardGrid.setVgap(10);
 	        cardButtons = new ArrayList<>();
 	    }
+	    public CradView addCard(String  path  ) {
+
+	    	CradView cardButton = new  CradView(100, 150, path);
+	        
+	        int index = cardButtons.size();
+	        int row = index / 4;  
+	        int col = index % 4;
+
+	        cardGrid.add(cardButton.drawCard(), col, row);
+	        cardButtons.add(cardButton);
+
+	        return cardButton;
+	    }
 	    public Button addCard(Card card ) {
 
 	    	CradView cardButton = new  CradView(100, 150, card);
