@@ -2,11 +2,11 @@ package model.card.wild;
 
 import java.util.ArrayList;
 
-import model.player.Marble;
 import engine.GameManager;
 import engine.board.BoardManager;
 import exception.ActionException;
 import exception.InvalidMarbleException;
+import model.player.Marble;
 
 public class Saver extends Wild {
 
@@ -14,11 +14,9 @@ public class Saver extends Wild {
         super(name, description, boardManager, gameManager);
     }
 
-	public void act(ArrayList<Marble> marbles) throws ActionException,
-			InvalidMarbleException {
-//		if (!validateMarbleSize(marbles)) throw new InvalidMarbleException("Invalid marble count");
-//		if (!validateMarbleColours(marbles)) throw new InvalidMarbleException("Invalid marble colours");
-		boardManager.sendToSafe(marbles.get(0));
-	}
-    
+    @Override
+    public void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException {
+        boardManager.sendToSafe(marbles.get(0));
+    }
+
 }

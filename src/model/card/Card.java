@@ -1,12 +1,11 @@
 package model.card;
 
+import java.util.ArrayList;
+
 import engine.GameManager;
 import engine.board.BoardManager;
 import exception.ActionException;
 import exception.InvalidMarbleException;
-
-import java.util.*;
-
 import model.Colour;
 import model.player.Marble;
 
@@ -22,41 +21,6 @@ public abstract class Card {
         this.boardManager = boardManager;
         this.gameManager = gameManager;
     }
-    
-    // M2  it's not completed 
-    
-    public boolean validateMarbleSize(ArrayList<Marble> marbles) { //Morkos: we will change this, so that each class override this method.
-//        if (this instanceof model.card.standard.Jack || this instanceof model.card.standard.Seven) {
-//            return (marbles.size() == 1 || marbles.size() == 2); 
-//        } 
-//        else if (this instanceof model.card.standard.King || this instanceof model.card.standard.Ten
-//        		|| this instanceof model.card.standard.Queen || this instanceof model.card.standard.Ace) {
-//            return (marbles.size() == 0 || marbles.size() == 1); 
-//        } 
-//        else {
-//        	// Wild and the rest form standard
-//            return marbles.size() == 1; 
-//        }
-    	return marbles.size()==1;
-    }
-    // not for Jack , Five  and Burner 
-    public boolean validateMarbleColours(ArrayList<Marble> marbles) {	
-    	if (marbles == null || marbles.isEmpty()) { //Morkos: does this happen?
-            return true; 
-        }
-        
-    	Colour playerColour = gameManager.getActivePlayerColour();
-        for (Marble marble : marbles) {
-            if (marble.getColour() != playerColour) {//Morkos: do we need to handle if marble is null?
-                return false; 
-            }
-        }
-        return true;	
-    }
-
-    public abstract void act(ArrayList<Marble> marbles) throws ActionException,InvalidMarbleException;
-   
-    //
 
     public String getName() {
         return name;
@@ -65,6 +29,22 @@ public abstract class Card {
     public String getDescription() {
         return description;
     }
-
+    
+    public abstract void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException;
+    
+    public boolean validateMarbleSize(ArrayList<Marble> marbles) {
+        return marbles.size() == 1;
+    }
+    
+    public boolean validateMarbleColours(ArrayList<Marble> marbles) {
+        Colour ownerColour = gameManager.getActivePlayerColour();
+        boolean sameColour = true;
+        for (Marble marble : marbles) {
+            if (marble.getColour() != ownerColour) {
+                sameColour = false;
+            }
+        }
+        return sameColour;
+    }
     
 }

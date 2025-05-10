@@ -2,12 +2,11 @@ package model.card.standard;
 
 import java.util.ArrayList;
 
-import model.Colour;
-import model.player.Marble;
 import engine.GameManager;
 import engine.board.BoardManager;
 import exception.ActionException;
 import exception.InvalidMarbleException;
+import model.player.Marble;
 
 public class Seven extends Standard {
 
@@ -15,33 +14,20 @@ public class Seven extends Standard {
         super(name, description, 7, suit, boardManager, gameManager);
     }
 
+    @Override
+    public boolean validateMarbleSize(ArrayList<Marble> marbles) {
+        return marbles.size() == 2 || super.validateMarbleSize(marbles);
+    }
 
-    
-    // M2 
-	@Override
-	public boolean validateMarbleSize(ArrayList<Marble> marbles) {
-        return (marbles.size() == 1 || marbles.size() == 2); 
-	}
-	@Override
-	public void act(ArrayList<Marble> marbles) throws ActionException,
-			InvalidMarbleException {
-//		if (!validateMarbleSize(marbles)) throw new InvalidMarbleException("Invalid marble count");
-//		if (!validateMarbleColours(marbles)) throw new InvalidMarbleException("Invalid marble colours");
-		if(marbles.size()==1){
-			boardManager.moveBy(marbles.get(0), 7, false);
-		}else{
-			//notice that we didn't handle if a marble will bypass the other marble , as this is not mentioned in the game, and the gameroom didn't help on that.
-			int splitdistance=boardManager.getSplitDistance();
-			boardManager.moveBy(marbles.get(0), splitdistance, false);
-			boardManager.moveBy(marbles.get(1), 7-splitdistance, false);
-		}
-	}
+    @Override
+    public void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException {
+        if(marbles.size() == 2) {
+            boardManager.moveBy(marbles.get(0), boardManager.getSplitDistance(), false);
+            boardManager.moveBy(marbles.get(1), 7-boardManager.getSplitDistance(), false);
+        }
+        
+        else
+            super.act(marbles);
+    }
 
-
-
-
-    
-    
-    //
-  
 }

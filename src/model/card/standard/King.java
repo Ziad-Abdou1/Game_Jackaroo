@@ -13,24 +13,19 @@ public class King extends Standard {
     public King(String name, String description, Suit suit, BoardManager boardManager, GameManager gameManager) {
         super(name, description, 13, suit, boardManager, gameManager);
     }
-    
+
     @Override
-	public boolean validateMarbleSize(ArrayList<Marble> marbles) {
-        return (marbles.size() == 0 || marbles.size() == 1); 
-	}
+    public boolean validateMarbleSize(ArrayList<Marble> marbles) {
+        return marbles.isEmpty() || super.validateMarbleSize(marbles);
+    }
 
-	@Override
-	public void act(ArrayList<Marble> marbles) throws ActionException,
-			InvalidMarbleException {
-//		if (!validateMarbleSize(marbles)) throw new InvalidMarbleException("Invalid marble count");
-//		if (!validateMarbleColours(marbles)) throw new InvalidMarbleException("Invalid marble colours");
-		if (marbles.size()==0) {
-			gameManager.fieldMarble();
-		}
-		else if (marbles.size()==1) {
-			boardManager.moveBy(marbles.get(0), getRank(), true);
-		}
-	}
-
+    @Override
+    public void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException {
+        if (marbles.isEmpty()) 
+            this.gameManager.fieldMarble();
+        
+        else
+            this.boardManager.moveBy(marbles.get(0), 13, true);
+    }
 
 }

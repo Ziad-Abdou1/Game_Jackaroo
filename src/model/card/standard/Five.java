@@ -4,40 +4,17 @@ import java.util.ArrayList;
 
 import engine.GameManager;
 import engine.board.BoardManager;
-import exception.ActionException;
-import exception.InvalidMarbleException;
 import model.player.Marble;
-
 
 public class Five extends Standard {
 
     public Five(String name, String description, Suit suit, BoardManager boardManager, GameManager gameManager) {
         super(name, description, 5, suit, boardManager, gameManager);
     }
-    
-    // M2
 
     @Override
     public boolean validateMarbleColours(ArrayList<Marble> marbles) {
-        return true ; 
+        return true;
     }
-
-	@Override
-	public void act(ArrayList<Marble> marbles) throws ActionException,
-			InvalidMarbleException {
-//		if(!validateMarbleSize(marbles)) throw new InvalidMarbleException("Five card requires exactly 1 marble");
-//		if(!validateMarbleColours(marbles)) throw new InvalidMarbleException(""); //no need because 5 goes with any colour.
-		boardManager.moveBy(marbles.get(0), 5, false);
-	}
-
-//    @Override
-//    public void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException {
-//        if (marbles == null || marbles.size() != 1) {
-//            throw new InvalidMarbleException("Five card requires exactly 1 marble");
-//        }
-//        boardManager.moveBy(marbles.get(0), 5, false);
-//    }
-    
-    //
 
 }

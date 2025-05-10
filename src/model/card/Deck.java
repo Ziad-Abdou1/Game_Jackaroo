@@ -23,25 +23,9 @@ import model.card.wild.Saver;
 
 public class Deck {
     private static final String CARDS_FILE = "Cards.csv";
-    
-    // Arraylist to store the available cards.
     static private ArrayList<Card> cardsPool;
-    
-    // M2
-    public static int getPoolSize(){
-    	return cardsPool.size();
-    }
-    public static void refillPool(ArrayList<Card> cards) {
-        if (cards == null || cards.isEmpty()) {
-            return; 
-        }
-        cardsPool.addAll(cards);
-//        cards.clear();
-    }
-    
-    //
 
-    //  reads the csv file and instantiates the right card based on the code 
+    @SuppressWarnings("resource")
 	public static void loadCardPool(BoardManager boardManager, GameManager gameManager) throws IOException {
         cardsPool = new ArrayList<>();
 
@@ -91,12 +75,20 @@ public class Deck {
 			}	
         }
     }
-	// Shuffles the cardsPool, then removes and re turns the first four cards from it.
+
     public static ArrayList<Card> drawCards() {
         Collections.shuffle(cardsPool);
         ArrayList<Card> cards = new ArrayList<>(cardsPool.subList(0, 4));
         cardsPool.subList(0, 4).clear();
         return cards;
+    }
+    
+    public static int getPoolSize() {
+		return cardsPool.size();
+	}
+
+    public static void refillPool(ArrayList<Card> cards) {
+        cardsPool.addAll(cards);
     }
 
 }

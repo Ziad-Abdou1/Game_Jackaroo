@@ -36,7 +36,7 @@ public class CardView {
 		Random random = new Random();
         int randomNumber = random.nextInt(4) + 1;
         imFile += random;
-		Image crdImage = new Image(imFile);
+//		Image crdImage = new Image(imFile);
 		return btn;
 	}
 }

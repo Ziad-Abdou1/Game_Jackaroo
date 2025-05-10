@@ -15,27 +15,21 @@ public class SafeZone {
             this.cells.add(new Cell(CellType.SAFE));
     }
 
-    //milestone 2
-    public boolean isFull(){
-    	assert(cells.size()==4);      // will not happen (cells.size()==4 always)
-    	for(int i=0;i<cells.size();i++){
-    		Cell x=cells.get(i);
-    		if(x==null) return false; //will not happen for sure
-    		if(x.getMarble()==null){
-    			return false;
-    		}
-    	}
-    	return true;
-    }
-    
-    //____________________
-    
     public Colour getColour() {
         return this.colour;
     }
 
     public ArrayList<Cell> getCells() {
         return this.cells;
+    }
+    
+    public boolean isFull() {
+        for (Cell cell : this.cells) {
+            if (cell.getMarble() == null) 
+                return false;
+        }
+            
+        return true;
     }
 
 }
