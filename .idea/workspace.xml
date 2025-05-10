@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6f8ee7d9-687c-4f36-afda-a6211de8548b" name="Changes" comment="removed .idea and .metadata and .setting">
+      <change beforePath="$PROJECT_DIR$/src/view/BoardView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/BoardView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/CardView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/CellView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/CellView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/HomeView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/HomeView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/MarbleView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/MarbleView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/SafeZoneView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/SafeZoneView.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Ziad-Abdou1&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Ziad-Abdou1/JackarooM1.git&quot;,
+    &quot;accountId&quot;: &quot;a3ea936e-fe3b-42e5-9dd5-84d3927ee9dc&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2v64w1AiVv3ZUExEh6Gmz8SH33K" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/GUC/CSEN401 Game/Game project/JackarooM1&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\GUC\CSEN401 Game\Game project\JackarooM1" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.24978.46" />
+        <option value="bundled-js-predefined-d6986cc7102b-76f8388c3a79-JavaScript-IU-243.24978.46" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6f8ee7d9-687c-4f36-afda-a6211de8548b" name="Changes" comment="" />
+      <created>1743452425057</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1743452425057</updated>
+      <workItem from="1743452426191" duration="640000" />
+      <workItem from="1743498014261" duration="297000" />
+      <workItem from="1743498521247" duration="1897000" />
+      <workItem from="1743500585746" duration="35000" />
+      <workItem from="1743500633042" duration="61000" />
+      <workItem from="1743500701494" duration="98000" />
+      <workItem from="1743500808116" duration="8000" />
+      <workItem from="1743500842237" duration="92000" />
+      <workItem from="1743500941081" duration="98000" />
+      <workItem from="1743501525297" duration="14000" />
+      <workItem from="1743501555379" duration="437000" />
+      <workItem from="1743515214112" duration="2766000" />
+      <workItem from="1743694434786" duration="972000" />
+      <workItem from="1744302494581" duration="37000" />
+      <workItem from="1746304368939" duration="6000" />
+      <workItem from="1746884922620" duration="2000" />
+      <workItem from="1746884929611" duration="1000" />
+      <workItem from="1746885106642" duration="1189000" />
+    </task>
+    <task id="LOCAL-00001" summary="added .gitignore file">
+      <option name="closed" value="true" />
+      <created>1743499772101</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1743499772101</updated>
+    </task>
+    <task id="LOCAL-00002" summary="removed .idea and .metadata and .setting">
+      <option name="closed" value="true" />
+      <created>1743500332740</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1743500332740</updated>
+    </task>
+    <task id="LOCAL-00003" summary="removed .idea and .metadata and .setting">
+      <option name="closed" value="true" />
+      <created>1743694495138</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1743694495138</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="added .gitignore file" />
+    <MESSAGE value="removed .idea and .metadata and .setting" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed .idea and .metadata and .setting" />
+  </component>
+</project>
