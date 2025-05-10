@@ -23,7 +23,7 @@ public class VPalyerCardView {
 	    }
 	    public Button addCard(String path ) {
 
-	    	CardView cardButton = new  CardView(170, 130, path,1);
+	    	CardView cardButton = new  CardView(200, 130, path,1);
 	        
 	        int index = cardButtons.size();
 	        int row = index / 4;  
