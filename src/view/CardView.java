@@ -9,28 +9,34 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class CradView {
+public class CardView {
 	private  Card card ; 
 	private int x ,  y ; 
 	private Button cardButton ; 
 	
-	public CradView( int x ,int u ,Card card ){
+	public CardView( int x ,int u ,Card card ){
 		this.card  = card;
 		this.x = x;
 		this.y = y;		
 	}
 	
 	//  just for testing 
-	public CradView(int width, int height, String imagePath) {
-        Image image = new Image(imagePath);
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(width);
-        imageView.setFitHeight(height);
-        imageView.setPreserveRatio(true);
+	public CardView(int width, int height, String imagePath,int rotate) {
+	    Image image = new Image(imagePath);
+	    ImageView imageView = new ImageView(image);
+	    imageView.setFitWidth(width);
+	    imageView.setFitHeight(height);
+	    imageView.setPreserveRatio(true); // or true, depending on your need
 
-        cardButton = new Button();
-        cardButton.setGraphic(imageView);
-    }
+	    
+	    imageView.setRotate(90*rotate); // Rotate 90 degrees clockwise
+
+	    cardButton = new Button();
+	    cardButton.setGraphic(imageView);
+	    //cardButton.setPrefSize(width, height); // optional
+	}
+
+
 	public Button drawCard(int x , int y){
 		String path ="/cardss/";
 		if ( this.card instanceof Standard ){

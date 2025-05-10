@@ -21,21 +21,33 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.scene.input.MouseEvent; 
+import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 
 public class test extends Application  {
-	private PalyerCardView player ; 
+	private HPalyerCardView player ; 
 	public void start(Stage Stage) throws Exception {
 
 		
-		player = new PalyerCardView();
+		player = new HPalyerCardView();
 		Group  view = new Group();  
         view.getChildren().add(player.getCardGrid());
         String path = getClass().getResource("/cardss/101.png").toExternalForm();
-//
-//        player.addCard(path);
-//        player.addCard("file:/D:/GUC/CSEN401 Game/Game project/JackarooM1/src/cardss/101.png");
-//        player.addCard("file:/D:/GUC/CSEN401 Game/Game project/JackarooM1/src/cardss/101.png");
-//        player.addCard("file:/D:/GUC/CSEN401 Game/Game project/JackarooM1/src/cardss/101.png");
+        String p2 = getClass().getResource("/cardss/93.png").toExternalForm();
+        String p3 = getClass().getResource("/cardss/54.png").toExternalForm();
+        String p4 = getClass().getResource("/cardss/61.png").toExternalForm();
+        player.addCard(path);
+        player.addCard(p2);
+        player.addCard(p3);
+        player.addCard(p4);
         Scene scene = new Scene(view, 550, 200);
         Stage.setScene(scene);
         Stage.setTitle("CardView Test");

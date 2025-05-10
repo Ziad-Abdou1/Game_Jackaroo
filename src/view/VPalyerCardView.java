@@ -10,32 +10,32 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
-public class PalyerCardView {
+public class VPalyerCardView {
 	 private GridPane cardGrid;
-	    private ArrayList<CradView> cardButtons;
+	    private ArrayList<CardView> cardButtons;
 	    
-	    public PalyerCardView() {
+	    public VPalyerCardView() {
 	        cardGrid = new GridPane();
-	        cardGrid.setPadding(new Insets(10));
+	        cardGrid.setPadding(new Insets(40));
 	        cardGrid.setHgap(10);
 	        cardGrid.setVgap(10);
 	        cardButtons = new ArrayList<>();
 	    }
-	    public Button addCard(Card card ) {
+	    public Button addCard(String path ) {
 
-	    	CradView cardButton = new  CradView(100, 150, card);
+	    	CardView cardButton = new  CardView(170, 130, path,1);
 	        
 	        int index = cardButtons.size();
 	        int row = index / 4;  
 	        int col = index % 4;
 
-	        cardGrid.add(cardButton.drawCard(), col, row);
+	        cardGrid.add(cardButton.drawCard(), row, col);
 	        cardButtons.add(cardButton);
 
 	        return cardButton.drawCard();
 	    }
 
-	    public void removeCard(CradView cardButton) {
+	    public void removeCard(CardView cardButton) {
 	        cardGrid.getChildren().remove(cardButton); 
 	        cardButtons.remove(cardButton);            
 	        refreshGrid();        
@@ -45,14 +45,14 @@ public class PalyerCardView {
 	        for (int i = 0; i < cardButtons.size(); i++) {
 	            int row = i / 4;
 	            int col = i % 4;
-	            cardGrid.add(cardButtons.get(i).drawCard(), col, row);
+	            cardGrid.add(cardButtons.get(i).drawCard(), row, col);
 	        }
 	    }
 	    public GridPane getCardGrid() {
 	        return cardGrid;
 	    }
 
-	    public ArrayList<CradView> getCardButtons() {
+	    public ArrayList<CardView> getCardButtons() {
 	        return cardButtons;
 	    }
 }

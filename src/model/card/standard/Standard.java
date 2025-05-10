@@ -19,7 +19,7 @@ public class Standard extends Card {
         this.suit = suit;
     }
 
-    public int getRank() {
+    public int getRank() {A
         return rank;
     }
 
