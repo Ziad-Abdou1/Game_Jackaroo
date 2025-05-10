@@ -87,12 +87,12 @@ public class test2 extends Application  {
           
           
 //board
-          BoardView board = new BoardView(1300, 1700);
+          BoardView board = new BoardView(1200, 1200);
           
           
           GameView game = new GameView(board,player, cpu1, cpu2, cpu3);
           
-        Scene scene = new Scene(game.drawGameView(),5000, 1340);
+        Scene scene = new Scene(game.drawGameView(),1700, 900);
         Stage.setScene(scene);
         Stage.setTitle("CardView Test");
         Stage.show();
