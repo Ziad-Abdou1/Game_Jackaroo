@@ -11,10 +11,10 @@ public class CellView {
 		this.j =j;
 		this.marbleView =null;
 	}
-	public Circle draw(int x, int y, int r){
+	public Circle draw(double d, double e, int r){
 		Circle circ = new Circle();
-		circ.setCenterX(x);
-		circ.setCenterY(y);
+		circ.setCenterX(d);
+		circ.setCenterY(e);
 		circ.setRadius(r);
 		circ.setFill(Color.WHITE);
 		circ.setStroke(Color.BLACK);

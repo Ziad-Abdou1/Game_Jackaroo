@@ -21,14 +21,13 @@ public class HPalyerCardView {
 	        cardGrid.setVgap(10);
 	        cardButtons = new ArrayList<>();
 	    }
-	    public Button addCard(String path ) {
-
-	    	CardView cardButton = new  CardView(100, 150, path,0);
-	        
+	    public Button addCard(Card card ) {
+	    	
+	    	CardView cardButton = new  CardView(GameView.WINDOW_HEIGHT/10, GameView.WINDOW_WIDTH/8, card,0);
 	        int index = cardButtons.size();
 	        int row = index / 4;  
 	        int col = index % 4;
-
+	        
 	        cardGrid.add(cardButton.drawCard(), col, row);
 	        cardButtons.add(cardButton);
 

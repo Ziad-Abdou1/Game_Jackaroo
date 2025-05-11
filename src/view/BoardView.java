@@ -2,6 +2,10 @@ package view;
 
 import java.util.ArrayList;
 
+import javafx.geometry.Insets;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -207,6 +211,7 @@ public class BoardView {
 		
 		HEIGHT = height; WIDTH = width;
 		grid = new Pane();
+		grid.setBackground(new Background(new BackgroundFill(Color.BROWN, CornerRadii.EMPTY, Insets.EMPTY)));
 		grid.setPrefHeight(HEIGHT);
 		grid.setPrefWidth(WIDTH);
 		cols=HEIGHT/div;rows=WIDTH/div;
@@ -250,4 +255,5 @@ public class BoardView {
 	}
 	public int transfromX(int x){return x*(WIDTH/cols)+div/2;}
 	public int transformY(int y){return y*(HEIGHT/rows)+div/2;}
+	
 }

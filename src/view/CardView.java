@@ -21,39 +21,37 @@ public class CardView {
 	}
 	
 	//  just for testing 
-	public CardView(int width, int height, String imagePath,int rotate) {
-	    Image image = new Image(imagePath);
+	public CardView(int width, int height, Card card,int rotate) {
+		this.card = card;
+		
+	    Image image = new Image(getPath());
 	    ImageView imageView = new ImageView(image);
 	    imageView.setFitWidth(width);
 	    imageView.setFitHeight(height);
+
 	    imageView.setPreserveRatio(true); // or true, depending on your need
 
 	    
 	    imageView.setRotate(90*rotate); // Rotate 90 degrees clockwise
 
 	    cardButton = new Button();
+	    cardButton.setPrefWidth(width);
+	    cardButton.setPrefHeight(height);
 	    cardButton.setGraphic(imageView);
 	    //cardButton.setPrefSize(width, height); // optional
 	}
 
-
-	public Button drawCard(int x , int y){
-		String path ="/cardss/";
+	public String getPath(){
+		String path ="cardss/";
 		if ( this.card instanceof Standard ){
 			Standard c = (Standard) this.card ; 
-			if(c.getRank() == 1 )path+="1";
-			if(c.getRank() == 2 )path+="2";
-			if(c.getRank() == 3 )path+="3";
-			if(c.getRank() == 4 )path+="4";
-			if(c.getRank() == 5 )path+="5";
-			if(c.getRank() == 6 )path+="6";
-			if(c.getRank() == 7 )path+="7";
-			if(c.getRank() == 8 )path+="8";
-			if(c.getRank() == 9 )path+="9";
-			if(c.getRank() == 10 )path+="10";
-			if(c.getRank() == 11 )path+="11";
-			if(c.getRank() == 12 )path+="12";
-			if(c.getRank() == 13 )path+="13";
+			if (c.getRank()>=2 && c.getRank()<=10){
+				path += ""+c.getRank();
+			}
+			if(c.getRank() == 1 )path+="A";
+			if(c.getRank() == 11 )path+="J";
+			if(c.getRank() == 12 )path+="Q";
+			if(c.getRank() == 13 )path+="K";
 			
 			if(c.getSuit() ==  Suit.CLUB)path+="1";
 			if(c.getSuit() ==  Suit.SPADE)path+="2";
@@ -63,6 +61,12 @@ public class CardView {
 			 if ( this.card instanceof Burner)path+="";
 			 if ( this.card instanceof Saver)path+="";
 		}
+		path += ".png";
+		return path;
+	}
+
+	public Button drawCard(int x , int y){
+		String path = getPath();
 		
 		Image image = new Image(path);
         ImageView imageView = new ImageView(image);

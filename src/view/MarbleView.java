@@ -8,9 +8,12 @@ import model.player.Marble;
 
 public class MarbleView {
 	private Marble marble;
-	int x, y, r;
+	double x, y;
+	int r;
+	private Button bt;
 	public MarbleView(Marble marble, int x, int y, int r) {
 		this.marble = marble;
+		bt = new Button();
 		this.x = x;
 		this.y = y;
 		this.r = r;
@@ -18,9 +21,9 @@ public class MarbleView {
 	public MarbleView(Marble marble) {
 		this.marble = marble;
 	}
-	public Button drawMarble(int x, int y, int r){
-		this.x = x;
-	    this.y = y;
+	public Button drawMarble(double d, double e, int r){
+		this.x = d;
+	    this.y = e;
 	    this.r = r;
 
 	    Circle circ = new Circle();
@@ -37,13 +40,12 @@ public class MarbleView {
 		else if (marble.getColour()==Colour.BLUE){
 			circ.setFill(Color.BLUE);
 		}
-	    Button bt = new Button();
 	    bt.setShape(circ);
 	    bt.setMinSize(2 * r, 2 * r);
 	    bt.setMaxSize(2 * r, 2 * r);
 
-	    bt.setLayoutX(x - r); 
-	    bt.setLayoutY(y - r);
+	    bt.setLayoutX(d - r); 
+	    bt.setLayoutY(e - r);
 
 	    return bt;
 	}
