@@ -1,19 +1,29 @@
 package controller;
 
+import java.util.ArrayList;
+
 import model.card.Card;
+import model.player.Marble;
 import engine.Game;
+import engine.board.Cell;
 import view.BoardView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import view.*;
 
 public class ControllerGUI extends Application {
 	public void start(Stage stage) throws Exception{
 		Game game = new Game("sa3d nabiha");
-		BoardView bv = new BoardView(800,800);
+		ArrayList<Cell> track=game.getBoard().getTrack();
+		ArrayList<ArrayList<Marble>> homes=new ArrayList<>();
+		for(int i=0;i<4;i++){
+			homes.add(game.getPlayers().get(i).getMarbles());
+		}
+		BoardView bv = new BoardView(400,400,track,homes);
 		HPalyerCardView cv1 = new HPalyerCardView();
 		for (Card c : game.getPlayers().get(0).getHand()){
 			//System.out.println(c.getName());
@@ -34,10 +44,11 @@ public class ControllerGUI extends Application {
 		GameView gv = new GameView(bv,cv1,cv2,cv3,cv4);
 		BorderPane grid = gv.drawGameView();
 		
-//		while (game.checkWin()==null){
-//			
-//			//grid = gv.drawGameView();
-//		}
+		bv.refresh();
+		
+		
+		
+		
 		
 		Scene scene = new Scene(grid);
 		stage.setScene(scene);

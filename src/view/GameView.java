@@ -15,7 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class GameView {
-	public static final int WINDOW_HEIGHT= 800, WINDOW_WIDTH = 800;
+	public static final int WINDOW_HEIGHT= 800, WINDOW_WIDTH = 1400;
 	private BorderPane root = new BorderPane();
 	BoardView board;
 	HPalyerCardView playerview;
@@ -29,8 +29,8 @@ public class GameView {
 		this.cpu2 = cpu2;
 		this.cpu3 = cpu3;
 		
-		root.setPrefHeight(WINDOW_HEIGHT);
-		root.setPrefHeight(WINDOW_WIDTH);
+//		root.setPrefHeight(WINDOW_HEIGHT);
+//		root.setPrefHeight(WINDOW_WIDTH);
 		root.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
 		// Top (centered horizontally)
 	       
@@ -44,8 +44,8 @@ public class GameView {
         root.setBottom(bottomBox);
         
      // Center
-      board.draw().prefWidthProperty().bind(root.widthProperty().subtract(WINDOW_WIDTH/4));
-      board.draw().prefHeightProperty().bind(root.heightProperty().subtract(WINDOW_HEIGHT/4));
+//      board.draw().prefWidthProperty().bind(root.widthProperty().subtract(WINDOW_WIDTH/4));
+//      board.draw().prefHeightProperty().bind(root.heightProperty().subtract(WINDOW_HEIGHT/4));
        root.setCenter(board.draw());
 
         

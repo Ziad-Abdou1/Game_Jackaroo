@@ -2,6 +2,8 @@ package view;
 
 import java.util.ArrayList;
 
+import model.player.Marble;
+import engine.board.Cell;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -16,6 +18,8 @@ public class BoardView {
 	private Pane grid;
 	private final int div = 25;
 	private ArrayList<CellView> trackView;
+	private ArrayList<Cell> track;
+	private ArrayList<ArrayList<Marble>> homes;
 	private int initTrackI, initTrackJ;
 	ArrayList<SafeZoneView> safeZoneViews;
 	ArrayList<HomeView> homeViews;
@@ -207,7 +211,9 @@ public class BoardView {
 		homeViews.add(new HomeView(initTrackI-6,initTrackJ-8));
 	}
 	
-	public BoardView(int height,int width){
+	public BoardView(int height,int width, ArrayList<Cell> track, ArrayList<ArrayList<Marble>> homes){
+		this.homes=homes;
+		this.track=track;
 		
 		HEIGHT = height; WIDTH = width;
 		grid = new Pane();
@@ -252,6 +258,31 @@ public class BoardView {
 			}
 		}
 		return grid;
+	}
+	public void refresh(){
+		
+//		for(int i=0;i<track.size();i++){
+//			Cell c=track.get(i);
+//			if(c.getMarble()!=null){
+//				trackView.get(i).setMarbleView(new MarbleView(c.getMarble()));
+//			}
+//		}
+		for(int i =0; i< 4; i++){
+			for (int j = 0; j < 4; j++){
+				if (j < homes.get(i).size()){
+					homeViews.get(i).getCellViews().get(j).setMarbleView(new MarbleView(homes.get(i).get(j)));
+				}
+				else homeViews.get(i).getCellViews().get(j).setMarbleView(null);
+			}
+			
+		}
+		draw();
+	}
+	void print(ArrayList<Marble> arr)
+	{
+		for(int i=0;i<arr.size();i++){
+			System.out.println(arr.get(i));
+		}
 	}
 	public int transfromX(int x){return x*(WIDTH/cols)+div/2;}
 	public int transformY(int y){return y*(HEIGHT/rows)+div/2;}

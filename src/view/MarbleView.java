@@ -21,11 +21,11 @@ public class MarbleView {
 	public MarbleView(Marble marble) {
 		this.marble = marble;
 	}
-	public Button drawMarble(double d, double e, int r){
-		this.x = d;
-	    this.y = e;
+	public Button drawMarble(double x, double y, int r){
+		this.x = x;
+	    this.y = y;
 	    this.r = r;
-
+	    System.out.println(x);
 	    Circle circ = new Circle();
 	    circ.setRadius(r);
 	    if (marble.getColour()==Colour.RED){
@@ -40,12 +40,13 @@ public class MarbleView {
 		else if (marble.getColour()==Colour.BLUE){
 			circ.setFill(Color.BLUE);
 		}
-	    bt.setShape(circ);
-	    bt.setMinSize(2 * r, 2 * r);
-	    bt.setMaxSize(2 * r, 2 * r);
 
-	    bt.setLayoutX(d - r); 
-	    bt.setLayoutY(e - r);
+	    bt.setShape(circ);
+////	    bt.setMinSize(2 * r, 2 * r);
+////	    bt.setMaxSize(2 * r, 2 * r);
+//
+//	    bt.setLayoutX(x - r); 
+//	    bt.setLayoutY(y - r);
 
 	    return bt;
 	}

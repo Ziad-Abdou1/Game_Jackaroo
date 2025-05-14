@@ -23,7 +23,7 @@ public class HPalyerCardView {
 	    }
 	    public Button addCard(Card card ) {
 	    	
-	    	CardView cardButton = new  CardView(GameView.WINDOW_HEIGHT/10, GameView.WINDOW_WIDTH/8, card,0);
+	    	CardView cardButton = new  CardView(GameView.WINDOW_HEIGHT/12, GameView.WINDOW_WIDTH/10, card,0);
 	        int index = cardButtons.size();
 	        int row = index / 4;  
 	        int col = index % 4;
