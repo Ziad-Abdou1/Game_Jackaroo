@@ -6,35 +6,38 @@ import javafx.scene.layout.*;
 
 import java.util.ArrayList;
 
+import engine.Game;
 import model.card.Card;
+import model.player.Player;
 
 public class HandsView extends StackPane {
-	
-    public HandsView(ArrayList<Card> topHand, ArrayList<Card> leftHand, ArrayList<Card> bottomHand, ArrayList<Card> rightHand) {
-
-        // Create the individual hand views
-        HPlayerCardView top = new HPlayerCardView(topHand);
-        HPlayerCardView left = new HPlayerCardView(leftHand);
-        HPlayerCardView bottom = new HPlayerCardView(bottomHand);
-        HPlayerCardView right = new HPlayerCardView(rightHand);
-
-        // Rotate cards to reflect their positions
-        top.setRotate(180);   // upside-down
-        left.setRotate(270);  // rotated to vertical
-        right.setRotate(90);  // rotated to vertical
-
-
-        this.getChildren().addAll(left,top,right,bottom);
+	Game game;
+	ArrayList<HPlayerCardView> hands;
+    public HandsView(Game game) {
+    	this.game = game;
+        
+    	draw();
+    }
+    
+    public void draw(){
+    	hands = new ArrayList<>();
+    	for (Player p : game.getPlayers()){
+    		HPlayerCardView hand = new HPlayerCardView(p.getHand());
+    		hands.add(hand);
+    	}
+    	hands.get(1).setRotate(270);
+    	hands.get(2).setRotate(180);
+    	hands.get(3).setRotate(90);
+    	
+        for (HPlayerCardView hand : hands) this.getChildren().addAll(hand);
 
         
-        this.setAlignment(top, Pos.TOP_CENTER);
-        this.setAlignment(left, Pos.CENTER_LEFT);
-        this.setAlignment(right, Pos.CENTER_RIGHT);
-        this.setAlignment(bottom, Pos.BOTTOM_CENTER);
+        this.setAlignment(hands.get(2), Pos.TOP_CENTER);
+        this.setAlignment(hands.get(1), Pos.CENTER_LEFT);
+        this.setAlignment(hands.get(3), Pos.CENTER_RIGHT);
+        this.setAlignment(hands.get(0), Pos.BOTTOM_CENTER);
         
-        this.setMaxWidth(1300);
-
-        
+        this.setMaxWidth(1300); 
     }
 
     private Pane wrap(HPlayerCardView view, Pos alignment) {

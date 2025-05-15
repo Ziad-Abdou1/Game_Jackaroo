@@ -32,7 +32,7 @@ public class HPlayerCardView extends HBox{
 	    	}
 	    	this.setSpacing(20);
 	    	this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-	    	//this.setStyle("-fx-background-color: red");
+	    	this.setStyle("-fx-background-color: red");
 	    }
 
 
