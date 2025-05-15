@@ -1,15 +1,22 @@
 package view;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.stage.Screen;
 import model.Colour;
 import model.player.Marble;
 
 public class MarbleView extends StackPane {
+	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+    double screenWidth = screenBounds.getWidth();
+    double screenHeight = screenBounds.getHeight();
+
+    
 	private Marble marble;
-	private final double radius = 10;
+	private final double radius = 12*screenWidth/1920;
 	private Circle circle;
 	public MarbleView(Marble marble){
 		circle = new Circle();

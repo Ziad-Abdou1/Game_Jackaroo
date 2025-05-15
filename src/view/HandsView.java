@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import model.card.Card;
 
 public class HandsView extends StackPane {
+	
     public HandsView(ArrayList<Card> topHand, ArrayList<Card> leftHand, ArrayList<Card> bottomHand, ArrayList<Card> rightHand) {
 
         // Create the individual hand views
@@ -31,7 +32,7 @@ public class HandsView extends StackPane {
         this.setAlignment(right, Pos.CENTER_RIGHT);
         this.setAlignment(bottom, Pos.BOTTOM_CENTER);
         
-        this.setMaxWidth(1150);
+        this.setMaxWidth(1300);
 
         
     }

@@ -10,6 +10,7 @@ import model.player.Marble;
 import model.player.Player;
 
 public class HomeZoneView extends GridPane {
+	
 	private Player player;
 	public HomeZoneView(Player player){
 		this.player = player;
@@ -35,6 +36,7 @@ public class HomeZoneView extends GridPane {
 			curi += dy[i];
 			curj += dx[i];
 		}
+		this.setRotate(45);
 	}
     public void addNode(Node node, int col, int row) {
         this.add(node, col, row);
