@@ -45,6 +45,8 @@ public class test extends Application{
 	public void start(Stage stage) throws Exception {
 //		BoardView boardView=new BoardView();
 		Game game=new Game("Adham");
+//		HomeZoneView root = new HomeZoneView(game.getPlayers().get(0));
+//		Scene scene = new Scene(root);
 		BoardView boardView=new BoardView(game.getBoard());
 		boardView.setMaxSize(200, 200);
 		ArrayList<Card> a1=game.getPlayers().get(0).getHand();

@@ -31,7 +31,7 @@ public class HandsView extends StackPane {
         this.setAlignment(right, Pos.CENTER_RIGHT);
         this.setAlignment(bottom, Pos.BOTTOM_CENTER);
         
-        this.setMaxWidth(1200);
+        this.setMaxWidth(1150);
 
         
     }
