@@ -57,11 +57,8 @@ public class test extends Application{
 		HomesView homeViews = new HomesView(game.getPlayers());
 		BoardView boardView=new BoardView(game.getBoard());
 		boardView.setMaxSize(50, 50);
-		ArrayList<Card> a1=game.getPlayers().get(0).getHand();
-		ArrayList<Card> a2=game.getPlayers().get(1).getHand();
-		ArrayList<Card> a3=game.getPlayers().get(2).getHand();
-		ArrayList<Card> a4=game.getPlayers().get(3).getHand();
-		HandsView h=new HandsView(a3, a2, a1, a4);
+		
+		HandsView h=new HandsView(game);
 //		HPlayerCardView hv=new HPlayerCardView(a1);
 //		VBox onlyOnePlayer=new VBox();
 //		onlyOnePlayer.getChildren().addAll(boardView,hv);
