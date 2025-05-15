@@ -18,6 +18,7 @@ public class CardView extends ImageView{
 	}
 	private void drawCard(){
 		this.setImage(new Image(getPath()));
+	
 		
 	}
 	
