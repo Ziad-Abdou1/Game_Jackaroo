@@ -1,56 +1,34 @@
 package view;
 
 import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import model.Colour;
 import model.player.Marble;
 
-public class MarbleView {
+public class MarbleView extends StackPane {
 	private Marble marble;
-	double x, y;
-	int r;
-	private Button bt;
-	public MarbleView(Marble marble, int x, int y, int r) {
+	private final double radius = 10;
+	private Circle circle;
+	public MarbleView(Marble marble){
+		circle = new Circle();
 		this.marble = marble;
-		bt = new Button();
-		this.x = x;
-		this.y = y;
-		this.r = r;
+		draw();
 	}
-	public MarbleView(Marble marble) {
-		this.marble = marble;
-	}
-	public Button drawMarble(double x, double y, int r){
-		this.x = x;
-	    this.y = y;
-	    this.r = r;
-	    System.out.println(x);
-	    Circle circ = new Circle();
-	    circ.setRadius(r);
-	    if (marble.getColour()==Colour.RED){
-			circ.setFill(Color.RED);
+	
+	public void draw(){
+		circle.setRadius(radius);
+		if (marble==null){
+			circle.setFill(Color.GREY);
 		}
-		else if (marble.getColour()==Colour.GREEN){
-			circ.setFill(Color.GREEN);
+		else{
+			Colour clr = marble.getColour();
+			if (clr == Colour.BLUE) circle.setFill(Color.BLUE);
+			if (clr == Colour.YELLOW) circle.setFill(Color.YELLOW);
+			if (clr == Colour.GREEN) circle.setFill(Color.GREEN);
+			if (clr == Colour.RED) circle.setFill(Color.RED);
 		}
-		else if (marble.getColour()==Colour.YELLOW){
-			circ.setFill(Color.YELLOW);
-		}
-		else if (marble.getColour()==Colour.BLUE){
-			circ.setFill(Color.BLUE);
-		}
-
-	    bt.setShape(circ);
-////	    bt.setMinSize(2 * r, 2 * r);
-////	    bt.setMaxSize(2 * r, 2 * r);
-//
-//	    bt.setLayoutX(x - r); 
-//	    bt.setLayoutY(y - r);
-
-	    return bt;
-	}
-	public Button drawMarble(){
-		return drawMarble(x,y,r);
+		this.getChildren().addAll(circle);
 	}
 }

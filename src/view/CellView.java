@@ -1,41 +1,35 @@
 package view;
 
+import model.Colour;
+import engine.board.Cell;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class CellView {
-	private int i, j;
+public class CellView extends StackPane {
+	private Cell cell;
+	private Circle circle;
+	private final double radius = 10;
 	private MarbleView marbleView;
-	public CellView(int i, int j){
-		this.i =i;
-		this.j =j;
-		this.marbleView =null;
+	public CellView(Cell c){
+		circle = new Circle();
+		this.cell = c;
+		circle.setRadius(radius);
+		draw();
 	}
-	public Circle draw(double d, double e, int r){
-		Circle circ = new Circle();
-		circ.setCenterX(d);
-		circ.setCenterY(e);
-		circ.setRadius(r);
-		circ.setFill(Color.WHITE);
-		circ.setStroke(Color.BLACK);
-		return circ;
+	public void draw(){
+		
+		if (cell.getMarble()!=null){
+			marbleView = new MarbleView(cell.getMarble());
+			this.getChildren().addAll(marbleView);
+		}
+		else{
+			this.getChildren().removeAll();
+			marbleView = null;
+			circle.setFill(Color.GREY);
+			this.getChildren().addAll(circle);
+			
+		}
 	}
-	public void setMarbleView(MarbleView marbleView){
-		this.marbleView =marbleView;
-	}
-	public MarbleView getMarbleView(){
-		return this.marbleView;
-	}
-	public int getI() {
-		return i;
-	}
-	public void setI(int i) {
-		this.i = i;
-	}
-	public int getJ() {
-		return j;
-	}
-	public void setJ(int j) {
-		this.j = j;
-	}
+	
 }

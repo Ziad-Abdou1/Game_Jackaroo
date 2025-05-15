@@ -24,7 +24,7 @@ public class ControllerGUI extends Application {
 			homes.add(game.getPlayers().get(i).getMarbles());
 		}
 		BoardView bv = new BoardView(400,400,track,homes);
-		HPalyerCardView cv1 = new HPalyerCardView();
+		HPlayerCardView cv1 = new HPlayerCardView();
 		for (Card c : game.getPlayers().get(0).getHand()){
 			//System.out.println(c.getName());
 			cv1.addCard(c);
@@ -33,7 +33,7 @@ public class ControllerGUI extends Application {
 		for (Card c : game.getPlayers().get(1).getHand()){
 			cv2.addCard(c);
 		}
-		HPalyerCardView cv3 = new HPalyerCardView();
+		HPlayerCardView cv3 = new HPlayerCardView();
 		for (Card c : game.getPlayers().get(2).getHand()){
 			cv3.addCard(c);
 		}

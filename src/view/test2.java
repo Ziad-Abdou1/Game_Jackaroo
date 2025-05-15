@@ -33,13 +33,13 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 public class test2 extends Application  {
-	private HPalyerCardView player ; 
+	private HPlayerCardView player ; 
 	private VPalyerCardView cpu1 ;
-	private HPalyerCardView cpu2 ;
+	private HPlayerCardView cpu2 ;
 	private VPalyerCardView cpu3 ;
 	public void start(Stage Stage) throws Exception {
 //player
-		player = new HPalyerCardView(); 
+		player = new HPlayerCardView(); 
 //        String path = getClass().getResource("/cardss/101.png").toExternalForm();
 //        String p2 = getClass().getResource("/cardss/93.png").toExternalForm();
 //        String p3 = getClass().getResource("/cardss/54.png").toExternalForm();

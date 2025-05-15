@@ -9,37 +9,19 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class CardView {
+public class CardView extends ImageView{
 	private  Card card ; 
-	private int x ,  y ; 
-	private Button cardButton ; 
 	
-	public CardView( int x ,int u ,Card card ){
-		this.card  = card;
-		this.x = x;
-		this.y = y;		
+	public CardView(Card card ){
+		this.card  = card;	
+		drawCard();
 	}
-	
-	//  just for testing 
-	public CardView(int width, int height, Card card,int rotate) {
-		this.card = card;
+	private void drawCard(){
+		this.setImage(new Image(getPath()));
 		
-	    Image image = new Image(getPath());
-	    ImageView imageView = new ImageView(image);
-	    imageView.setFitWidth(width);
-	    imageView.setFitHeight(height);
-
-	    imageView.setPreserveRatio(true); // or true, depending on your need
-
-	    
-	    imageView.setRotate(90*rotate); // Rotate 90 degrees clockwise
-
-	    cardButton = new Button();
-	    cardButton.setPrefWidth(width);
-	    cardButton.setPrefHeight(height);
-	    cardButton.setGraphic(imageView);
-	    //cardButton.setPrefSize(width, height); // optional
 	}
+	
+
 
 	public String getPath(){
 		String path ="cardss/";
@@ -58,35 +40,13 @@ public class CardView {
 			if(c.getSuit() ==  Suit.HEART)path+="3";
 			if(c.getSuit() ==  Suit.DIAMOND)path+="4";
 		}else{
-			 if ( this.card instanceof Burner)path+="";
-			 if ( this.card instanceof Saver)path+="";
+			 if ( this.card instanceof Burner)path+="A1";
+			 if ( this.card instanceof Saver)path+="A1";
 		}
 		path += ".png";
 		return path;
 	}
 
-	public Button drawCard(int x , int y){
-		String path = getPath();
-		
-		Image image = new Image(path);
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(x);
-        imageView.setFitHeight(y);
-        imageView.setPreserveRatio(true);
 
-        cardButton = new Button();
-        cardButton.setGraphic(imageView);
-		
-		
-		
-		return cardButton;
-		
-
-	
-		
-	}
-    public Button drawCard() {
-        return cardButton;
-    }
 	
 }
