@@ -4,6 +4,7 @@ import engine.board.Cell;
 import engine.board.CellType;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 import model.Colour;
 import model.player.Marble;
 import model.player.Player;
@@ -13,6 +14,7 @@ public class HomeZoneView extends GridPane {
 	public HomeZoneView(Player player){
 		this.player = player;
 		draw();
+		this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 	}
 	private void draw(){
 		int num = player.getMarbles().size();

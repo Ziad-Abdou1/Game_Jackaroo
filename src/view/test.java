@@ -47,8 +47,9 @@ public class test extends Application{
 		Game game=new Game("Adham");
 //		HomeZoneView root = new HomeZoneView(game.getPlayers().get(0));
 //		Scene scene = new Scene(root);
+		HomesView homeViews = new HomesView(game.getPlayers());
 		BoardView boardView=new BoardView(game.getBoard());
-		boardView.setMaxSize(200, 200);
+		boardView.setMaxSize(50, 50);
 		ArrayList<Card> a1=game.getPlayers().get(0).getHand();
 		ArrayList<Card> a2=game.getPlayers().get(1).getHand();
 		ArrayList<Card> a3=game.getPlayers().get(2).getHand();
@@ -56,7 +57,7 @@ public class test extends Application{
 		HandsView h=new HandsView(a3, a2, a1, a4);
 		StackPane st=new StackPane();
 		st.setMaxSize(1400, 900);
-		st.getChildren().addAll(h,boardView);
+		st.getChildren().addAll(h,boardView,homeViews);
 		StackPane.setAlignment(boardView, Pos.CENTER);
 		st.setPadding(new Insets(20));
 		Scene scene=new Scene(st,1400,900);

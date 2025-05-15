@@ -76,6 +76,10 @@ public class BoardView extends GridPane {
 				curi += dx[direction[i]];
 				curj += dy[direction[i]];
 				CellView cv=new CellView(board.getSafeZones().get(i).getCells().get(j));
+//				Colour clr = board.getSafeZones().get(i).getColour();
+//				if (clr == Colour.BLUE){
+//					cv.setStyle("-fx-ba");
+//				}
 				safeZoneView[i].add(cv);
 				this.addNode(cv,curj,curi);
     		}
