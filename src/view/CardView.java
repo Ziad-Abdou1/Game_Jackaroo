@@ -1,11 +1,14 @@
 package view;
 
+import java.util.ArrayList;
+
 import engine.Game;
 import model.card.Card;
 import model.card.standard.*;
 import model.card.wild.Burner;
 import model.card.wild.Saver;
 import model.card.wild.Wild;
+import model.player.Marble;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -52,6 +55,14 @@ public class CardView extends ImageView{
 			}
 		});
 	}
+	
+//	public boolean canWork(){
+//		ArrayList<Marble> activeMarbles = game.getBoard().getActionableMarbles();
+//		//sz=0
+//		if (card.validateMarbleSize(new ArrayList<Marble>()) && card.validateMarbleColours(new ArrayList<Marble>()));
+//		
+//		//sz=1
+//	}
 	
 	public void hover(boolean f){
 		if (game.getPlayers().get(0).getSelectedCard()==this.card){

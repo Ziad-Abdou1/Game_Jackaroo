@@ -42,7 +42,7 @@ public class MarbleView extends StackPane {
 	public void refresh(){
 		circle.setRadius(radius);
 		if (marble==null){
-			circle.setFill(Color.GREY);
+			//circle.setFill(Color.GREY);
 		}
 		else{
 			Colour clr = marble.getColour();

@@ -31,8 +31,8 @@ public class HomesView extends StackPane {
 		}
         this.setAlignment(homes.get(0), Pos.BOTTOM_CENTER);
         this.setAlignment(homes.get(1), Pos.CENTER_LEFT);
-        this.setAlignment(homes.get(3), Pos.TOP_CENTER);
-        this.setAlignment(homes.get(2), Pos.CENTER_RIGHT);
+        this.setAlignment(homes.get(2), Pos.TOP_CENTER);
+        this.setAlignment(homes.get(3), Pos.CENTER_RIGHT);
        
 	}
     

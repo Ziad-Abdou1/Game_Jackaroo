@@ -8,8 +8,10 @@ import java.security.acl.Group;
 
 
 
+
 import model.card.Card;
 import model.player.Player;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
@@ -39,8 +41,8 @@ public class GameView extends StackPane {
 	int idx=0;
 
 	public GameView(Game game){
-		initPlayButton();
 		this.game = game;
+		initPlayButton();
 		draw();
 	}
 	
@@ -51,16 +53,29 @@ public class GameView extends StackPane {
 		PlayButton.setScaleY(0.4);
 //		playerViews.getPlayerViews().get(0).setActive(true);
 //		draw();
+		
+		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), e -> {
+			if (!game.canPlayTurn() && game.getActivePlayerColour()==game.getPlayers().get(0).getColour()){
+				game.endPlayerTurn();
+				
+				playCPU();
+			}
+		}));
+		timeline.setCycleCount(Animation.INDEFINITE); // Repeat forever
+		timeline.play();
+
+	
+		
 		PlayButton.setOnMouseClicked(e -> {
 			try{
 				if (game.canPlayTurn()){
-					PauseTransition pause = new PauseTransition(Duration.seconds(1));
-					pause.setOnFinished(event -> {
-					    // this code runs 1 second later, on the JavaFX thread
-					});
-					pause.play();
+//					PauseTransition pause = new PauseTransition(Duration.seconds(1));
+//					pause.setOnFinished(event -> {
+//					    // this code runs 1 second later, on the JavaFX thread
+//					});
+//					pause.play();
 					game.playPlayerTurn();
-					Card store =firePitView.topCardView.getCard();
+					//Card store =firePitView.topCardView.getCard();
 					draw();
 					
 //					playerViews.getPlayerViews().get(0).setActive(false);
@@ -70,37 +85,7 @@ public class GameView extends StackPane {
 				draw();
 			System.out.println(game.getFirePit().size()+" "+game.getFirePit().get(game.getFirePit().size()-1).getName());
 					
-					Timeline replay = new Timeline(new KeyFrame(Duration.seconds(5), ev -> {
-//						    	idx++;
-//						    	playerViews.getPlayerViews().get(idx).setActive(true);
-						    	if(game.canPlayTurn()){
-							    	try {
-										game.playPlayerTurn();
-									} catch (Exception e1) {
-										// TODO Auto-generated catch block
-										e1.printStackTrace();
-									}
-							    	
-//							    	System.out.println(game.getFirePit().size()+" "+game.getFirePit().get(game.getFirePit().size()-1).getName());
-							    	System.out.println(game.getActivePlayerColour());
-						    	}
-						    	game.endPlayerTurn();
-						    	draw();
-						    	//----------------------
-						    	System.out.println("");
-						    	System.out.println("Current hands:");
-				                for (int i = 0; i < game.getPlayers().size(); i++) {
-				                    Player p = game.getPlayers().get(i);
-				                    System.out.print(p.getName() + ": ");
-				                    for (Card c : p.getHand()) {
-				                        System.out.print(c.getName() + " ");
-				                    }
-				                    System.out.println();
-				                }
-						    })
-						);
-					replay.setCycleCount(3);
-			        replay.play();
+					playCPU();
 
 
 			}catch (Exception ex){
@@ -117,7 +102,41 @@ public class GameView extends StackPane {
 		});
 	}
 
-
+	public void playCPU(){
+		draw();
+		Timeline replay = new Timeline(new KeyFrame(Duration.seconds(2), ev -> {
+//	    	idx++;
+//	    	playerViews.getPlayerViews().get(idx).setActive(true);
+	    	if(game.canPlayTurn()){
+		    	try {
+					game.playPlayerTurn();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+		    	
+//		    	System.out.println(game.getFirePit().size()+" "+game.getFirePit().get(game.getFirePit().size()-1).getName());
+		    	System.out.println(game.getActivePlayerColour());
+	    	}
+	    	game.endPlayerTurn();
+	    	draw();
+	    	//----------------------
+	    	System.out.println("");
+	    	System.out.println("Current hands:");
+            for (int i = 0; i < game.getPlayers().size(); i++) {
+                Player p = game.getPlayers().get(i);
+                System.out.print(p.getName() + ": ");
+                for (Card c : p.getHand()) {
+                    System.out.print(c.getName() + " ");
+                }
+                System.out.println();
+            }
+	    })
+	);
+replay.setCycleCount(3);
+replay.play();
+	}
+	
 	public void draw(){
 		this.getChildren().clear();
 		boardView = new BoardView(game.getBoard(), game);

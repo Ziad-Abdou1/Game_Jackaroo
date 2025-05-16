@@ -8,6 +8,7 @@ import view.GameView;
 import view.HPlayerCardView;
 import view.MarbleView;
 import engine.Game;
+import engine.board.Cell;
 import javafx.animation.AnimationTimer;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
@@ -33,7 +34,16 @@ public class GameController extends Application {
 		Game game = new Game(name);
 		gameView = new GameView(game);
 		Scene scene = new Scene(gameView,screenWidth,screenHeight);
-	
+		System.out.println("Board state:");
+        for (Cell cell : game.getBoard().getTrack()) {
+            System.out.print(cell.isTrap()?"1":"0");
+        }
+        System.out.println();
+    
+		for (int i = 0; i < 4; i++){
+			System.out.println(game.getPlayers().get(i).getColour());
+		}
+		
 		stage.setScene(scene);
 		stage.setMaxHeight(screenHeight);
 		stage.setWidth(screenWidth);

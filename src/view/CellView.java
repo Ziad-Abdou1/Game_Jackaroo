@@ -27,7 +27,7 @@ public class CellView extends StackPane {
 		draw();
 	}
 	public void draw(){
-		
+
 		if (cell.getMarble()!=null){
 			marbleView = new MarbleView(cell.getMarble(),game);
 			this.getChildren().addAll(marbleView);
@@ -38,6 +38,9 @@ public class CellView extends StackPane {
 			circle.setFill(Color.DARKGRAY);
 			this.getChildren().addAll(circle);
 			
+		}
+		if (cell.isTrap()){
+			circle.setFill(Color.BLACK);
 		}
 	}
 	public void setCell(Cell cell) {
