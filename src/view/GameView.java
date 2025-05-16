@@ -89,6 +89,7 @@ public class GameView extends StackPane {
 
 
 			}catch (Exception ex){
+				game.deselectAll();
 				System.out.println(ex.getMessage());
 			}
 		});
@@ -147,7 +148,7 @@ replay.play();
 		homesView = new HomesView(game.getPlayers(), game);
 		homesView.setMaxSize(700, 700);
 		playerViews = new PlayerViews(game);
-		playerViews.setMaxSize(1500, 900);
+		playerViews.setMaxSize(1100, 900);
 //		playerViews.setStyle("-fx-background-color: green;");
 //		for (Player p : game.getPlayers()){
 //			System.out.println(p.getName()+": ");

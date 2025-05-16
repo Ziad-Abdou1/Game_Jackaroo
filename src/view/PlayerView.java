@@ -1,5 +1,6 @@
 package view;
 
+import engine.Game;
 import model.player.Player;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -19,38 +20,50 @@ public class PlayerView extends GridPane{
     double screenWidth = screenBounds.getWidth();
     double screenHeight = screenBounds.getHeight();
 	
-	
+	private Game game;
 	private Player player;
-	private boolean active;
 	private Circle circle;
 	private Label name;
-	public PlayerView(Player player){
+	public PlayerView(Player player, Game game){
+		this.game = game;
 		this.player = player;
-		active = false;
 		circle = new Circle();
 		name = new Label();
 		name.setText(player.getName());
 		refresh();
-		addNode(circle,0,0);
-		addNode(name,0,1);
-		for (int i = 0; i < 10; i++){
-			Circle c = new Circle();
-			c.setRadius(screenWidth/70);
-			c.setOpacity(0);
-			addNode(c,i,0);
-		}
+
+		
+//		for (int i = 0; i < 10; i++){
+//			Circle c = new Circle();
+//			c.setRadius(screenWidth/70);
+//			c.setOpacity(0);
+//			addNode(c,i,0);
+//		}
 	}
-	public void setActive(boolean a){
-		this.active = a;
-		refresh();
+	public boolean active(){
+		return game.getActivePlayerColour()==player.getColour();
 	}
 	private void refresh(){
-		if (active) circle.setRadius(screenWidth/50);
-		else circle.setRadius(screenWidth/70);
+		circle.setRadius(screenWidth/70);
 		Image image = new Image(getClass().getResource("/user_icon.png").toExternalForm());
 		circle.setFill(new ImagePattern(image));
-		//circle.setFill(Color.BLACK);		
+		//circle.setFill(Color.BLACK);	
+		StackPane wrapper1 = new StackPane(circle);
+		wrapper1.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+		if (active()) {
+			
+			wrapper1.setStyle(
+				    "-fx-border-color: yellow;" +
+				    "-fx-border-width: 20;" 
+				);
+		}
         this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+		addNode(wrapper1,0,0);
+		StackPane wrapper = new StackPane(name);
+
+		// Optionally set size to fill the cell if needed
+		wrapper.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+		addNode(wrapper,0,1);
 	}
 	
     public void addNode(Node node, int col, int row) {
