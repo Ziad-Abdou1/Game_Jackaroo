@@ -56,21 +56,25 @@ public class test extends Application{
 //		Scene scene = new Scene(root);
 		HomesView homeViews = new HomesView(game.getPlayers());
 		BoardView boardView=new BoardView(game.getBoard());
-		boardView.setMaxSize(50, 50);
-		
+		//boardView.setMaxSize(50, 50);
+		ArrayList<Card> a1=game.getPlayers().get(0).getHand();
+		ArrayList<Card> a2=game.getPlayers().get(1).getHand();
+		ArrayList<Card> a3=game.getPlayers().get(2).getHand();
+		ArrayList<Card> a4=game.getPlayers().get(3).getHand();
 		HandsView h=new HandsView(game);
 //		HPlayerCardView hv=new HPlayerCardView(a1);
 //		VBox onlyOnePlayer=new VBox();
 //		onlyOnePlayer.getChildren().addAll(boardView,hv);
 //		onlyOnePlayer.setAlignment(Pos.CENTER);
 		StackPane st=new StackPane();
-		st.setMaxSize(screenWidth, screenHeight);
+		//st.setMaxSize(screenWidth, screenHeight);
 		st.getChildren().addAll(boardView,h,homeViews);
 		StackPane.setAlignment(h, Pos.CENTER);
 		StackPane.setAlignment(boardView, Pos.CENTER);
 		st.setPadding(new Insets(10));
-		Scene scene=new Scene(st,screenWidth,screenHeight);
+		Scene scene=new Scene(st);
 		stage.setScene(scene);
+		stage.setFullScreen(true);
 		stage.show();
 
 	}

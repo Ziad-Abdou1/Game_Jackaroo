@@ -1,10 +1,16 @@
 package view;
 
 import javafx.geometry.Insets;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.Node;
 
@@ -36,14 +42,13 @@ public class BoardView extends GridPane {
     int initI=61;
     int initJ=61;
     private void initTrack(){
-    	trackView = new ArrayList<>();
+    	trackView.clear();
     	int curIdx = 0;
     	int curi = initI, curj = initJ;
     	for(int i=0;i<directions.length;i++){
     		for(int j=0;j<directions[i].length;j++){
     			for (int k = 0; k < segment[j]; k++){
     				Cell cell=board.getTrack().get(curIdx);
-    				if(i==0) cell.setMarble(new Marble(Colour.RED));
 
     				CellView cv = new CellView(cell);
     				trackView.add(cv);
@@ -64,12 +69,12 @@ public class BoardView extends GridPane {
     ArrayList<CellView> [] safeZoneView;
     
     private void initSafeZone(){
-    	safeZoneView = new ArrayList[4];
+
 
     	int curIdx=98;
     	int[] direction={0,1,2,3};
     	for (int i = 0; i < 4; i++){
-    		safeZoneView[i] = new ArrayList<>();
+    		safeZoneView[i].clear();
         	int curi=this.getRowIndex(trackView.get(curIdx));
         	int curj=this.getColumnIndex(trackView.get(curIdx));
     		for (int j = 0; j < 4; j++){
@@ -84,23 +89,47 @@ public class BoardView extends GridPane {
 				this.addNode(cv,curj,curi);
     		}
     		curIdx=(curIdx+25)%100;
-    		System.out.println(curIdx);
+    		//System.out.println(curIdx);
     	}
     	
     }
     ////----------------------------------------------------------------------------
     
     public BoardView(Board board) {
+    	safeZoneView = new ArrayList[4];
+    	for (int i=0; i < 4; i++) safeZoneView[i] = new ArrayList<>();
+    	trackView = new ArrayList<>();
     	this.board=board;
-    	this.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
-        initTrack();
-        initSafeZone();
+    	refresh();
     }
 
 
     public void refresh(){
+    	
+    	
+    	//just making background image------------------------------------------------------------------------------------
+    	Image backgroundImage = new Image("/wood2.png");  // or use getClass().getResource("/path/to/image.png")
+
+    	BackgroundSize backgroundSize = new BackgroundSize(
+    		    100, 100,      // width and height as percentages
+    		    true, true,    // width and height are percentages
+    		    true, true    // preserveRatio = true, cover = false
+    		);
+
+
+    	BackgroundImage background = new BackgroundImage(
+    	    backgroundImage,
+    	    BackgroundRepeat.NO_REPEAT,
+    	    BackgroundRepeat.NO_REPEAT,
+    	    BackgroundPosition.CENTER,
+    	    backgroundSize);
+
+    	this.setBackground(new Background(background));
+    	//---------------------------------------------------------------------------------------------------------------
+    	
     	initTrack();
     	initSafeZone();
+    	this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
     }
 
 

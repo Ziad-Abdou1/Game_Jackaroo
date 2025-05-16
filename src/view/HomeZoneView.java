@@ -37,6 +37,13 @@ public class HomeZoneView extends GridPane {
 			curj += dx[i];
 		}
 		this.setRotate(45);
+		this.setStyle(
+			    "-fx-background-color: lightblue;" +
+			    "-fx-border-color: #4682B4;" +  
+			    "-fx-border-width: 3;" +
+			    "-fx-border-radius: 5;" +
+			    "-fx-background-radius: 5;"
+			);
 	}
     public void addNode(Node node, int col, int row) {
         this.add(node, col, row);
