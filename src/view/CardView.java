@@ -43,6 +43,7 @@ public class CardView extends ImageView{
 		});
 		this.setOnMouseClicked(e -> {
 			try{
+				
 				//redraw();
 				game.deselectAll();
 				game.selectCard(this.getCard());
@@ -65,17 +66,20 @@ public class CardView extends ImageView{
 //	}
 	
 	public void hover(boolean f){
-		if (game.getPlayers().get(0).getSelectedCard()==this.card){
-			return;
+		if (game.getPlayers().get(0).getHand().contains(card)){
+			if (game.getPlayers().get(0).getSelectedCard()==this.card){
+				return;
+			}
+			if (f){
+				this.setScaleX(1.2);
+				this.setScaleY(1.2);
+			}
+			else{
+				this.setScaleX(1.0);
+				this.setScaleY(1.0);
+			}
 		}
-		if (f){
-			this.setScaleX(1.2);
-			this.setScaleY(1.2);
-		}
-		else{
-			this.setScaleX(1.0);
-			this.setScaleY(1.0);
-		}
+
 	}
 	private void drawCard(){
 		this.setImage(new Image(getPath()));
