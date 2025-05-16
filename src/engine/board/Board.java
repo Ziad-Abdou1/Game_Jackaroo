@@ -362,16 +362,16 @@ public class Board implements BoardManager {
     
     
     //M3--------------------------------------------------------------------------------------------
-    
-    public boolean ok(Marble marble, int steps, boolean destroy){
-    	try{
-        	ArrayList<Cell> fullPath = validateSteps(marble, steps);        	
-            validatePath(marble, fullPath, destroy);
-            return true;
-    	}catch(Exception ex){
-    		return false;
-    	}
-    }
+//    
+//    public boolean ok(Marble marble, int steps, boolean destroy){
+//    	try{
+//        	ArrayList<Cell> fullPath = validateSteps(marble, steps);        	
+//            validatePath(marble, fullPath, destroy);
+//            return true;
+//    	}catch(Exception ex){
+//    		return false;
+//    	}
+//    }
     
     //M3--------------------------------------------------------------------------------------------
     
