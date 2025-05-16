@@ -5,16 +5,24 @@ import model.card.standard.*;
 import model.card.wild.Burner;
 import model.card.wild.Saver;
 import model.card.wild.Wild;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Screen;
 
 public class CardView extends ImageView{
 	private  Card card ; 
+	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+    double screenWidth = screenBounds.getWidth();
+    double screenHeight = screenBounds.getHeight();
 	
-	public CardView(Card card ){
-		this.card  = card;	
-		drawCard();
+	public CardView(Card card ,boolean f){
+		this.card  = card;
+		if(f)
+			drawCard();
+		else
+			drawCPUCard();
 	}
 	public void hover(boolean f){
 		if (f){
@@ -28,10 +36,17 @@ public class CardView extends ImageView{
 	}
 	private void drawCard(){
 		this.setImage(new Image(getPath()));
+		this.setPreserveRatio(true);
+	    this.setFitWidth(screenWidth * 0.04); 
+	    this.setFitHeight(screenHeight*0.1);
+	}
+	private void drawCPUCard(){
+		this.setImage(new Image("cardss/Card back.png"));
+		this.setPreserveRatio(true);
+	    this.setFitWidth(screenWidth * 0.04); 
+	    this.setFitHeight(screenHeight*0.1);
 	}
 	
-
-
 	public String getPath(){
 		String path ="cardss/";
 		if ( this.card instanceof Standard ){

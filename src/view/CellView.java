@@ -16,7 +16,7 @@ public class CellView extends StackPane {
 	private Cell cell;
 	private Circle circle;
 	//private final double radius = 12*screenWidth/1920;
-	private final double radius = 12*screenWidth/3000;
+	private final double radius = 12*screenWidth/1700;
 	private MarbleView marbleView;
 	public CellView(Cell c){
 		circle = new Circle();

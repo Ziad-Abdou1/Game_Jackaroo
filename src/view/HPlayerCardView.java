@@ -20,11 +20,11 @@ import javafx.scene.layout.Region;
 public class HPlayerCardView extends HBox{
 	    ArrayList<Card> hand;
 	    ArrayList<CardView> handView;
-	    public HPlayerCardView(ArrayList<Card> hand) {
+	    public HPlayerCardView(ArrayList<Card> hand,boolean f) {
 	    	this.hand=hand;
 	    	handView=new ArrayList<CardView>();
 	    	for(Card c:hand){
-	    		CardView cv=new CardView(c);
+	    		CardView cv=new CardView(c,f);
 	    		handView.add(cv);
 	    		this.getChildren().add(cv);
 	    		

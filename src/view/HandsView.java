@@ -21,8 +21,8 @@ public class HandsView extends StackPane {
     
     public void draw(){
     	hands = new ArrayList<>();
-    	for (Player p : game.getPlayers()){
-    		HPlayerCardView hand = new HPlayerCardView(p.getHand());
+    	for (int i =0;i<game.getPlayers().size();i++){
+    		HPlayerCardView hand = new HPlayerCardView(game.getPlayers().get(i).getHand(),i==0);
     		hands.add(hand);
     	}
     	hands.get(1).setRotate(270);

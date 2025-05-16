@@ -22,6 +22,7 @@ import engine.board.Board;
 import engine.board.Cell;
 public class BoardView extends GridPane {
     private Board board;
+    
 	
     //track------------------------------------------
     private ArrayList<CellView> trackView;
