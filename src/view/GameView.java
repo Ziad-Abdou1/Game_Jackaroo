@@ -49,21 +49,22 @@ public class GameView extends StackPane {
 		PlayButton = new ImageView(img);
 		PlayButton.setScaleX(0.4);
 		PlayButton.setScaleY(0.4);
-		
+//		playerViews.getPlayerViews().get(0).setActive(true);
+//		draw();
 		PlayButton.setOnMouseClicked(e -> {
 			try{
 //				if (game.canPlayTurn()){
 					game.playPlayerTurn();
 					game.endPlayerTurn();
-					playerViews.getPlayerViews().get(0).setActive(false);
-					draw();
+					//playerViews.getPlayerViews().get(0).setActive(false);
+//					draw();
 
 //					System.out.println(game.getFirePit().size()+" "+game.getFirePit().get(game.getFirePit().size()-1).getName());
 					
 					Timeline replay = new Timeline(
 						    new KeyFrame(Duration.seconds(1), ev -> {
-						    	idx++;
-						    	playerViews.getPlayerViews().get(idx).setActive(true);
+//						    	idx++;
+//						    	playerViews.getPlayerViews().get(idx).setActive(true);
 						    	try {
 									game.playPlayerTurn();
 								} catch (Exception e1) {
