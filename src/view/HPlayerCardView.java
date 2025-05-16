@@ -18,10 +18,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 
 public class HPlayerCardView extends HBox{
+		Game game;
 	    ArrayList<Card> hand;
 	    ArrayList<CardView> handView;
 	    private boolean orientation;
-	    public HPlayerCardView(ArrayList<Card> hand,boolean f) {
+	    public HPlayerCardView(Game game, ArrayList<Card> hand,boolean f) {
+	    	this.game = game;
 	    	this.orientation = f;
 	    	this.hand=hand;
 	    	handView=new ArrayList<CardView>();
@@ -40,7 +42,7 @@ public class HPlayerCardView extends HBox{
 	    }
 	    public void refresh(){
 	    	for(Card c:hand){
-	    		CardView cv=new CardView(c,orientation);
+	    		CardView cv=new CardView(game,c,orientation);
 	    		handView.add(cv);
 	    		this.getChildren().add(cv);
 	    	}

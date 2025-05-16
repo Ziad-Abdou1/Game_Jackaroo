@@ -22,7 +22,7 @@ public class HandsView extends StackPane {
     public void draw(){
     	
     	for (int i =0;i<game.getPlayers().size();i++){
-    		HPlayerCardView hand = new HPlayerCardView(game.getPlayers().get(i).getHand(),i==0);
+    		HPlayerCardView hand = new HPlayerCardView(game,game.getPlayers().get(i).getHand(),i==0);
     		hands.add(hand);
     	}
     	hands.get(1).setRotate(270);
@@ -39,7 +39,7 @@ public class HandsView extends StackPane {
         //this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         //this.setMaxWidth(1300); 
     }
-    public ArrayList<HPlayerCardView> getHand(){return hands;}
+    public ArrayList<HPlayerCardView> getHands(){return hands;}
     private Pane wrap(HPlayerCardView view, Pos alignment) {
         StackPane wrapper = new StackPane(view);
         wrapper.setAlignment(alignment);

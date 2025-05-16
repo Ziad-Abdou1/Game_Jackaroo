@@ -1,5 +1,7 @@
 package controller;
 
+import model.card.Card;
+import model.player.Player;
 import view.CardView;
 import view.CellView;
 import view.GameView;
@@ -49,28 +51,10 @@ public class GameController extends Application {
 //		});
 		
 
-		for (HPlayerCardView hp : gameView.getHandView().getHand()){
-			for (CardView c : hp.getCardViews()){
-				c.setOnMouseEntered(e -> {
-				    c.hover(true);
-				});
-
-				c.setOnMouseExited(e -> {
-				    c.hover(false);
-				});
-				c.setOnMouseClicked(e -> {
-					try{
-						game.selectCard(c.getCard());
-						game.playPlayerTurn();
-						game.endPlayerTurn();
-						redraw();
-						System.out.println("card is selected");
-					}catch(Exception exc){
-						System.out.println(exc.getMessage());
-					}
-				});
-			}
-		}
+//		for (HPlayerCardView hp : gameView.getHandView().getHands()){
+//			for (CardView c : hp.getCardViews()){
+//				
+//		}
 
 	}
 	private Point2D scenePos(Node node) {

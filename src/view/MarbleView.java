@@ -32,8 +32,6 @@ public class MarbleView extends StackPane {
 			try{
 				System.out.println("marble is selected");
 				game.selectMarble(this.marble);
-				game.playPlayerTurn();
-				game.endPlayerTurn();
 			}catch(Exception exc){
 				System.out.println(exc.getMessage()); //to be edited
 			}

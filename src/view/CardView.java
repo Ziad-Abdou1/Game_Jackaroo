@@ -1,5 +1,6 @@
 package view;
 
+import engine.Game;
 import model.card.Card;
 import model.card.standard.*;
 import model.card.wild.Burner;
@@ -13,19 +14,48 @@ import javafx.stage.Screen;
 
 public class CardView extends ImageView{
 	private  Card card ; 
+	private Game game;
 	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
     double screenWidth = screenBounds.getWidth();
     double screenHeight = screenBounds.getHeight();
 	private boolean orientation;
-	public CardView(Card card ,boolean f){
+	public CardView(Game game, Card card ,boolean f){
+		this.game = game;
 		this.orientation = f;
 		this.card  = card;
 		if(f)
 			drawCard();
 		else
 			drawCPUCard();
+		action();
 	}
+	public void action(){
+		this.setOnMouseEntered(e -> {
+		    this.hover(true);
+		});
+
+		this.setOnMouseExited(e -> {
+		    this.hover(false);
+		});
+		this.setOnMouseClicked(e -> {
+			try{
+				//redraw();
+				game.deselectAll();
+				game.selectCard(this.getCard());
+				this.setStyle("-fx-border-color: lightblue; -fx-border-width: 50;");
+				this.setScaleX(0.3);
+				this.setScaleY(0.3);
+				System.out.println("card is selected");
+			}catch(Exception exc){
+				System.out.println(exc.getMessage());
+			}
+		});
+	}
+	
 	public void hover(boolean f){
+		if (game.getPlayers().get(0).getSelectedCard()==this.card){
+			return;
+		}
 		if (f){
 			this.setScaleX(1.2);
 			this.setScaleY(1.2);
