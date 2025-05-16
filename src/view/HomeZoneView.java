@@ -48,4 +48,7 @@ public class HomeZoneView extends GridPane {
     public void addNode(Node node, int col, int row) {
         this.add(node, col, row);
     }
+    public void refresh(){
+    	
+    }
 }

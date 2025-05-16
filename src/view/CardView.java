@@ -16,24 +16,25 @@ public class CardView extends ImageView{
 	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
     double screenWidth = screenBounds.getWidth();
     double screenHeight = screenBounds.getHeight();
-	
+	private boolean orientation;
 	public CardView(Card card ,boolean f){
+		this.orientation = f;
 		this.card  = card;
 		if(f)
 			drawCard();
 		else
 			drawCPUCard();
 	}
-	public void hover(boolean f){
-		if (f){
-			this.setScaleX(1.2);
-			this.setScaleY(1.2);
-		}
-		else{
-			this.setScaleX(1.0);
-			this.setScaleY(1.0);
-		}
-	}
+//	public void hover(boolean f){
+//		if (f){
+//			this.setScaleX(1.2);
+//			this.setScaleY(1.2);
+//		}
+//		else{
+//			this.setScaleX(1.0);
+//			this.setScaleY(1.0);
+//		}
+//	}
 	private void drawCard(){
 		this.setImage(new Image(getPath()));
 		this.setPreserveRatio(true);
@@ -45,6 +46,12 @@ public class CardView extends ImageView{
 		this.setPreserveRatio(true);
 	    this.setFitWidth(screenWidth * 0.04); 
 	    this.setFitHeight(screenHeight*0.1);
+	}
+	public void setCard(Card card){this.card = card;}
+	
+	public void refresh(){
+		if (orientation) drawCard();
+		else drawCPUCard();
 	}
 	
 	public String getPath(){

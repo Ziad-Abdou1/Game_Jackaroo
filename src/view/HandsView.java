@@ -15,12 +15,12 @@ public class HandsView extends StackPane {
 	ArrayList<HPlayerCardView> hands;
     public HandsView(Game game) {
     	this.game = game;
-        
+    	hands = new ArrayList<>();
     	draw();
     }
     
     public void draw(){
-    	hands = new ArrayList<>();
+    	
     	for (int i =0;i<game.getPlayers().size();i++){
     		HPlayerCardView hand = new HPlayerCardView(game.getPlayers().get(i).getHand(),i==0);
     		hands.add(hand);
@@ -44,5 +44,9 @@ public class HandsView extends StackPane {
         StackPane wrapper = new StackPane(view);
         wrapper.setAlignment(alignment);
         return wrapper;
+    }
+    public void refresh(){
+    	this.getChildren().clear();
+    	draw();
     }
 }

@@ -49,20 +49,20 @@ public class GameController extends Application {
 			}
 		}
 		
-//	    AnimationTimer gameLoop = new AnimationTimer() {
-//	        @Override
-//	        public void handle(long now) {
-//	        	
-//	        	
-//	        	gameView.draw();
-//
-//	            if (game.checkWin() != null) {
-//	                stop();
-//	                System.out.println("We have a winner!");
-//	            }
-//	        }
-//	    };
-//	    gameLoop.start();
+	    AnimationTimer gameLoop = new AnimationTimer() {
+	        @Override
+	        public void handle(long now) {
+	        	
+	        	
+	        	gameView.draw();
+
+	            if (game.checkWin() != null) {
+	                stop();
+	                System.out.println("We have a winner!");
+	            }
+	        }
+	    };
+	    gameLoop.start();
 	}
 	
 	public static void main(String[]args){

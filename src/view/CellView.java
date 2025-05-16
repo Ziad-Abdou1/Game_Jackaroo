@@ -38,5 +38,10 @@ public class CellView extends StackPane {
 			
 		}
 	}
+	public void setCell(Cell cell) {this.cell = cell;}
+	public void refresh(){
+		this.getChildren().clear();
+		draw();
+	}
 	
 }
