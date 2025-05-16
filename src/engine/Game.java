@@ -93,11 +93,14 @@ public class Game implements GameManager {
     }
 
     public void endPlayerTurn() {
+    
         Card selected = players.get(currentPlayerIndex).getSelectedCard();
-        players.get(currentPlayerIndex).getHand().remove(selected);
-        firePit.add(selected);
+        if(selected!=null){
+		    players.get(currentPlayerIndex).getHand().remove(selected);
+		    firePit.add(selected);
+		   
+        }
         players.get(currentPlayerIndex).deselectAll();
-        
         currentPlayerIndex = (currentPlayerIndex + 1) % 4;
         
         if(currentPlayerIndex == 0 && turn < 3) 

@@ -53,32 +53,55 @@ public class GameView extends StackPane {
 //		draw();
 		PlayButton.setOnMouseClicked(e -> {
 			try{
-//				if (game.canPlayTurn()){
+				if (game.canPlayTurn()){
+					PauseTransition pause = new PauseTransition(Duration.seconds(1));
+					pause.setOnFinished(event -> {
+					    // this code runs 1 second later, on the JavaFX thread
+					});
+					pause.play();
 					game.playPlayerTurn();
-					game.endPlayerTurn();
-					//playerViews.getPlayerViews().get(0).setActive(false);
-//					draw();
-
-//					System.out.println(game.getFirePit().size()+" "+game.getFirePit().get(game.getFirePit().size()-1).getName());
+					Card store =firePitView.topCardView.getCard();
+					draw();
 					
-					Timeline replay = new Timeline(
-						    new KeyFrame(Duration.seconds(1), ev -> {
+//					playerViews.getPlayerViews().get(0).setActive(false);
+				}
+				
+				game.endPlayerTurn();
+				draw();
+			System.out.println(game.getFirePit().size()+" "+game.getFirePit().get(game.getFirePit().size()-1).getName());
+					
+					Timeline replay = new Timeline(new KeyFrame(Duration.seconds(5), ev -> {
 //						    	idx++;
 //						    	playerViews.getPlayerViews().get(idx).setActive(true);
-						    	try {
-									game.playPlayerTurn();
-								} catch (Exception e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
+						    	if(game.canPlayTurn()){
+							    	try {
+										game.playPlayerTurn();
+									} catch (Exception e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
+							    	
+//							    	System.out.println(game.getFirePit().size()+" "+game.getFirePit().get(game.getFirePit().size()-1).getName());
+							    	System.out.println(game.getActivePlayerColour());
+						    	}
 						    	game.endPlayerTurn();
 						    	draw();
-						    	
+						    	//----------------------
+						    	System.out.println("");
+						    	System.out.println("Current hands:");
+				                for (int i = 0; i < game.getPlayers().size(); i++) {
+				                    Player p = game.getPlayers().get(i);
+				                    System.out.print(p.getName() + ": ");
+				                    for (Card c : p.getHand()) {
+				                        System.out.print(c.getName() + " ");
+				                    }
+				                    System.out.println();
+				                }
 						    })
 						);
 					replay.setCycleCount(3);
 			        replay.play();
-//				}
+
 
 			}catch (Exception ex){
 				System.out.println(ex.getMessage());

@@ -89,6 +89,9 @@ public class CardView extends ImageView{
 	}
 	
 	public String getPath(){
+		if(card==null){
+			return "cardss/baby.jpg";
+		}
 		String path ="cardss/";
 		if ( this.card instanceof Standard ){
 			Standard c = (Standard) this.card ; 
