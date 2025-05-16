@@ -16,10 +16,18 @@ public class CardView extends ImageView{
 		this.card  = card;	
 		drawCard();
 	}
+	public void hover(boolean f){
+		if (f){
+			this.setScaleX(1.2);
+			this.setScaleY(1.2);
+		}
+		else{
+			this.setScaleX(1.0);
+			this.setScaleY(1.0);
+		}
+	}
 	private void drawCard(){
 		this.setImage(new Image(getPath()));
-	
-		
 	}
 	
 

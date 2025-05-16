@@ -36,10 +36,10 @@ public class HandsView extends StackPane {
         this.setAlignment(hands.get(1), Pos.CENTER_LEFT);
         this.setAlignment(hands.get(3), Pos.CENTER_RIGHT);
         this.setAlignment(hands.get(0), Pos.BOTTOM_CENTER);
-        
-        this.setMaxWidth(1300); 
+        //this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        //this.setMaxWidth(1300); 
     }
-
+    public ArrayList<HPlayerCardView> getHand(){return hands;}
     private Pane wrap(HPlayerCardView view, Pos alignment) {
         StackPane wrapper = new StackPane(view);
         wrapper.setAlignment(alignment);

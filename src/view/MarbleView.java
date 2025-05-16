@@ -16,7 +16,8 @@ public class MarbleView extends StackPane {
 
     
 	private Marble marble;
-	private final double radius = 12*screenWidth/1920;
+	//private final double radius = 12*screenWidth/1920;
+	private final double radius = 12*screenWidth/3000;
 	private Circle circle;
 	public MarbleView(Marble marble){
 		circle = new Circle();
@@ -36,6 +37,7 @@ public class MarbleView extends StackPane {
 			if (clr == Colour.GREEN) circle.setFill(Color.GREEN);
 			if (clr == Colour.RED) circle.setFill(Color.RED);
 		}
+		this.getChildren().removeAll();
 		this.getChildren().addAll(circle);
 	}
 }

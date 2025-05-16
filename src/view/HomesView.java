@@ -27,13 +27,11 @@ public class HomesView extends StackPane {
 			homes.add(new HomeZoneView(players.get(i)));
 			this.getChildren().addAll(homes.get(i));
 		}
-        this.setAlignment(homes.get(0), Pos.BOTTOM_LEFT);
-        this.setAlignment(homes.get(1), Pos.BOTTOM_RIGHT);
-        this.setAlignment(homes.get(3), Pos.TOP_RIGHT);
-        this.setAlignment(homes.get(2), Pos.TOP_LEFT);
-        
-        this.setMaxWidth(1000);
-        this.setMaxHeight(800);
+        this.setAlignment(homes.get(0), Pos.BOTTOM_CENTER);
+        this.setAlignment(homes.get(1), Pos.CENTER_LEFT);
+        this.setAlignment(homes.get(3), Pos.TOP_CENTER);
+        this.setAlignment(homes.get(2), Pos.CENTER_RIGHT);
+       
 	}
     
 	

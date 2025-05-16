@@ -15,7 +15,8 @@ public class CellView extends StackPane {
 
 	private Cell cell;
 	private Circle circle;
-	private final double radius = 12*screenWidth/1920;
+	//private final double radius = 12*screenWidth/1920;
+	private final double radius = 12*screenWidth/3000;
 	private MarbleView marbleView;
 	public CellView(Cell c){
 		circle = new Circle();
@@ -32,7 +33,7 @@ public class CellView extends StackPane {
 		else{
 			this.getChildren().removeAll();
 			marbleView = null;
-			circle.setFill(Color.GREY);
+			circle.setFill(Color.DARKGRAY);
 			this.getChildren().addAll(circle);
 			
 		}
