@@ -1,5 +1,6 @@
 package view;
 
+import engine.Game;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
@@ -13,19 +14,33 @@ public class MarbleView extends StackPane {
 	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
     double screenWidth = screenBounds.getWidth();
     double screenHeight = screenBounds.getHeight();
-
+    
+    Game game;
     
 	private Marble marble;
 	//private final double radius = 12*screenWidth/1920;
-	private final double radius = 12*screenWidth/3000;
+	private final double radius = 12*screenWidth/4000;
 	private Circle circle;
-	public MarbleView(Marble marble){
+	public MarbleView(Marble marble,Game game){
+		this.game=game;
 		circle = new Circle();
 		this.marble = marble;
-		draw();
+		refresh();
+		this.getChildren().add(circle);
+		
+		this.setOnMouseClicked(e ->{
+			try{
+				System.out.println("marble is selected");
+				game.selectMarble(this.marble);
+				game.playPlayerTurn();
+				game.endPlayerTurn();
+			}catch(Exception exc){
+				System.out.println(exc.getMessage()); //to be edited
+			}
+		});
 	}
 	
-	public void draw(){
+	public void refresh(){
 		circle.setRadius(radius);
 		if (marble==null){
 			circle.setFill(Color.GREY);
@@ -37,7 +52,10 @@ public class MarbleView extends StackPane {
 			if (clr == Colour.GREEN) circle.setFill(Color.GREEN);
 			if (clr == Colour.RED) circle.setFill(Color.RED);
 		}
-		this.getChildren().removeAll();
-		this.getChildren().addAll(circle);
 	}
+	public void setMarble(Marble marble){
+		this.marble=marble;
+		refresh();
+	}
+	
 }

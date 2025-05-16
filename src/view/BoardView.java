@@ -18,12 +18,35 @@ import java.util.*;
 
 import model.Colour;
 import model.player.Marble;
+import engine.Game;
 import engine.board.Board;
 import engine.board.Cell;
+import engine.board.SafeZone;
 public class BoardView extends GridPane {
     private Board board;
-    
-	
+    private Game game;
+
+    public BoardView(Board board, Game game) {
+    	this.game=game;
+    	safeZoneView = new ArrayList[4];
+    	for (int i=0; i < 4; i++) safeZoneView[i] = new ArrayList<>();
+    	trackView = new ArrayList<>();
+    	this.board=board;
+    	refresh();
+    }
+    public CellView getBaseCellView(Colour clr){
+    	int idx=getBasePosition(clr);
+    	return trackView.get(idx);
+    }
+    private int getBasePosition(Colour colour) {
+    	ArrayList<SafeZone> safeZones=board.getSafeZones();
+        for(int i = 0; i < safeZones.size(); i++) {
+            if(safeZones.get(i).getColour() == colour)
+                return i * 25;
+        }
+        
+        return -1;
+    }
     //track------------------------------------------
     private ArrayList<CellView> trackView;
 
@@ -51,7 +74,7 @@ public class BoardView extends GridPane {
     			for (int k = 0; k < segment[j]; k++){
     				Cell cell=board.getTrack().get(curIdx);
 
-    				CellView cv = new CellView(cell);
+    				CellView cv = new CellView(cell,game);
     				trackView.add(cv);
     				this.addNode(cv,curj,curi);
     				curi += dx[directions[i][j]];
@@ -81,7 +104,7 @@ public class BoardView extends GridPane {
     		for (int j = 0; j < 4; j++){
 				curi += dx[direction[i]];
 				curj += dy[direction[i]];
-				CellView cv=new CellView(board.getSafeZones().get(i).getCells().get(j));
+				CellView cv=new CellView(board.getSafeZones().get(i).getCells().get(j), game);
 //				Colour clr = board.getSafeZones().get(i).getColour();
 //				if (clr == Colour.BLUE){
 //					cv.setStyle("-fx-ba");
@@ -96,13 +119,7 @@ public class BoardView extends GridPane {
     }
     ////----------------------------------------------------------------------------
     
-    public BoardView(Board board) {
-    	safeZoneView = new ArrayList[4];
-    	for (int i=0; i < 4; i++) safeZoneView[i] = new ArrayList<>();
-    	trackView = new ArrayList<>();
-    	this.board=board;
-    	refresh();
-    }
+
 
 
     public void refresh(){

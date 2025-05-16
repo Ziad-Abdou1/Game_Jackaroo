@@ -27,19 +27,10 @@ public class PlayerView extends GridPane{
 	public PlayerView(Player player){
 		this.player = player;
 		active = false;
-		draw();
-	}
-	void setActive(boolean a){this.active = a;}
-	void draw(){
 		circle = new Circle();
-		if (active) circle.setRadius(screenWidth/50);
-		else circle.setRadius(screenWidth/70);
-		Image image = new Image(getClass().getResource("/user_icon.png").toExternalForm());
-		circle.setFill(new ImagePattern(image));
-		//circle.setFill(Color.BLACK);
 		name = new Label();
 		name.setText(player.getName());
-		
+		refresh();
 		addNode(circle,0,0);
 		addNode(name,0,1);
 		for (int i = 0; i < 10; i++){
@@ -48,9 +39,18 @@ public class PlayerView extends GridPane{
 			c.setOpacity(0);
 			addNode(c,i,0);
 		}
-		
+	}
+	public void setActive(boolean a){
+		this.active = a;
+		refresh();
+	}
+	private void refresh(){
+		if (active) circle.setRadius(screenWidth/50);
+		else circle.setRadius(screenWidth/70);
+		Image image = new Image(getClass().getResource("/user_icon.png").toExternalForm());
+		circle.setFill(new ImagePattern(image));
+		//circle.setFill(Color.BLACK);		
         this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-		
 	}
 	
     public void addNode(Node node, int col, int row) {

@@ -25,16 +25,16 @@ public class CardView extends ImageView{
 		else
 			drawCPUCard();
 	}
-//	public void hover(boolean f){
-//		if (f){
-//			this.setScaleX(1.2);
-//			this.setScaleY(1.2);
-//		}
-//		else{
-//			this.setScaleX(1.0);
-//			this.setScaleY(1.0);
-//		}
-//	}
+	public void hover(boolean f){
+		if (f){
+			this.setScaleX(1.2);
+			this.setScaleY(1.2);
+		}
+		else{
+			this.setScaleX(1.0);
+			this.setScaleY(1.0);
+		}
+	}
 	private void drawCard(){
 		this.setImage(new Image(getPath()));
 		this.setPreserveRatio(true);
@@ -47,7 +47,10 @@ public class CardView extends ImageView{
 	    this.setFitWidth(screenWidth * 0.04); 
 	    this.setFitHeight(screenHeight*0.1);
 	}
-	public void setCard(Card card){this.card = card;}
+	public void setCard(Card card){
+		this.card = card;
+		refresh();
+	}
 	
 	public void refresh(){
 		if (orientation) drawCard();
@@ -76,6 +79,9 @@ public class CardView extends ImageView{
 		}
 		path += ".png";
 		return path;
+	}
+	public Card getCard() {
+		return card;
 	}
 
 

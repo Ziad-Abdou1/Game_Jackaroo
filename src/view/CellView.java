@@ -1,6 +1,7 @@
 package view;
 
 import model.Colour;
+import engine.Game;
 import engine.board.Cell;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.layout.StackPane;
@@ -12,13 +13,14 @@ public class CellView extends StackPane {
 	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
     double screenWidth = screenBounds.getWidth();
     double screenHeight = screenBounds.getHeight();
-
+    Game game;
 	private Cell cell;
 	private Circle circle;
 	//private final double radius = 12*screenWidth/1920;
-	private final double radius = 12*screenWidth/1700;
+	private final double radius = 12*screenWidth/3500;
 	private MarbleView marbleView;
-	public CellView(Cell c){
+	public CellView(Cell c,Game game){
+		this.game=game;
 		circle = new Circle();
 		this.cell = c;
 		circle.setRadius(radius);
@@ -27,7 +29,7 @@ public class CellView extends StackPane {
 	public void draw(){
 		
 		if (cell.getMarble()!=null){
-			marbleView = new MarbleView(cell.getMarble());
+			marbleView = new MarbleView(cell.getMarble(),game);
 			this.getChildren().addAll(marbleView);
 		}
 		else{
@@ -38,10 +40,11 @@ public class CellView extends StackPane {
 			
 		}
 	}
-	public void setCell(Cell cell) {this.cell = cell;}
-	public void refresh(){
-		this.getChildren().clear();
-		draw();
+	public void setCell(Cell cell) {
+		this.cell = cell;
+		marbleView.setMarble(cell.getMarble());
 	}
+
+
 	
 }

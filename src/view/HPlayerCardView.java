@@ -25,26 +25,40 @@ public class HPlayerCardView extends HBox{
 	    	this.orientation = f;
 	    	this.hand=hand;
 	    	handView=new ArrayList<CardView>();
-	    	draw();
-	    		
-	    		
-	    	
+	    	refresh();
+
 	    	this.setSpacing(20);
 	    	this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 //	    	this.setStyle("-fx-background-color: red");
 	    }
 	    public ArrayList<CardView> getCardViews(){return handView;}
-	    public void setHand(ArrayList<Card> hand){this.hand = hand;}
-	    public void draw(){
+	    public void setHand(ArrayList<Card> hand){
+	    	this.hand = hand;
+	    	handView.clear();
+	    	this.getChildren().clear();
+	    	refresh();
+	    }
+	    public void refresh(){
 	    	for(Card c:hand){
 	    		CardView cv=new CardView(c,orientation);
 	    		handView.add(cv);
 	    		this.getChildren().add(cv);
 	    	}
 	    }
-	    public void refresh(){
-	    	this.getChildren().clear();
+
+	    public void removeCard(Card card){
+	    	int idx=-1;
+	    	for(int i=0;i<hand.size();i++){
+	    		if(hand.get(i)==card){
+	    			idx=i;
+	    			break;
+	    		}
+	    	}
+	    	if(idx==-1) return; //no usage
+	    	hand.remove(idx);
 	    	handView.clear();
-	    	draw();
+	    	this.getChildren().clear();
+	    	refresh();
 	    }
+
 }

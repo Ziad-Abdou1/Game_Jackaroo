@@ -1,5 +1,8 @@
 package view;
 
+import java.util.ArrayList;
+
+import engine.Game;
 import engine.board.Cell;
 import engine.board.CellType;
 import javafx.scene.Node;
@@ -11,8 +14,10 @@ import model.player.Player;
 
 public class HomeZoneView extends GridPane {
 	
+	Game game;
 	private Player player;
-	public HomeZoneView(Player player){
+	public HomeZoneView(Player player,Game game){
+		this.game=game;
 		this.player = player;
 		draw();
 		this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
@@ -23,15 +28,16 @@ public class HomeZoneView extends GridPane {
 		int curi = 1, curj = 1;
 		int[] dx = {-1,0,1,0};
 		int[] dy ={0,-1,0,1};
+		ArrayList<Marble> marbles=player.getMarbles();
 		for (int i =0; i < 4; i++){
 			if (i < num){
 				Cell c = new Cell(CellType.BASE);
-				c.setMarble(new Marble(clr));
-				this.addNode(new CellView(c),curj,curi);
+				c.setMarble(marbles.get(i));
+				this.addNode(new CellView(c, game),curj,curi);
 			}
 			else{
 				Cell c = new Cell(CellType.BASE);
-				this.addNode(new CellView(c),curj,curi);
+				this.addNode(new CellView(c, game),curj,curi);
 			}
 			curi += dy[i];
 			curj += dx[i];
@@ -49,6 +55,7 @@ public class HomeZoneView extends GridPane {
         this.add(node, col, row);
     }
     public void refresh(){
-    	
+    	draw();
     }
 }
+

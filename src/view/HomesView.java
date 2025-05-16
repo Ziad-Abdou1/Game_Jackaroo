@@ -2,6 +2,7 @@ package view;
 
 import java.util.ArrayList;
 
+import engine.Game;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.layout.Pane;
@@ -13,18 +14,19 @@ public class HomesView extends StackPane {
 	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
     double screenWidth = screenBounds.getWidth();
     double screenHeight = screenBounds.getHeight();
-
     
+    Game game;
 	private ArrayList<Player> players;
 	private ArrayList<HomeZoneView> homes;
-	public HomesView(ArrayList<Player> players){
+	public HomesView(ArrayList<Player> players, Game game){
+		this.game=game;
 		this.players = players;
 		draw();
 	}
 	public void draw(){
 		homes = new ArrayList<>();
 		for (int i = 0; i < players.size(); i++){
-			homes.add(new HomeZoneView(players.get(i)));
+			homes.add(new HomeZoneView(players.get(i), game));
 			this.getChildren().addAll(homes.get(i));
 		}
         this.setAlignment(homes.get(0), Pos.BOTTOM_CENTER);
