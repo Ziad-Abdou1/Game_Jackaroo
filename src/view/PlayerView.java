@@ -7,6 +7,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
@@ -44,6 +45,7 @@ public class PlayerView extends GridPane{
 		return game.getActivePlayerColour()==player.getColour();
 	}
 	private void refresh(){
+		this.getChildren().clear();
 		circle.setRadius(screenWidth/70);
 		Image image = new Image(getClass().getResource("/user_icon.png").toExternalForm());
 		circle.setFill(new ImagePattern(image));
@@ -51,11 +53,13 @@ public class PlayerView extends GridPane{
 		StackPane wrapper1 = new StackPane(circle);
 		wrapper1.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
 		if (active()) {
-			
-			wrapper1.setStyle(
-				    "-fx-border-color: yellow;" +
-				    "-fx-border-width: 20;" 
-				);
+			Image gif = new Image(getClass().getResource("/cardss/ff.png").toExternalForm());
+		
+			ImageView gifView = new ImageView(gif);
+			gifView.setPreserveRatio(true);
+			gifView.setFitWidth(100);
+
+			wrapper1.getChildren().add(gifView);
 		}
         this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 		addNode(wrapper1,0,0);
