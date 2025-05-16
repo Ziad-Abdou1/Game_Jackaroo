@@ -20,6 +20,7 @@ public class CardView extends ImageView{
     double screenHeight = screenBounds.getHeight();
 	private boolean orientation;
 	public CardView(Game game, Card card ,boolean f){
+		f=true;
 		this.game = game;
 		this.orientation = f;
 		this.card  = card;

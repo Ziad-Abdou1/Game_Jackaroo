@@ -36,6 +36,7 @@ public class MarbleView extends StackPane {
 				System.out.println(exc.getMessage()); //to be edited
 			}
 		});
+		
 	}
 	
 	public void refresh(){

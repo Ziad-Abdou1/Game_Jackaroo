@@ -2,8 +2,17 @@ package view;
 
 import java.security.acl.Group;
 
+
+
+
+
+
+
 import model.card.Card;
 import model.player.Player;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -12,6 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
+import javafx.util.Duration;
 import engine.Game;
 import engine.board.Board;
 
@@ -38,11 +48,26 @@ public class GameView extends StackPane {
 		PlayButton.setScaleY(0.4);
 		PlayButton.setOnMouseClicked(e -> {
 			try{
-				if (game.canPlayTurn()){
+//				if (game.canPlayTurn()){
 					game.playPlayerTurn();
 					game.endPlayerTurn();
 					draw();
-				}
+					System.out.println(game.getFirePit().size()+" "+game.getFirePit().get(game.getFirePit().size()-1).getName());
+					Timeline replay = new Timeline(
+						    new KeyFrame(Duration.seconds(1), ev -> {
+						    	try {
+									game.playPlayerTurn();
+								} catch (Exception e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+						    	game.endPlayerTurn();
+						    	draw();
+						    })
+						);
+					replay.setCycleCount(3);
+			        replay.play();
+//				}
 
 			}catch (Exception ex){
 				System.out.println(ex.getMessage());
@@ -56,6 +81,24 @@ public class GameView extends StackPane {
 			PlayButton.setScaleX(0.4);
 			PlayButton.setScaleY(0.4);
 		});
+	}
+	public void print(int playerIdx){
+		Player curr_palyer = game.getPlayers().get(playerIdx);
+
+
+
+        System.out.println("Current hands:");
+        for (int i = 0; i < game.getPlayers().size(); i++) {
+            Player p = game.getPlayers().get(i);
+            System.out.print(p.getName() + ": ");
+            for (Card c : p.getHand()) {
+                System.out.print(c.getName() + " ");
+            }
+            System.out.println();
+        }
+        System.out.println("Current palyer " +curr_palyer.getName()  );
+
+        System.out.println("Select a card index (0-" + (curr_palyer.getHand().size() - 1) + "):");
 	}
 
 	public void draw(){
@@ -76,7 +119,7 @@ public class GameView extends StackPane {
 //				System.out.println(card.getName());
 //			}
 //		}
-		this.getChildren().addAll(boardView,homesView,playerViews,handsView,PlayButton);
+		this.getChildren().addAll(playerViews,homesView,handsView, boardView,PlayButton);
 		StackPane.setAlignment(homesView, Pos.CENTER);
 		StackPane.setAlignment(handsView, Pos.CENTER);
 		StackPane.setAlignment(boardView, Pos.CENTER);
