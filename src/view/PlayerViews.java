@@ -34,4 +34,13 @@ public class PlayerViews extends StackPane {
         
 
 	}
+
+	public ArrayList<PlayerView> getPlayerViews() {
+		return playerViews;
+	}
+
+	public void setPlayerViews(ArrayList<PlayerView> playerViews) {
+		this.playerViews = playerViews;
+	}
+	
 }

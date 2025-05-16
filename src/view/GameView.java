@@ -35,6 +35,9 @@ public class GameView extends StackPane {
 	private HandsView handsView;
 	private HomesView homesView;
 	private PlayerViews playerViews;
+	private FirePitView firePitView;
+	int idx=0;
+
 	public GameView(Game game){
 		initPlayButton();
 		this.game = game;
@@ -46,15 +49,21 @@ public class GameView extends StackPane {
 		PlayButton = new ImageView(img);
 		PlayButton.setScaleX(0.4);
 		PlayButton.setScaleY(0.4);
+		
 		PlayButton.setOnMouseClicked(e -> {
 			try{
 //				if (game.canPlayTurn()){
 					game.playPlayerTurn();
 					game.endPlayerTurn();
+					playerViews.getPlayerViews().get(0).setActive(false);
 					draw();
-					System.out.println(game.getFirePit().size()+" "+game.getFirePit().get(game.getFirePit().size()-1).getName());
+
+//					System.out.println(game.getFirePit().size()+" "+game.getFirePit().get(game.getFirePit().size()-1).getName());
+					
 					Timeline replay = new Timeline(
 						    new KeyFrame(Duration.seconds(1), ev -> {
+						    	idx++;
+						    	playerViews.getPlayerViews().get(idx).setActive(true);
 						    	try {
 									game.playPlayerTurn();
 								} catch (Exception e1) {
@@ -63,6 +72,7 @@ public class GameView extends StackPane {
 								}
 						    	game.endPlayerTurn();
 						    	draw();
+						    	
 						    })
 						);
 					replay.setCycleCount(3);
@@ -82,24 +92,7 @@ public class GameView extends StackPane {
 			PlayButton.setScaleY(0.4);
 		});
 	}
-	public void print(int playerIdx){
-		Player curr_palyer = game.getPlayers().get(playerIdx);
 
-
-
-        System.out.println("Current hands:");
-        for (int i = 0; i < game.getPlayers().size(); i++) {
-            Player p = game.getPlayers().get(i);
-            System.out.print(p.getName() + ": ");
-            for (Card c : p.getHand()) {
-                System.out.print(c.getName() + " ");
-            }
-            System.out.println();
-        }
-        System.out.println("Current palyer " +curr_palyer.getName()  );
-
-        System.out.println("Select a card index (0-" + (curr_palyer.getHand().size() - 1) + "):");
-	}
 
 	public void draw(){
 		this.getChildren().clear();
@@ -119,7 +112,8 @@ public class GameView extends StackPane {
 //				System.out.println(card.getName());
 //			}
 //		}
-		this.getChildren().addAll(playerViews,homesView,handsView, boardView,PlayButton);
+		firePitView=new FirePitView(game);
+		this.getChildren().addAll(playerViews,homesView,handsView, boardView,PlayButton,firePitView);
 		StackPane.setAlignment(homesView, Pos.CENTER);
 		StackPane.setAlignment(handsView, Pos.CENTER);
 		StackPane.setAlignment(boardView, Pos.CENTER);
