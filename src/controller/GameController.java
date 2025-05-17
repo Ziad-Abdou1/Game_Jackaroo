@@ -71,40 +71,7 @@ public class GameController extends Application {
 	    Bounds b = node.localToScene(node.getBoundsInLocal());
 	    return new Point2D(b.getMinX(), b.getMinY());
 	}
-//	public void animateFielding(MarbleView marbleView, CellView targetCell) {
-//	    // 1) figure out start & end positions
-//	    Point2D start = scenePos(marbleView);
-//	    Point2D end   = scenePos(targetCell);
-//
-//	    // 2) detach marbleView from its parent and re-parent it to the GameView root
-//	    //    so that we can move it freely over the board.
-//	    Pane overlay = gameView.getOverlayPane(); 
-//	    // (you can add a transparent Pane on top of everything in GameView)
-//	    Parent parent = marbleView.getParent();
-//	    ((Pane) parent).getChildren().remove(marbleView);
-//	    overlay.getChildren().add(marbleView);
-//
-//	    // 3) position it exactly at the start
-//	    marbleView.setTranslateX(start.getX());
-//	    marbleView.setTranslateY(start.getY());
-//
-//	    // 4) build the transition
-//	    TranslateTransition tt = new TranslateTransition(Duration.seconds(0.6), marbleView);
-//	    tt.setFromX(start.getX());
-//	    tt.setFromY(start.getY());
-//	    tt.setToX(end.getX());
-//	    tt.setToY(end.getY());
-//
-//	    // 5) on finish: snap it into the cellView and clean up
-//	    tt.setOnFinished(evt -> {
-//	        overlay.getChildren().remove(marbleView);
-//	        targetCell.getChildren().add(marbleView);
-//	        marbleView.setTranslateX(0);
-//	        marbleView.setTranslateY(0);
-//	    });
-//
-//	    tt.play();
-//	}
+
 
 	public void redraw(){
 		gameView.draw();
