@@ -56,7 +56,6 @@ public class GameView extends StackPane {
 	private FirePitView firePitView;
 	int idx=0;
 	
-    private final Pane animationLayer = new Pane();
 
 	public GameView(Game game){
 		this.game = game;
@@ -244,37 +243,37 @@ replay.play();
 	public void setPlayerViews(PlayerViews playerViews) {
 		this.playerViews = playerViews;
 	}
-    public void animateMove(MarbleView marble, CellView target) {
-        // compute start/end in GameView’s local coordinates
-        Bounds startScene = marble.localToScene(marble.getBoundsInLocal());
-        Bounds endScene   = target.localToScene(target.getBoundsInLocal());
-        Point2D startLocal = this.sceneToLocal(startScene.getMinX(), startScene.getMinY());
-        Point2D endLocal   = this.sceneToLocal(endScene.getMinX(),   endScene.getMinY());
-
-        // 1) detach marble out of its cell into the animation layer
-        Parent oldParent = marble.getParent();
-        ((Pane)oldParent).getChildren().remove(marble);
-        animationLayer.getChildren().add(marble);
-
-        // 2) place it at the exact starting spot
-        marble.setLayoutX(startLocal.getX());
-        marble.setLayoutY(startLocal.getY());
-
-        // 3) animate to the end spot
-        TranslateTransition tt = new TranslateTransition(Duration.seconds(0.5), marble);
-        tt.setToX(endLocal.getX() - startLocal.getX());
-        tt.setToY(endLocal.getY() - startLocal.getY());
-        tt.setOnFinished(e -> {
-            // 4) snap it back into the target cell
-            animationLayer.getChildren().remove(marble);
-            target.getChildren().add(marble);
-            marble.setTranslateX(0);
-            marble.setTranslateY(0);
-            marble.setLayoutX(0);
-            marble.setLayoutY(0);
-        });
-        tt.play();
-    }
+//    public void animateMove(MarbleView marble, CellView target) {
+//        // compute start/end in GameView’s local coordinates
+//        Bounds startScene = marble.localToScene(marble.getBoundsInLocal());
+//        Bounds endScene   = target.localToScene(target.getBoundsInLocal());
+//        Point2D startLocal = this.sceneToLocal(startScene.getMinX(), startScene.getMinY());
+//        Point2D endLocal   = this.sceneToLocal(endScene.getMinX(),   endScene.getMinY());
+//
+//        // 1) detach marble out of its cell into the animation layer
+//        Parent oldParent = marble.getParent();
+//        ((Pane)oldParent).getChildren().remove(marble);
+//        animationLayer.getChildren().add(marble);
+//
+//        // 2) place it at the exact starting spot
+//        marble.setLayoutX(startLocal.getX());
+//        marble.setLayoutY(startLocal.getY());
+//
+//        // 3) animate to the end spot
+//        TranslateTransition tt = new TranslateTransition(Duration.seconds(0.5), marble);
+//        tt.setToX(endLocal.getX() - startLocal.getX());
+//        tt.setToY(endLocal.getY() - startLocal.getY());
+//        tt.setOnFinished(e -> {
+//            // 4) snap it back into the target cell
+//            animationLayer.getChildren().remove(marble);
+//            target.getChildren().add(marble);
+//            marble.setTranslateX(0);
+//            marble.setTranslateY(0);
+//            marble.setLayoutX(0);
+//            marble.setLayoutY(0);
+//        });
+//        tt.play();
+//    }
 	
 	
 }
