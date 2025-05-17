@@ -65,6 +65,23 @@ public class GameView extends StackPane {
 		draw();
 	}
 	
+	public void handleSelectedCards(){
+			for (CardView cv : this.getHandsView().getHands().get(0).getCardViews()){
+			cv.setOnMouseClicked(e -> {
+				try{
+					//redraw();
+					game.deselectAll();
+					refresh();
+					game.selectCard(cv.getCard());
+					refresh();
+					System.out.println("card is selected");
+				}catch(Exception exc){
+					System.out.println(exc.getMessage());
+				}
+			});
+		}
+	}
+	
 	public void initPlayButton(){
 		Image img = new Image("playButton.png");
 		PlayButton = new ImageView(img);

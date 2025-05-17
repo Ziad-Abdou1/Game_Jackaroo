@@ -27,13 +27,11 @@ public class CardView extends ImageView{
 		this.game = game;
 		this.orientation = f;
 		this.card  = card;
-		if(f)
-			drawCard();
-		else
-			drawCPUCard();
+		refresh();
 		action();
 	}
 	public void action(){
+		refresh();
 		this.setOnMouseEntered(e -> {
 		    this.hover(true);
 		});
@@ -43,13 +41,12 @@ public class CardView extends ImageView{
 		});
 		this.setOnMouseClicked(e -> {
 			try{
-				
+
 				//redraw();
 				game.deselectAll();
+				refresh();
 				game.selectCard(this.getCard());
-				this.setStyle("-fx-border-color: lightblue; -fx-border-width: 50;");
-				this.setScaleX(0.3);
-				this.setScaleY(0.3);
+				refresh();
 				System.out.println("card is selected");
 			}catch(Exception exc){
 				System.out.println(exc.getMessage());
@@ -91,7 +88,20 @@ public class CardView extends ImageView{
 		refresh();
 	}
 	
+	public void formatNotSelected(){
+		this.setScaleX(1.0);
+		this.setScaleY(1.0);
+	}
+	
+	public void formatSelected(){
+		this.setStyle("-fx-border-color: lightblue; -fx-border-width: 50;");
+		this.setScaleX(0.3);
+		this.setScaleY(0.3);
+	}
+	
 	public void refresh(){
+		if (game.getPlayers().get(0).getSelectedCard()!=this.card) formatNotSelected();
+		else formatSelected();
 		if (orientation) drawCard();
 		else drawCPUCard();
 	}

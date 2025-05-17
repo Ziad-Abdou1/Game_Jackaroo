@@ -45,7 +45,6 @@ public class HandsView extends StackPane {
     		hands.get(i).setHand(game.getPlayers().get(i).getHand());
     	}
     }
-    
     public ArrayList<HPlayerCardView> getHands(){return hands;}
     private Pane wrap(HPlayerCardView view, Pos alignment) {
         StackPane wrapper = new StackPane(view);

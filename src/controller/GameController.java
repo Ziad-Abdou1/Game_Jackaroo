@@ -52,28 +52,26 @@ public class GameController extends Application {
 		    }
 		});
 		
+		
+//		for (CardView cv : gameView.getHandsView().getHands().get(0).getCardViews()){
+//			cv.setOnMouseClicked(e -> {
+//				try{
+//					//redraw();
+//					game.deselectAll();
+//					game.selectCard(cv.getCard());
+//					cv.refresh();
+//					System.out.println("card is selected");
+//				}catch(Exception exc){
+//					System.out.println(exc.getMessage());
+//				}
+//			});
+//		}
 		stage.setScene(scene);
 		stage.setMaxHeight(screenHeight);
 		stage.setWidth(screenWidth);
 		stage.show();
 		
 		
-		
-//		scene.setOnKeyPressed(event -> {
-//		    switch(event.getCode()) {
-//		        case ESCAPE:
-//		            stage.close();
-//		            break;
-//		        // handle other keys
-//		    }
-//		});
-		
-
-//		for (HPlayerCardView hp : gameView.getHandView().getHands()){
-//			for (CardView c : hp.getCardViews()){
-//				
-//		}
-
 	}
 	private Point2D scenePos(Node node) {
 	    Bounds b = node.localToScene(node.getBoundsInLocal());
