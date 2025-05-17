@@ -67,6 +67,7 @@ public class GameView extends StackPane {
 		this.game = game;
 		initPlayButton();
 		draw();
+		handleSelectedCards();
 	}
 
 	public void handleSelectedCards() {
@@ -75,7 +76,6 @@ public class GameView extends StackPane {
 				try {
 					// redraw();
 					game.deselectAll();
-					refresh();
 					game.selectCard(cv.getCard());
 					refresh();
 					System.out.println("card is selected");
@@ -169,7 +169,7 @@ public class GameView extends StackPane {
 				}
 			}
 		}
-
+		 ((GameView)this.getScene().getRoot()).refresh();
 		if (done) {
 			playCPU();
 			PlayButton.setDisable(true);

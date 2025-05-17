@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Stack;
 
 import model.card.Card;
@@ -38,38 +39,41 @@ public class GameController extends Application {
 	GameView gameView;
 
 	@Override
-	public void start(Stage stage) {
-	    javafx.scene.control.TextField nameField = new javafx.scene.control.TextField();
-	    javafx.scene.control.Button startButton = new javafx.scene.control.Button("Start Game");
-
-	    nameField.setPromptText("Enter your name");
-	    nameField.setMaxWidth(200);
-
-	    VBox inputBox = new VBox(15);
-	    inputBox.setAlignment(Pos.CENTER);
-	    inputBox.getChildren().addAll(nameField, startButton);
-	    inputBox.setPadding(new Insets(20));
-
-	    Scene inputScene = new Scene(inputBox, 400, 200);
-
-	    stage.setScene(inputScene);
-	    stage.setTitle("Welcome");
-	    stage.centerOnScreen();
-	    stage.show();
-
-	    startButton.setOnAction(e -> {
-	        name = nameField.getText().isEmpty() ? "Player" : nameField.getText();
-	        try {
-	            launchGame(stage);
-	        } catch (Exception e1) {
-	            System.out.println(e1.getMessage());
-	        }
-	    });
+	public void start(Stage stage)throws IOException {
+//	    javafx.scene.control.TextField nameField = new javafx.scene.control.TextField();
+//	    javafx.scene.control.Button startButton = new javafx.scene.control.Button("Start Game");
+//
+//	    nameField.setPromptText("Enter your name");
+//	    nameField.setMaxWidth(200);
+//
+//	    VBox inputBox = new VBox(15);
+//	    inputBox.setAlignment(Pos.CENTER);
+//	    inputBox.getChildren().addAll(nameField, startButton);
+//	    inputBox.setPadding(new Insets(20));
+//
+//	    Scene inputScene = new Scene(inputBox, 400, 200);
+//
+//	    stage.setScene(inputScene);
+//	    stage.setTitle("Welcome");
+//	    stage.centerOnScreen();
+//	    stage.show();
+//
+//	    startButton.setOnAction(e -> {
+//	        name = nameField.getText().isEmpty() ? "Player" : nameField.getText();
+//	        try {
+//	            launchGame(stage);
+//	        } catch (Exception e1) {
+//	            System.out.println(e1.getMessage());
+//	        }
+//	    });
+		
+		
+		launchGame(stage);
 	}
 
 
 	private void launchGame(Stage stage) throws IOException {
-		Game game = new Game(name);
+		Game game = new Game("adham");
 		gameView = new GameView(game);
 		Scene scene = new Scene(gameView, screenWidth, screenHeight);
 
@@ -79,6 +83,20 @@ public class GameController extends Application {
 			}
 		});
 
+//		ArrayList<CardView> cardViews1st=(gameView.getHandsView().getHands().get(0).getCardViews());
+//		for(CardView cv: cardViews1st){
+//			cv.setOnMouseClicked(e -> {
+//				try {
+//					game.deselectAll();
+//					gameView.refresh();
+//					game.selectCard(cv.getCard());
+//					gameView.refresh();
+//					System.out.println("card is selected");
+//				} catch (Exception exc) {
+//					System.out.println(exc.getMessage());
+//				}
+//			});
+//		}
 		stage.setScene(scene);
 		stage.setMaxHeight(screenHeight);
 		stage.setWidth(screenWidth);

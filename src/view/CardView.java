@@ -18,13 +18,14 @@ import javafx.stage.Screen;
 public class CardView extends ImageView {
 	private Card card;
 	private Game game;
+
 	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 	double screenWidth = screenBounds.getWidth();
 	double screenHeight = screenBounds.getHeight();
 	private boolean orientation;
 
 	public CardView(Game game, Card card, boolean f) {
-		f = true;
+		f=true;
 		this.game = game;
 		this.orientation = f;
 		this.card = card;
@@ -44,13 +45,13 @@ public class CardView extends ImageView {
 		this.setOnMouseClicked(e -> {
 			try {
 				game.deselectAll();
-				refresh();
 				game.selectCard(this.getCard());
 				refresh();
 				System.out.println("card is selected");
 			} catch (Exception exc) {
 				System.out.println(exc.getMessage());
 			}
+		    ((GameView)this.getScene().getRoot()).refresh();
 		});
 	}
 
