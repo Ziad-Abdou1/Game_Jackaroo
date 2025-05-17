@@ -2,10 +2,17 @@ package view;
 
 import engine.Game;
 import model.player.Player;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.Timeline;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -15,6 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
+import javafx.util.Duration;
 
 public class PlayerView extends GridPane{
 	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -53,6 +61,7 @@ public class PlayerView extends GridPane{
 		StackPane wrapper1 = new StackPane(circle);
 		wrapper1.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
 		if (active()) {
+			//part 1 : image
 			Image gif = new Image(getClass().getResource("/cardss/ff.png").toExternalForm());
 		
 			ImageView gifView = new ImageView(gif);
@@ -60,6 +69,47 @@ public class PlayerView extends GridPane{
 			gifView.setFitWidth(100);
 
 			wrapper1.getChildren().add(gifView);
+			
+			//part 2: glow around the player
+			DropShadow glow = new DropShadow();
+			glow.setColor(Color.GOLD);
+			glow.setOffsetX(0);
+			glow.setOffsetY(0);
+			glow.setRadius(0);
+			wrapper1.setEffect(glow);
+
+			// animate the glow radius
+			Timeline pulse = new Timeline(
+			    new KeyFrame(Duration.ZERO,    new KeyValue(glow.radiusProperty(), 0)),
+			    new KeyFrame(Duration.seconds(0.5), new KeyValue(glow.radiusProperty(), 70)),
+			    new KeyFrame(Duration.seconds(1),   new KeyValue(glow.radiusProperty(), 0))
+			);
+			pulse.setCycleCount(Animation.INDEFINITE);
+			pulse.play();
+			
+			//part 3: a rotatin ring 
+			Circle ring = new Circle(circle.getRadius() + 6);
+			ring.setStroke(Color.LIME);
+			ring.setStrokeWidth(3);
+			ring.setFill(null);
+			wrapper1.getChildren().add(ring);
+
+			// rotate the ring continuously
+			RotateTransition rot = new RotateTransition(Duration.seconds(2), ring);
+			rot.setByAngle(360);
+			rot.setCycleCount(Animation.INDEFINITE);
+			rot.play();
+			
+			//part 4: scale continuously when active
+			ScaleTransition bounce = new ScaleTransition(Duration.seconds(0.5), wrapper1);
+			bounce.setFromY(1.0);
+			bounce.setToY(1.2);
+			bounce.setFromX(1.0);
+			bounce.setToX(1.2);
+			bounce.setAutoReverse(true);
+			bounce.setCycleCount(Animation.INDEFINITE);
+			bounce.play();
+			
 		}
         this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 		addNode(wrapper1,0,0);

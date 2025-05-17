@@ -22,6 +22,8 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.input.KeyCode;
+
 
 public class GameController extends Application {
 	String name;
@@ -43,6 +45,12 @@ public class GameController extends Application {
 		for (int i = 0; i < 4; i++){
 			System.out.println(game.getPlayers().get(i).getColour());
 		}
+		
+		scene.setOnKeyPressed(evt -> {
+		    if (evt.getCode() == KeyCode.ENTER) {
+		        gameView.playAll();
+		    }
+		});
 		
 		stage.setScene(scene);
 		stage.setMaxHeight(screenHeight);
