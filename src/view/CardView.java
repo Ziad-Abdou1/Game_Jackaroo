@@ -9,11 +9,15 @@ import model.card.wild.Burner;
 import model.card.wild.Saver;
 import model.card.wild.Wild;
 import model.player.Marble;
+import javafx.animation.ScaleTransition;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.stage.Screen;
+import javafx.util.Duration;
 
 public class CardView extends ImageView {
 	private Card card;
@@ -87,15 +91,40 @@ public class CardView extends ImageView {
 		refresh();
 	}
 
-	public void formatNotSelected() {
-		this.setScaleX(1.0);
-		this.setScaleY(1.0);
+	public void formatSelected() {
+	    // 1) Add a colored glow around the card
+	    DropShadow glow = new DropShadow();
+	    glow.setColor(Color.web("#4A90E2", 0.7)); // adjust to your theme
+	    glow.setRadius(15);
+	    glow.setSpread(0.5);
+	    this.setEffect(glow);
+
+	    // 2) Scale up with a smooth animation
+	    ScaleTransition st = new ScaleTransition(Duration.millis(200), this);
+	    st.setToX(1.2);
+	    st.setToY(1.2);
+	    st.play();
+
+	    // 3) Optional: tint a colored border
+	    this.setStyle(
+	      "-fx-border-color: #4A90E2;" +
+	      "-fx-border-width: 4;" +
+	      "-fx-border-radius: 8;"
+	    );
 	}
 
-	public void formatSelected() {
-		this.setStyle("-fx-border-color: lightblue; -fx-border-width: 50;");
-		this.setScaleX(0.3);
-		this.setScaleY(0.3);
+	public void formatNotSelected() {
+	    // 1) Remove glow
+	    this.setEffect(null);
+
+	    // 2) Scale back smoothly
+	    ScaleTransition st = new ScaleTransition(Duration.millis(200), this);
+	    st.setToX(1.0);
+	    st.setToY(1.0);
+	    st.play();
+
+	    // 3) Clear border
+	    this.setStyle("");
 	}
 
 	public void refresh() {

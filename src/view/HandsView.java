@@ -51,10 +51,10 @@ public class HandsView extends StackPane {
 		return hands;
 	}
 
-	private Pane wrap(HPlayerCardView view, Pos alignment) {
-		StackPane wrapper = new StackPane(view);
-		wrapper.setAlignment(alignment);
-		return wrapper;
-	}
+//	private Pane wrap(HPlayerCardView view, Pos alignment) {
+//		StackPane wrapper = new StackPane(view);
+//		wrapper.setAlignment(alignment);
+//		return wrapper;
+//	}
 
 }

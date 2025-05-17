@@ -24,19 +24,18 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.util.Duration;
 
-public class PlayerView extends GridPane {
+public class PlayerView extends GridPane{
 	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-	double screenWidth = screenBounds.getWidth();
-	double screenHeight = screenBounds.getHeight();
-
-	StackPane wrapper1;
-	StackPane wrapper;
+    double screenWidth = screenBounds.getWidth();
+    double screenHeight = screenBounds.getHeight();
+	
+    StackPane wrapper1;
+    StackPane wrapper;
 	private Game game;
 	private Player player;
 	private Circle circle;
 	private Label name;
-
-	public PlayerView(Player player, Game game) {
+	public PlayerView(Player player, Game game){
 		this.game = game;
 		this.player = player;
 		circle = new Circle();
@@ -44,54 +43,68 @@ public class PlayerView extends GridPane {
 		name.setText(player.getName());
 		draw();
 
+		
+//		for (int i = 0; i < 10; i++){
+//			Circle c = new Circle();
+//			c.setRadius(screenWidth/70);
+//			c.setOpacity(0);
+//			addNode(c,i,0);
+//		}
 	}
-
-	public boolean active() {
-		return game.getActivePlayerColour() == player.getColour();
+	public boolean active(){
+		return game.getActivePlayerColour()==player.getColour();
 	}
-
-	public void refresh() {
-		if (active()) {
+	public void refresh(){
+		if (active()){
 			activeEffect();
-		} else {
-			wrapper1.setEffect(null);
-			wrapper1.getChildren().retainAll(circle);
-			wrapper1.setScaleX(1.0);
-			wrapper1.setScaleY(1.0);
-			wrapper1.setRotate(0);
+		}
+		else {
+		    // Remove visual effects
+		    wrapper1.setEffect(null);
+
+		    // Stop any active animations (optional if you track them)
+
+		    // Remove any extra children added during activeEffect
+		    // Keep only the circle as the base image
+		    wrapper1.getChildren().retainAll(circle);
+
+		    // Reset scale and rotation
+		    wrapper1.setScaleX(1.0);
+		    wrapper1.setScaleY(1.0);
+		    wrapper1.setRotate(0);
 		}
 	}
-
-	private void draw() {
+	private void draw(){
 		this.getChildren().clear();
-		circle.setRadius(screenWidth / 70);
-		Image image = new Image(getClass().getResource("/user_icon.png")
-				.toExternalForm());
+		circle.setRadius(screenWidth/70);
+		Image image = new Image(getClass().getResource("/user_icon.png").toExternalForm());
 		circle.setFill(new ImagePattern(image));
+		//circle.setFill(Color.BLACK);	
 		wrapper1 = new StackPane(circle);
 		wrapper1.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
 		if (active()) {
 			activeEffect();
 		}
-		this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-		addNode(wrapper1, 0, 0);
+        this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+		addNode(wrapper1,0,0);
 		wrapper = new StackPane(name);
+
+		// Optionally set size to fill the cell if needed
 		wrapper.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
-		addNode(wrapper, 0, 1);
+		addNode(wrapper,0,1);
 	}
-
-	public void activeEffect() {
-		// part 1 : image
-		Image gif = new Image(getClass().getResource("/cardss/ff.png")
-				.toExternalForm());
-
+	
+	public void activeEffect(){
+		//part 1 : image
+		Image gif = new Image(getClass().getResource("/cardss/ff.png").toExternalForm());
+	
 		ImageView gifView = new ImageView(gif);
 		gifView.setPreserveRatio(true);
 		gifView.setFitWidth(100);
 
 		wrapper1.getChildren().add(gifView);
-
-		// part 2: glow around the player
+		
+		//part 2: glow around the player
 		DropShadow glow = new DropShadow();
 		glow.setColor(Color.GOLD);
 		glow.setOffsetX(0);
@@ -100,14 +113,15 @@ public class PlayerView extends GridPane {
 		wrapper1.setEffect(glow);
 
 		// animate the glow radius
-		Timeline pulse = new Timeline(new KeyFrame(Duration.ZERO, new KeyValue(
-				glow.radiusProperty(), 0)), new KeyFrame(Duration.seconds(0.5),
-				new KeyValue(glow.radiusProperty(), 70)), new KeyFrame(
-				Duration.seconds(1), new KeyValue(glow.radiusProperty(), 0)));
+		Timeline pulse = new Timeline(
+		    new KeyFrame(Duration.ZERO,    new KeyValue(glow.radiusProperty(), 0)),
+		    new KeyFrame(Duration.seconds(0.5), new KeyValue(glow.radiusProperty(), 70)),
+		    new KeyFrame(Duration.seconds(1),   new KeyValue(glow.radiusProperty(), 0))
+		);
 		pulse.setCycleCount(Animation.INDEFINITE);
 		pulse.play();
-
-		// part 3: a rotatin ring
+		
+		//part 3: a rotatin ring 
 		Circle ring = new Circle(circle.getRadius() + 6);
 		ring.setStroke(Color.LIME);
 		ring.setStrokeWidth(3);
@@ -119,10 +133,9 @@ public class PlayerView extends GridPane {
 		rot.setByAngle(360);
 		rot.setCycleCount(Animation.INDEFINITE);
 		rot.play();
-
-		// part 4: scale continuously when active
-		ScaleTransition bounce = new ScaleTransition(Duration.seconds(0.5),
-				wrapper1);
+		
+		//part 4: scale continuously when active
+		ScaleTransition bounce = new ScaleTransition(Duration.seconds(0.5), wrapper1);
 		bounce.setFromY(1.0);
 		bounce.setToY(1.2);
 		bounce.setFromX(1.0);
@@ -131,8 +144,8 @@ public class PlayerView extends GridPane {
 		bounce.setCycleCount(Animation.INDEFINITE);
 		bounce.play();
 	}
-
-	public void addNode(Node node, int col, int row) {
-		this.add(node, col, row);
-	}
+	
+    public void addNode(Node node, int col, int row) {
+        this.add(node, col, row);
+    }
 }

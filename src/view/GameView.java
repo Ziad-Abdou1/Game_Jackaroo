@@ -77,7 +77,7 @@ public class GameView extends StackPane {
 
 	public GameView(Game game) {
 		this.game = game;
-		detailsView=new DetailsView();
+		detailsView=new DetailsView(game);
 		initPlayButton();
 		draw();
 		handleSelectedCards();
@@ -337,7 +337,7 @@ public class GameView extends StackPane {
 		boardView = new BoardView(game.getBoard(), game);
 
 		handsView = new HandsView(game);
-		handsView.setMaxSize(1400, 1000);
+		handsView.setMaxSize(1300, 1000);
 		homesView = new HomesView(game.getPlayers(), game);
 		homesView.setMaxSize(700, 700);
 		playerViews = new PlayerViews(game);
@@ -367,6 +367,7 @@ public class GameView extends StackPane {
 		playerViews.refresh();
 		firePitView.refresh();
 		handleSelectedCards();
+		detailsView.refresh();
 	}
 
 	public void showExceptionWindow(String message) {
