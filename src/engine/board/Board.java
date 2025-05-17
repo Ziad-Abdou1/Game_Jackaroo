@@ -372,6 +372,13 @@ public class Board implements BoardManager {
 //    		return false;
 //    	}
 //    }
+    public ArrayList<Cell> path(Marble marble , int steps, boolean destroy) throws IllegalMovementException{
+
+		ArrayList<Cell> fullPath=validateSteps(marble, steps);
+		validatePath(marble, fullPath, destroy);
+		return fullPath;
+
+    }
     
     //M3--------------------------------------------------------------------------------------------
     

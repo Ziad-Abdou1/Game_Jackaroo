@@ -16,9 +16,13 @@ public class HomeZoneView extends GridPane {
 	
 	Game game;
 	private Player player;
+	ArrayList<Cell> cells;
+	ArrayList<CellView> cellViews;
 	public HomeZoneView(Player player,Game game){
 		this.game=game;
 		this.player = player;
+		cells=new ArrayList<Cell>();
+		cellViews=new ArrayList<CellView>();
 		draw();
 		this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 	}
@@ -30,15 +34,19 @@ public class HomeZoneView extends GridPane {
 		int[] dy ={0,-1,0,1};
 		ArrayList<Marble> marbles=player.getMarbles();
 		for (int i =0; i < 4; i++){
+			Cell c = new Cell(CellType.BASE);
+			CellView cv;
 			if (i < num){
-				Cell c = new Cell(CellType.BASE);
 				c.setMarble(marbles.get(i));
-				this.addNode(new CellView(c, game),curj,curi);
+				cv=new CellView(c, game);
+				this.addNode(cv,curj,curi);
 			}
 			else{
-				Cell c = new Cell(CellType.BASE);
-				this.addNode(new CellView(c, game),curj,curi);
+				cv=new CellView(c, game);
+				this.addNode(cv,curj,curi);
 			}
+			cells.add(c);
+			cellViews.add(cv);
 			curi += dy[i];
 			curj += dx[i];
 		}
@@ -57,5 +65,30 @@ public class HomeZoneView extends GridPane {
     public void refresh(){
     	draw();
     }
+	public Game getGame() {
+		return game;
+	}
+	public void setGame(Game game) {
+		this.game = game;
+	}
+	public Player getPlayer() {
+		return player;
+	}
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+	public ArrayList<Cell> getCells() {
+		return cells;
+	}
+	public void setCells(ArrayList<Cell> cells) {
+		this.cells = cells;
+	}
+	public ArrayList<CellView> getCellViews() {
+		return cellViews;
+	}
+	public void setCellViews(ArrayList<CellView> cellViews) {
+		this.cellViews = cellViews;
+	}
+    
 }
 

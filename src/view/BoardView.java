@@ -25,6 +25,7 @@ import engine.board.SafeZone;
 public class BoardView extends GridPane {
     private Board board;
     private Game game;
+    private Map<Cell,CellView> cellToView = new HashMap<>();
 
     public BoardView(Board board, Game game) {
     	this.game=game;
@@ -75,6 +76,7 @@ public class BoardView extends GridPane {
     				Cell cell=board.getTrack().get(curIdx);
 
     				CellView cv = new CellView(cell,game);
+    				cellToView.put(cell, cv);
     				trackView.add(cv);
     				this.addNode(cv,curj,curi);
     				curi += dx[directions[i][j]];
@@ -104,7 +106,9 @@ public class BoardView extends GridPane {
     		for (int j = 0; j < 4; j++){
 				curi += dx[direction[i]];
 				curj += dy[direction[i]];
-				CellView cv=new CellView(board.getSafeZones().get(i).getCells().get(j), game);
+				Cell cell=board.getSafeZones().get(i).getCells().get(j);
+				CellView cv=new CellView(cell, game);
+				cellToView.put(cell, cv);
 //				Colour clr = board.getSafeZones().get(i).getColour();
 //				if (clr == Colour.BLUE){
 //					cv.setStyle("-fx-ba");
@@ -155,6 +159,73 @@ public class BoardView extends GridPane {
     public void addNode(Node node, int col, int row) {
         this.add(node, col, row);
     }
+	public Board getBoard() {
+		return board;
+	}
+	public void setBoard(Board board) {
+		this.board = board;
+	}
+	public Game getGame() {
+		return game;
+	}
+	public void setGame(Game game) {
+		this.game = game;
+	}
+	public Map<Cell, CellView> getCellToView() {
+		return cellToView;
+	}
+	public void setCellToView(Map<Cell, CellView> cellToView) {
+		this.cellToView = cellToView;
+	}
+	public ArrayList<CellView> getTrackView() {
+		return trackView;
+	}
+	public void setTrackView(ArrayList<CellView> trackView) {
+		this.trackView = trackView;
+	}
+	public int[] getDy() {
+		return dy;
+	}
+	public void setDy(int[] dy) {
+		this.dy = dy;
+	}
+	public int[] getDx() {
+		return dx;
+	}
+	public void setDx(int[] dx) {
+		this.dx = dx;
+	}
+	public int[] getSegment() {
+		return segment;
+	}
+	public void setSegment(int[] segment) {
+		this.segment = segment;
+	}
+	public int[][] getDirections() {
+		return directions;
+	}
+	public void setDirections(int[][] directions) {
+		this.directions = directions;
+	}
+	public int getInitI() {
+		return initI;
+	}
+	public void setInitI(int initI) {
+		this.initI = initI;
+	}
+	public int getInitJ() {
+		return initJ;
+	}
+	public void setInitJ(int initJ) {
+		this.initJ = initJ;
+	}
+	public ArrayList<CellView>[] getSafeZoneView() {
+		return safeZoneView;
+	}
+	public void setSafeZoneView(ArrayList<CellView>[] safeZoneView) {
+		this.safeZoneView = safeZoneView;
+	}
+    
 }
 //package view;
 //

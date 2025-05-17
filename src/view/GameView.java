@@ -9,15 +9,30 @@ import java.security.acl.Group;
 
 
 
+
+
+
+
+
+
+
+import java.util.ArrayList;
+
 import model.card.Card;
+import model.player.Marble;
 import model.player.Player;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -26,6 +41,7 @@ import javafx.stage.Screen;
 import javafx.util.Duration;
 import engine.Game;
 import engine.board.Board;
+import engine.board.Cell;
 
 public class GameView extends StackPane {
 	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -39,6 +55,8 @@ public class GameView extends StackPane {
 	private PlayerViews playerViews;
 	private FirePitView firePitView;
 	int idx=0;
+	
+    private final Pane animationLayer = new Pane();
 
 	public GameView(Game game){
 		this.game = game;
@@ -74,7 +92,17 @@ public class GameView extends StackPane {
 //					    // this code runs 1 second later, on the JavaFX thread
 //					});
 //					pause.play();
+
+//					MarbleView mv = this.getBoardView()
+//	                        .getCellToView()    // your Map<Cell,CellView>
+//	                        .get(modelCell)     // the Cell the marble *left*
+//	                        .getMarbleView();   // add a getter for this in CellView
 					game.playPlayerTurn();
+//					
+//
+//					CellView cv = this.getBoardView()
+//					                      .getCellToView()
+//					                      .get(targetCell);
 					//Card store =firePitView.topCardView.getCard();
 					draw();
 					
@@ -163,6 +191,8 @@ replay.play();
 		StackPane.setAlignment(boardView, Pos.CENTER);
 		StackPane.setAlignment(playerViews, Pos.CENTER);
 		StackPane.setAlignment(PlayButton, Pos.BOTTOM_RIGHT);
+		
+//		this.getChildren().add(animationLayer);
 //		this.setPadding(new Insets(10));
 	}
 	public HandsView getHandView(){return this.handsView;}
@@ -214,6 +244,37 @@ replay.play();
 	public void setPlayerViews(PlayerViews playerViews) {
 		this.playerViews = playerViews;
 	}
+    public void animateMove(MarbleView marble, CellView target) {
+        // compute start/end in GameView’s local coordinates
+        Bounds startScene = marble.localToScene(marble.getBoundsInLocal());
+        Bounds endScene   = target.localToScene(target.getBoundsInLocal());
+        Point2D startLocal = this.sceneToLocal(startScene.getMinX(), startScene.getMinY());
+        Point2D endLocal   = this.sceneToLocal(endScene.getMinX(),   endScene.getMinY());
+
+        // 1) detach marble out of its cell into the animation layer
+        Parent oldParent = marble.getParent();
+        ((Pane)oldParent).getChildren().remove(marble);
+        animationLayer.getChildren().add(marble);
+
+        // 2) place it at the exact starting spot
+        marble.setLayoutX(startLocal.getX());
+        marble.setLayoutY(startLocal.getY());
+
+        // 3) animate to the end spot
+        TranslateTransition tt = new TranslateTransition(Duration.seconds(0.5), marble);
+        tt.setToX(endLocal.getX() - startLocal.getX());
+        tt.setToY(endLocal.getY() - startLocal.getY());
+        tt.setOnFinished(e -> {
+            // 4) snap it back into the target cell
+            animationLayer.getChildren().remove(marble);
+            target.getChildren().add(marble);
+            marble.setTranslateX(0);
+            marble.setTranslateY(0);
+            marble.setLayoutX(0);
+            marble.setLayoutY(0);
+        });
+        tt.play();
+    }
 	
 	
 }
