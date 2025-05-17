@@ -41,6 +41,7 @@ public class HPlayerCardView extends HBox{
 	   
 	    public void draw(){
 	    	handView.clear();
+	    	this.getChildren().clear();
 	    	for(Card c:hand){
 	    		CardView cv=new CardView(game,c,orientation);
 	    		handView.add(cv);

@@ -75,6 +75,7 @@ public class HomeZoneView extends GridPane {
 				cv.setCell(c);
 			}
 			else{
+				c.setMarble(null);
 				cv.setCell(c);
 			}
 			curi += dy[i];

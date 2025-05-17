@@ -29,33 +29,43 @@ public class MarbleView extends StackPane {
 		refresh();
 		this.getChildren().add(circle);
 		
-		this.setOnMouseClicked(e ->{
-			try{
-				System.out.println("marble is selected");
-				game.selectMarble(this.marble);
-			}catch(Exception exc){
-				System.out.println(exc.getMessage()); //to be edited
-			}
-		});
-		DropShadow shadow = new DropShadow();
-		
-		shadow.setColor(getFXColor (marble.getColour()));
-		shadow.setRadius(20); 
+		handle();
 
-		this.setOnMouseEntered(e -> {
-		    circle.setEffect(shadow);
-		    this.setScaleX(1.3);
-			this.setScaleY(1.3);
-			
-		});
-
-		this.setOnMouseExited(e -> {
-		    circle.setEffect(null);
-		    this.setScaleX(1);
-			this.setScaleY(1);
-		});
 		
 	}
+	
+	public void handle(){
+		if (marble != null){
+			this.setOnMouseClicked(e ->{
+				try{
+					System.out.println("marble is selected");
+					game.selectMarble(this.marble);
+				}catch(Exception exc){
+					System.out.println(exc.getMessage()); //to be edited
+				}
+			});
+			
+			
+			DropShadow shadow = new DropShadow();
+			
+			shadow.setColor(getFXColor (marble.getColour()));
+			shadow.setRadius(20); 
+
+			this.setOnMouseEntered(e -> {
+			    circle.setEffect(shadow);
+			    this.setScaleX(1.3);
+				this.setScaleY(1.3);
+				
+			});
+
+			this.setOnMouseExited(e -> {
+			    circle.setEffect(null);
+			    this.setScaleX(1);
+				this.setScaleY(1);
+			});
+		}
+	}
+	
 	private Color getFXColor(Colour clr) {
 	    switch (clr) {
 	        case BLUE: return Color.BLUE;
@@ -67,6 +77,7 @@ public class MarbleView extends StackPane {
 	}
 	
 	public void refresh(){
+		handle();
 		circle.setRadius(radius);
 		if (marble==null){
 			//circle.setFill(Color.GREY);
@@ -81,6 +92,7 @@ public class MarbleView extends StackPane {
 			if (clr == Colour.RED) circle.setFill(Color.RED);
 		}
 	}
+	public Marble getMarble(){return this.marble;}
 	public void setMarble(Marble marble){
 		this.marble=marble;
 		refresh();

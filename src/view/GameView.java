@@ -57,7 +57,7 @@ public class GameView extends StackPane {
 	private PlayerViews playerViews;
 	private FirePitView firePitView;
 	int idx=0;
-	private boolean efficient = false;
+	private boolean efficient = true;
 
 	public GameView(Game game){
 		this.game = game;
@@ -125,8 +125,9 @@ public class GameView extends StackPane {
 	}
 	public void playAll() {
 		try{
+			System.out.println("selectd card is " + game.getPlayers().get(0).getSelectedCard().getName());
 			playPlayer();
-		System.out.println(game.getFirePit().size()+" "+game.getFirePit().get(game.getFirePit().size()-1).getName());
+		//System.out.println(game.getFirePit().size()+" "+game.getFirePit().get(game.getFirePit().size()-1).getName());
 				
 				playCPU();
 
@@ -150,7 +151,9 @@ public class GameView extends StackPane {
 //                    .getCellToView()    // your Map<Cell,CellView>
 //                    .get(modelCell)     // the Cell the marble *left*
 //                    .getMarbleView();   // add a getter for this in CellView
+			//System.out.println("here0");
 			game.playPlayerTurn();
+			//System.out.println("here1");
 //			
 //
 //			CellView cv = this.getBoardView()
@@ -159,11 +162,13 @@ public class GameView extends StackPane {
 			//Card store =firePitView.topCardView.getCard();
 			if (efficient) refresh();
 			else draw();
-			
+			//System.out.println("here2");
 //			playerViews.getPlayerViews().get(0).setActive(false);
 		}
 		
+		
 		game.endPlayerTurn();
+		//System.out.println("here3");
 		if (efficient) refresh();
 		else draw();
 	}
@@ -178,11 +183,11 @@ public class GameView extends StackPane {
 					game.playPlayerTurn();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+//					e1.printStackTrace();
 				}
 		    	
 //		    	System.out.println(game.getFirePit().size()+" "+game.getFirePit().get(game.getFirePit().size()-1).getName());
-		    	System.out.println(game.getActivePlayerColour());
+//		    	System.out.println(game.getActivePlayerColour());
 	    	}
 	    	game.endPlayerTurn();
 			if (efficient) refresh();
@@ -235,11 +240,21 @@ replay.play();
 	}
 	
 	public void refresh(){
+        for (Cell cell : game.getBoard().getTrack()) {
+            System.out.print(cell.isTrap()?"1":"0");
+        }
+        System.out.println();
+//        System.out.println("here0");
 		boardView.refresh();
+//		System.out.println("here1");
 		handsView.refresh();
+//		System.out.println("here2");
 		homesView.refresh();
+//		System.out.println("here3");
 		playerViews.refresh();
+//		System.out.println("here4");
 		firePitView.refresh();
+//		System.out.println("here5");
 	}
 	
 	public void makeExceptionWindow(String message) {

@@ -47,9 +47,10 @@ public class FirePitView extends StackPane {
 
 		// set a preferred size relative to your GameView’s dimensions
 		// you can adjust these ratios as you like
-		 this.setPrefWidth(screenWidth * WIDTH_RATIO);
-		 this.setPrefHeight(screenHeight *HEIGHT_RATIO);
-		this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+		 this.setPrefHeight(screenWidth * WIDTH_RATIO);
+		 this.setPrefWidth(screenHeight *HEIGHT_RATIO);
+		 this.setMaxSize(screenHeight *HEIGHT_RATIO,screenWidth * WIDTH_RATIO);
+		//this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 		draw();
 	}
 
@@ -89,15 +90,30 @@ public class FirePitView extends StackPane {
 			StackPane.setAlignment(topCardView, Pos.CENTER);
 		}	
 	}
-	
-	public void refresh(){
-		Card topCard = getTopCard();
-		if (topCard!=null) {
-			topCardView.setCard(topCard);
-			if (this.getChildren().size()==0) this.getChildren().add(topCardView);
-		}
-		else{
-			this.getChildren().clear();
-		}
+	public void refresh() {
+	    Card topCard = getTopCard();
+	    if (topCard != null) {
+	        if (topCardView == null) {
+	            topCardView = new CardView(game, topCard, true);
+	            topCardView.setScaleX(0.8);
+	            topCardView.setScaleY(0.8);
+	            this.getChildren().add(topCardView);
+	        } else {
+	            topCardView.setCard(topCard);
+	        }
+	    } else {
+	        this.getChildren().clear();
+	        topCardView = null;
+	    }
 	}
+//	public void refresh(){
+//		Card topCard = getTopCard();
+//		if (topCard!=null) {
+//			topCardView.setCard(topCard);
+//			if (this.getChildren().size()==0) this.getChildren().add(topCardView);
+//		}
+//		else{
+//			this.getChildren().clear();
+//		}
+//	}
 }

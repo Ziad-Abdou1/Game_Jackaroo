@@ -21,6 +21,7 @@ public class CellView extends StackPane {
 	private MarbleView marbleView;
 	public CellView(Cell c,Game game){
 		this.game=game;
+		marbleView = new MarbleView(c.getMarble(),game);
 		circle = new Circle();
 		this.cell = c;
 		circle.setRadius(radius);
@@ -30,18 +31,18 @@ public class CellView extends StackPane {
 
 		if (cell.getMarble()!=null){
 			marbleView = new MarbleView(cell.getMarble(),game);
-			this.getChildren().addAll(marbleView);
 		}
 		else{
 			this.getChildren().removeAll();
-			marbleView = null;
+			//marbleView = null;
 			circle.setFill(Color.DARKGRAY);
-			this.getChildren().addAll(circle);
 			
 		}
 		if (cell.isTrap()){
 			circle.setFill(Color.BLACK);
 		}
+		this.getChildren().addAll(circle);
+		if (marbleView.getMarble()!=null) this.getChildren().addAll(marbleView);
 	}
 	
 	public void refresh(){
@@ -56,10 +57,13 @@ public class CellView extends StackPane {
 	public void setCell(Cell cell) {
 		this.cell = cell;
 		circle.setFill(Color.DARKGRAY);
-		marbleView.setMarble(null);   //--------------
+		//System.out.println(marbleView==null);
+		this.getChildren().remove(marbleView);
+		marbleView.setMarble(cell.getMarble());
+		if (marbleView.getMarble()!=null) this.getChildren().addAll(marbleView);
 		refresh();
 	}
-
+	public MarbleView getMarbleView(){return this.marbleView;}
 
 	
 }
