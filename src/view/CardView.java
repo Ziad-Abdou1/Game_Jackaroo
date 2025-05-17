@@ -35,13 +35,9 @@ public class CardView extends ImageView {
 
 	public void action() {
 		refresh();
-		this.setOnMouseEntered(e -> {
-			this.hover(true);
-		});
 
-		this.setOnMouseExited(e -> {
-			this.hover(false);
-		});
+
+
 		this.setOnMouseClicked(e -> {
 			try {
 				game.deselectAll();

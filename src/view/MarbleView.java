@@ -19,7 +19,7 @@ public class MarbleView extends StackPane {
 	Game game;
 
 	private Marble marble;
-	private final double radius = 12 * screenWidth / 4000;
+	private final double radius = 14 * screenWidth / 4000;
 	private Circle circle;
 
 	public MarbleView(Marble marble, Game game) {

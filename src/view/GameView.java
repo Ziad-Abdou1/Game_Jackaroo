@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import com.sun.javafx.scene.control.SelectedCellsMap;
 
+import model.Colour;
 import model.card.standard.*;
 import model.card.*;
 import model.player.Marble;
@@ -16,6 +17,7 @@ import javafx.animation.PauseTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
+import javafx.collections.FXCollections;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
@@ -25,11 +27,16 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -66,9 +73,11 @@ public class GameView extends StackPane {
 	private FirePitView firePitView;
 	int idx = 0;
 	private boolean efficient = true;
+	private DetailsView detailsView;
 
 	public GameView(Game game) {
 		this.game = game;
+		detailsView=new DetailsView();
 		initPlayButton();
 		draw();
 		handleSelectedCards();
@@ -87,6 +96,14 @@ public class GameView extends StackPane {
 					System.out.println(exc.getMessage());
 					showExceptionWindow(exc.getMessage());
 				}
+			});
+			cv.setOnMouseEntered(e -> {
+				cv.hover(true);
+				detailsView.setDetails(cv.getCard().getDescription());
+			});
+			cv.setOnMouseExited(e -> {
+				cv.hover(false);
+				detailsView.setDetails("");
 			});
 		}
 	}
@@ -146,7 +163,26 @@ public class GameView extends StackPane {
 			PlayButton.setScaleY(0.4);
 		});
 	}
-
+	public void printMarbles(){
+		for(Player p: game.getPlayers()){
+			System.out.println(p.getName());
+			for(int i=0;i<game.getBoard().getTrack().size();i++){
+				Cell c=game.getBoard().getTrack().get(i);
+				Marble m=c.getMarble();
+				if(m!=null && m.getColour()==p.getColour()) System.out.print("track_"+i+" ");
+			}
+			ArrayList<SafeZone> safeZones=game.getBoard().getSafeZones();
+			SafeZone sfCur=null;
+			for(SafeZone sf:safeZones){
+				if(sf.getColour()==p.getColour()) sfCur=sf;
+			}
+			for(int i=0;i<sfCur.getCells().size();i++){
+				Marble m=sfCur.getCells().get(i).getMarble();
+				if(m!=null) System.out.print("safe_"+i+" ");
+			}
+			System.out.println();
+		}
+	}
 	public void playAll() {
 
 		boolean done = false;
@@ -186,9 +222,11 @@ public class GameView extends StackPane {
 	public void playPlayer() throws Exception {
 		ArrayList<Marble> selectedMarbles = new ArrayList<>();
 		if (game.canPlayTurn()) {
-			ArrayList<CellView> cellViews = boardView.getTrackView();
+			//to select marbles at the real game model
+			ArrayList<CellView> cellViewsOriginal = boardView.getTrackView();
 			ArrayList<CellView>[] safeZoneViews = boardView.getSafeZoneView();
-
+			ArrayList<CellView> cellViews=new ArrayList<CellView>();
+			for(int i=0;i<cellViewsOriginal.size();i++) cellViews.add(cellViewsOriginal.get(i));
 			for (int i = 0; i < safeZoneViews.length; i++){
 				for (CellView cv : safeZoneViews[i]) cellViews.add(cv);
 			}
@@ -204,7 +242,11 @@ public class GameView extends StackPane {
 			}
 			
 			
-			
+			//handle 7 card
+			Card selected=game.getPlayers().get(0).getSelectedCard();
+			if(selected instanceof Seven && selectedMarbles.size()==2){
+				game.getBoard().setSplitDistance(handle7Window());
+			}
 			game.playPlayerTurn();
 			if (efficient)
 				refresh();
@@ -212,8 +254,12 @@ public class GameView extends StackPane {
 				draw();
 
 		}
-		 ArrayList<Cell> track = game.getBoard().getTrack();
+		
+		//handle trap logic
+		 ArrayList<Cell> trackOrigianl = game.getBoard().getTrack();
 		 ArrayList<SafeZone> safeZones = game.getBoard().getSafeZones();
+		 ArrayList<Cell> track=new ArrayList<Cell>();
+		 for(int i=0;i<trackOrigianl.size();i++) track.add(trackOrigianl.get(i));
 		 for(int i=0;i<safeZones.size();i++){
 			 for(Cell cell:safeZones.get(i).getCells()){
 				 track.add(cell);
@@ -239,6 +285,8 @@ public class GameView extends StackPane {
 			refresh();
 		else
 			draw();
+		
+		printMarbles();
 	}
 
 	public void playCPU() {
@@ -246,7 +294,7 @@ public class GameView extends StackPane {
 			refresh();
 		else
 			draw();
-		Timeline replay = new Timeline(new KeyFrame(Duration.seconds(2),
+		Timeline replay = new Timeline(new KeyFrame(Duration.seconds(3),
 				ev -> {
 
 					if (game.canPlayTurn()) {
@@ -263,6 +311,7 @@ public class GameView extends StackPane {
 						refresh();
 					else
 						draw();
+					printMarbles();
 
 					System.out.println("");
 					System.out.println("Current hands:");
@@ -295,13 +344,15 @@ public class GameView extends StackPane {
 		playerViews.setMaxSize(1100, 900);
 
 		firePitView = new FirePitView(game);
-		this.getChildren().addAll(playerViews, homesView, handsView, boardView,
+		this.getChildren().addAll(detailsView, playerViews, homesView, handsView, boardView,
 				PlayButton, firePitView);
 		StackPane.setAlignment(homesView, Pos.CENTER);
 		StackPane.setAlignment(handsView, Pos.CENTER);
 		StackPane.setAlignment(boardView, Pos.CENTER);
 		StackPane.setAlignment(playerViews, Pos.CENTER);
 		StackPane.setAlignment(PlayButton, Pos.BOTTOM_RIGHT);
+		StackPane.setAlignment(detailsView, Pos.CENTER_LEFT);
+		
 
 	}
 
@@ -315,6 +366,7 @@ public class GameView extends StackPane {
 		homesView.refresh();
 		playerViews.refresh();
 		firePitView.refresh();
+		handleSelectedCards();
 	}
 
 	public void showExceptionWindow(String message) {
@@ -512,6 +564,75 @@ public class GameView extends StackPane {
 	public void cleanFirePitFromNull() {
 	    ArrayList<Card> firePit = game.getFirePit();
 	    firePit.removeIf(Objects::isNull);
+	}
+	public int handle7Window() {
+	    // we'll stash the result here
+	    final int[] choice = {1};
+
+	    // 1) Build the modal stage
+	    Stage dialog = new Stage(StageStyle.UNDECORATED);
+	    dialog.initModality(Modality.APPLICATION_MODAL);
+	    dialog.setResizable(false);
+
+	    // 2) Create and style the prompt label
+	    Label prompt = new Label("Roll the die: pick a number 1–6");
+	    prompt.setFont(Font.font("ArcadeClassic", FontWeight.BOLD, 20));
+	    prompt.setTextFill(Color.web("#222222"));
+
+	    // 3) Create the combo-box
+	    ComboBox<Integer> combo = new ComboBox<>(
+	        FXCollections.observableArrayList(1,2,3,4,5,6)
+	    );
+	    combo.setValue(1);
+	    combo.setStyle(
+	      "-fx-font-family: 'ArcadeClassic';" +
+	      "-fx-font-weight: bold;" +
+	      "-fx-font-size: 18px;" +
+	      "-fx-background-radius: 5;" +
+	      "-fx-border-radius: 5;" +
+	      "-fx-border-color: #333333;" +
+	      "-fx-border-width: 2;"
+	    );
+
+	    // 4) OK button
+	    Button ok = new Button("OK");
+	    ok.setFont(Font.font("ArcadeClassic", FontWeight.BOLD, 18));
+	    ok.setTextFill(Color.WHITE);
+	    ok.setBackground(new Background(new BackgroundFill(
+	      Color.web("#4A90E2"), new CornerRadii(5), Insets.EMPTY
+	    )));
+	    ok.setOnAction(e -> {
+	      choice[0] = combo.getValue();
+	      dialog.close();
+	    });
+
+	    HBox controls = new HBox(10, combo, ok);
+	    controls.setAlignment(Pos.CENTER);
+
+	    // 5) Put it all in a VBox with a gradient background and rounded box
+	    VBox root = new VBox(20, prompt, controls);
+	    root.setPadding(new Insets(20));
+	    root.setAlignment(Pos.CENTER);
+	    root.setBackground(new Background(new BackgroundFill(
+	      new LinearGradient(
+	        0,0,1,1,true,CycleMethod.NO_CYCLE,
+	        new Stop(0, Color.web("#FFF5E5")),
+	        new Stop(1, Color.web("#FFD88C"))
+	      ),
+	      new CornerRadii(10), Insets.EMPTY
+	    )));
+	    root.setBorder(new Border(new BorderStroke(
+	      Color.web("#333333"), BorderStrokeStyle.SOLID,
+	      new CornerRadii(10), new BorderWidths(2)
+	    )));
+
+	    // 6) Show it
+	    Scene scene = new Scene(root);
+	    dialog.setScene(scene);
+	    dialog.centerOnScreen();
+	    dialog.showAndWait();
+
+	    return choice[0];
 	}
 
 	// public void animateMove(MarbleView marble, CellView target) {

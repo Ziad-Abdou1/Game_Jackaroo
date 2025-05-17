@@ -16,7 +16,7 @@ public class CellView extends StackPane {
 	Game game;
 	private Cell cell;
 	private Circle circle;
-	private final double radius = 12 * screenWidth / 3500;
+	private final double radius = 14 * screenWidth / 3500;
 	private MarbleView marbleView;
 
 	public CellView(Cell c, Game game) {
