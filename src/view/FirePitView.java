@@ -47,9 +47,15 @@ public class FirePitView extends StackPane {
 
 		// set a preferred size relative to your GameView’s dimensions
 		// you can adjust these ratios as you like
-		 this.setPrefHeight(screenWidth * WIDTH_RATIO);
-		 this.setPrefWidth(screenHeight *HEIGHT_RATIO);
-		 this.setMaxSize(screenHeight *HEIGHT_RATIO,screenWidth * WIDTH_RATIO);
+//		 this.setPrefHeight(screenWidth * WIDTH_RATIO);
+//		 this.setPrefWidth(screenHeight *HEIGHT_RATIO);
+//		 this.setMaxSize(screenHeight *HEIGHT_RATIO,screenWidth * WIDTH_RATIO);
+//		 this.setMinSize(pitWidth, pitHeight);
+		 double pitWidth = screenWidth * WIDTH_RATIO;
+		 double pitHeight = screenHeight * HEIGHT_RATIO;
+		 this.setPrefSize(pitHeight,pitWidth);
+		 this.setMinSize(pitHeight,pitWidth);
+		 this.setMaxSize(pitHeight,pitWidth);
 		//this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 		draw();
 	}
