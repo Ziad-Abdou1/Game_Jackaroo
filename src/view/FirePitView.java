@@ -17,10 +17,9 @@ import model.player.Marble;
 
 public class FirePitView extends StackPane {
 	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-    double screenWidth = screenBounds.getWidth();
-    double screenHeight = screenBounds.getHeight();
-    
-    
+	double screenWidth = screenBounds.getWidth();
+	double screenHeight = screenBounds.getHeight();
+
 	private final Game game;
 	private final Rectangle pitBg;
 	CardView topCardView;
@@ -45,81 +44,60 @@ public class FirePitView extends StackPane {
 		this.getChildren().add(pitBg);
 		StackPane.setAlignment(pitBg, Pos.CENTER);
 
-		// set a preferred size relative to your GameView’s dimensions
-		// you can adjust these ratios as you like
-//		 this.setPrefHeight(screenWidth * WIDTH_RATIO);
-//		 this.setPrefWidth(screenHeight *HEIGHT_RATIO);
-//		 this.setMaxSize(screenHeight *HEIGHT_RATIO,screenWidth * WIDTH_RATIO);
-//		 this.setMinSize(pitWidth, pitHeight);
-		 double pitWidth = screenWidth * WIDTH_RATIO;
-		 double pitHeight = screenHeight * HEIGHT_RATIO;
-		 this.setPrefSize(pitHeight,pitWidth);
-		 this.setMinSize(pitHeight,pitWidth);
-		 this.setMaxSize(pitHeight,pitWidth);
-		//this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+		double pitWidth = screenWidth * WIDTH_RATIO;
+		double pitHeight = screenHeight * HEIGHT_RATIO;
+		this.setPrefSize(pitHeight, pitWidth);
+		this.setMinSize(pitHeight, pitWidth);
+		this.setMaxSize(pitHeight, pitWidth);
 		draw();
 	}
 
-	/**
-	 * Call this whenever the fire-pit changes (after a turn). It will remove
-	 * the old top card view (if any) and show the newest one.
-	 */
-	public void setTopCardView(CardView topCardView){
-		this.topCardView=topCardView;
+	public void setTopCardView(CardView topCardView) {
+		this.topCardView = topCardView;
 	}
-	
-	public Card getTopCard(){
+
+	public Card getTopCard() {
 		Card ret = null;
-		for (Card c : game.getFirePit()){
-			if (c != null) ret = c;
+		for (Card c : game.getFirePit()) {
+			if (c != null)
+				ret = c;
 		}
 		return ret;
 	}
-	
+
 	public void draw() {
-		// remove old top card if present
 		if (topCardView != null) {
 			this.getChildren().remove(topCardView);
 			topCardView = null;
 		}
-		// get the latest card
 		int size = game.getFirePit().size();
 		Card topCard = getTopCard();
 		if (topCard != null) {
 			topCardView = new CardView(game, topCard, true);
 
-			// scale it down so it fits nicely inside the pit
 			topCardView.setScaleX(0.8);
 			topCardView.setScaleY(0.8);
 
 			this.getChildren().add(topCardView);
 			StackPane.setAlignment(topCardView, Pos.CENTER);
-		}	
+		}
 	}
+
 	public void refresh() {
-	    Card topCard = getTopCard();
-	    if (topCard != null) {
-	        if (topCardView == null) {
-	            topCardView = new CardView(game, topCard, true);
-	            topCardView.setScaleX(0.8);
-	            topCardView.setScaleY(0.8);
-	            this.getChildren().add(topCardView);
-	        } else {
-	            topCardView.setCard(topCard);
-	        }
-	    } else {
-	        this.getChildren().clear();
-	        topCardView = null;
-	    }
+		Card topCard = getTopCard();
+		if (topCard != null) {
+			if (topCardView == null) {
+				topCardView = new CardView(game, topCard, true);
+				topCardView.setScaleX(0.8);
+				topCardView.setScaleY(0.8);
+				this.getChildren().add(topCardView);
+			} else {
+				topCardView.setCard(topCard);
+			}
+		} else {
+			this.getChildren().clear();
+			topCardView = null;
+		}
 	}
-//	public void refresh(){
-//		Card topCard = getTopCard();
-//		if (topCard!=null) {
-//			topCardView.setCard(topCard);
-//			if (this.getChildren().size()==0) this.getChildren().add(topCardView);
-//		}
-//		else{
-//			this.getChildren().clear();
-//		}
-//	}
+
 }

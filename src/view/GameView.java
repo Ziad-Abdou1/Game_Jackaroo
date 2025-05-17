@@ -91,8 +91,6 @@ public class GameView extends StackPane {
 		PlayButton = new ImageView(img);
 		PlayButton.setScaleX(0.4);
 		PlayButton.setScaleY(0.4);
-		// playerViews.getPlayerViews().get(0).setActive(true);
-		// draw();
 
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),
 				e -> {
@@ -103,39 +101,36 @@ public class GameView extends StackPane {
 						playCPU();
 					}
 				}));
-		timeline.setCycleCount(Animation.INDEFINITE); // Repeat forever
+		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
 
 		PlayButton.setOnMouseClicked(e -> {
 			playAll();
+			Circle ripple = new Circle(0, Color.web("#ffffff50"));
+			ripple.setCenterX(e.getX());
+			ripple.setCenterY(e.getY());
+			((Pane) PlayButton.getParent()).getChildren().add(ripple);
 
-			// create a ripple circle at click point
-				Circle ripple = new Circle(0, Color.web("#ffffff50"));
-				ripple.setCenterX(e.getX());
-				ripple.setCenterY(e.getY());
-				((Pane) PlayButton.getParent()).getChildren().add(ripple);
+			Timeline tl = new Timeline(new KeyFrame(Duration.ZERO,
+					new KeyValue(ripple.radiusProperty(), 0), new KeyValue(
+							ripple.opacityProperty(), 0.5)), new KeyFrame(
+					Duration.seconds(0.4), new KeyValue(
+							ripple.radiusProperty(), 100), new KeyValue(ripple
+							.opacityProperty(), 0)));
+			tl.setOnFinished(evt -> ((Pane) PlayButton.getParent())
+					.getChildren().remove(ripple));
+			tl.play();
 
-				// animate it outwards and fading
-				Timeline tl = new Timeline(new KeyFrame(Duration.ZERO,
-						new KeyValue(ripple.radiusProperty(), 0), new KeyValue(
-								ripple.opacityProperty(), 0.5)), new KeyFrame(
-						Duration.seconds(0.4), new KeyValue(ripple
-								.radiusProperty(), 100), new KeyValue(ripple
-								.opacityProperty(), 0)));
-				tl.setOnFinished(evt -> ((Pane) PlayButton.getParent())
-						.getChildren().remove(ripple));
-				tl.play();
-
-				ScaleTransition pulse = new ScaleTransition(Duration
-						.seconds(1.2), PlayButton);
-				pulse.setFromX(0.4);
-				pulse.setFromY(0.4);
-				pulse.setToX(0.45);
-				pulse.setToY(0.45);
-				pulse.setAutoReverse(true);
-				pulse.setCycleCount(Animation.INDEFINITE);
-				pulse.play();
-			});
+			ScaleTransition pulse = new ScaleTransition(Duration.seconds(1.2),
+					PlayButton);
+			pulse.setFromX(0.4);
+			pulse.setFromY(0.4);
+			pulse.setToX(0.45);
+			pulse.setToY(0.45);
+			pulse.setAutoReverse(true);
+			pulse.setCycleCount(Animation.INDEFINITE);
+			pulse.play();
+		});
 		PlayButton.setOnMouseEntered(e -> {
 			PlayButton.setScaleX(0.5);
 			PlayButton.setScaleY(0.5);
@@ -148,34 +143,36 @@ public class GameView extends StackPane {
 
 	public void playAll() {
 
-		boolean done=false;
-		try{
-			System.out.println("selectd card is " + game.getPlayers().get(0).getSelectedCard().getName());
+		boolean done = false;
+		try {
+			System.out.println("selectd card is "
+					+ game.getPlayers().get(0).getSelectedCard().getName());
 			playPlayer();
-			done=true;
-		}catch (Exception ex){
-			Card selected=game.getPlayers().get(0).getSelectedCard();
+			done = true;
+		} catch (Exception ex) {
+			Card selected = game.getPlayers().get(0).getSelectedCard();
 			game.deselectAll();
 			System.out.println(ex.getMessage());
 
-				if(selected==null){
-					showExceptionWindow(ex.getMessage());
+			if (selected == null) {
+				showExceptionWindow(ex.getMessage());
 
-				}else{
-					boolean discard=makeExceptionWindowDiscardCard(ex.getMessage());
-					if(discard){
-						game.getPlayers().get(0).getHand().remove(selected);
-						game.getFirePit().add(selected);
-						game.endPlayerTurn();
-						this.refresh();
-						done=true;
-					}
+			} else {
+				boolean discard = makeExceptionWindowDiscardCard(ex
+						.getMessage());
+				if (discard) {
+					game.getPlayers().get(0).getHand().remove(selected);
+					game.getFirePit().add(selected);
+					game.endPlayerTurn();
+					this.refresh();
+					done = true;
 				}
 			}
+		}
 
-		if(done){ 
+		if (done) {
 			playCPU();
-			PlayButton.setDisable(true); // Disable the button immediately
+			PlayButton.setDisable(true);
 		}
 
 	}
@@ -191,7 +188,6 @@ public class GameView extends StackPane {
 		}
 
 		game.endPlayerTurn();
-		// System.out.println("here3");
 		if (efficient)
 			refresh();
 		else
@@ -205,39 +201,35 @@ public class GameView extends StackPane {
 			draw();
 		Timeline replay = new Timeline(new KeyFrame(Duration.seconds(2),
 				ev -> {
-					// idx++;
-					// playerViews.getPlayerViews().get(idx).setActive(true);
-				if (game.canPlayTurn()) {
-					try {
-						game.playPlayerTurn();
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						// e1.printStackTrace();
-					}
 
-					// System.out.println(game.getFirePit().size()+" "+game.getFirePit().get(game.getFirePit().size()-1).getName());
-					// System.out.println(game.getActivePlayerColour());
-				}
-				game.endPlayerTurn();
-				if (efficient)
-					refresh();
-				else
-					draw();
-				// ----------------------
-				System.out.println("");
-				System.out.println("Current hands:");
-				for (int i = 0; i < game.getPlayers().size(); i++) {
-					Player p = game.getPlayers().get(i);
-					System.out.print(p.getName() + ": ");
-					for (Card c : p.getHand()) {
-						System.out.print(c.getName() + " ");
+					if (game.canPlayTurn()) {
+						try {
+							game.playPlayerTurn();
+						} catch (Exception e1) {
+
+						}
+
 					}
-					System.out.println();
-				}
-			}));
+					game.endPlayerTurn();
+					if (efficient)
+						refresh();
+					else
+						draw();
+
+					System.out.println("");
+					System.out.println("Current hands:");
+					for (int i = 0; i < game.getPlayers().size(); i++) {
+						Player p = game.getPlayers().get(i);
+						System.out.print(p.getName() + ": ");
+						for (Card c : p.getHand()) {
+							System.out.print(c.getName() + " ");
+						}
+						System.out.println();
+					}
+				}));
 		replay.setCycleCount(3);
 		replay.setOnFinished(e -> {
-			PlayButton.setDisable(false); // Re-enable after CPU is done
+			PlayButton.setDisable(false);
 		});
 
 		replay.play();
@@ -246,21 +238,14 @@ public class GameView extends StackPane {
 	public void draw() {
 		this.getChildren().clear();
 		boardView = new BoardView(game.getBoard(), game);
-		// boardView.setMinSize(300, 300);
-		// boardView.setMaxSize(300, 300);
+
 		handsView = new HandsView(game);
 		handsView.setMaxSize(1400, 1000);
 		homesView = new HomesView(game.getPlayers(), game);
 		homesView.setMaxSize(700, 700);
 		playerViews = new PlayerViews(game);
 		playerViews.setMaxSize(1100, 900);
-		// playerViews.setStyle("-fx-background-color: green;");
-		// for (Player p : game.getPlayers()){
-		// System.out.println(p.getName()+": ");
-		// for (Card card : p.getHand()){
-		// System.out.println(card.getName());
-		// }
-		// }
+
 		firePitView = new FirePitView(game);
 		this.getChildren().addAll(playerViews, homesView, handsView, boardView,
 				PlayButton, firePitView);
@@ -270,8 +255,6 @@ public class GameView extends StackPane {
 		StackPane.setAlignment(playerViews, Pos.CENTER);
 		StackPane.setAlignment(PlayButton, Pos.BOTTOM_RIGHT);
 
-		// this.getChildren().add(animationLayer);
-		// this.setPadding(new Insets(10));
 	}
 
 	public void refresh() {
@@ -279,17 +262,11 @@ public class GameView extends StackPane {
 			System.out.print(cell.isTrap() ? "1" : "0");
 		}
 		System.out.println();
-		// System.out.println("here0");
 		boardView.refresh();
-		// System.out.println("here1");
 		handsView.refresh();
-		// System.out.println("here2");
 		homesView.refresh();
-		// System.out.println("here3");
 		playerViews.refresh();
-		// System.out.println("here4");
 		firePitView.refresh();
-		// System.out.println("here5");
 	}
 
 	public void showExceptionWindow(String message) {

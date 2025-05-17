@@ -51,21 +51,7 @@ public class GameController extends Application {
 		        gameView.playAll();
 		    }
 		});
-		
-		
-//		for (CardView cv : gameView.getHandsView().getHands().get(0).getCardViews()){
-//			cv.setOnMouseClicked(e -> {
-//				try{
-//					//redraw();
-//					game.deselectAll();
-//					game.selectCard(cv.getCard());
-//					cv.refresh();
-//					System.out.println("card is selected");
-//				}catch(Exception exc){
-//					System.out.println(exc.getMessage());
-//				}
-//			});
-//		}
+
 		stage.setScene(scene);
 		stage.setMaxHeight(screenHeight);
 		stage.setWidth(screenWidth);

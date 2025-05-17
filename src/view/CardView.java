@@ -15,127 +15,141 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 
-public class CardView extends ImageView{
-	private  Card card ; 
+public class CardView extends ImageView {
+	private Card card;
 	private Game game;
 	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-    double screenWidth = screenBounds.getWidth();
-    double screenHeight = screenBounds.getHeight();
+	double screenWidth = screenBounds.getWidth();
+	double screenHeight = screenBounds.getHeight();
 	private boolean orientation;
-	public CardView(Game game, Card card ,boolean f){
-		f=true;
+
+	public CardView(Game game, Card card, boolean f) {
+		f = true;
 		this.game = game;
 		this.orientation = f;
-		this.card  = card;
+		this.card = card;
 		refresh();
 		action();
 	}
-	public void action(){
+
+	public void action() {
 		refresh();
 		this.setOnMouseEntered(e -> {
-		    this.hover(true);
+			this.hover(true);
 		});
 
 		this.setOnMouseExited(e -> {
-		    this.hover(false);
+			this.hover(false);
 		});
 		this.setOnMouseClicked(e -> {
-			try{
-
-				//redraw();
+			try {
 				game.deselectAll();
 				refresh();
 				game.selectCard(this.getCard());
 				refresh();
 				System.out.println("card is selected");
-			}catch(Exception exc){
+			} catch (Exception exc) {
 				System.out.println(exc.getMessage());
 			}
 		});
 	}
-	
-	
-	public void hover(boolean f){
-		if (game.getPlayers().get(0).getHand().contains(card)){
-			if (game.getPlayers().get(0).getSelectedCard()==this.card){
+
+	public void hover(boolean f) {
+		if (game.getPlayers().get(0).getHand().contains(card)) {
+			if (game.getPlayers().get(0).getSelectedCard() == this.card) {
 				return;
 			}
-			if (f){
+			if (f) {
 				this.setScaleX(1.2);
 				this.setScaleY(1.2);
-			}
-			else{
+			} else {
 				this.setScaleX(1.0);
 				this.setScaleY(1.0);
 			}
 		}
 
 	}
-	private void drawCard(){
+
+	private void drawCard() {
 		this.setImage(new Image(getPath()));
 		this.setPreserveRatio(true);
-	    this.setFitWidth(screenWidth * 0.04); 
-	    this.setFitHeight(screenHeight*0.1);
+		this.setFitWidth(screenWidth * 0.04);
+		this.setFitHeight(screenHeight * 0.1);
 	}
-	private void drawCPUCard(){
+
+	private void drawCPUCard() {
 		this.setImage(new Image("cardss/Card back.png"));
 		this.setPreserveRatio(true);
-	    this.setFitWidth(screenWidth * 0.04); 
-	    this.setFitHeight(screenHeight*0.1);
+		this.setFitWidth(screenWidth * 0.04);
+		this.setFitHeight(screenHeight * 0.1);
 	}
-	public void setCard(Card card){
+
+	public void setCard(Card card) {
 		this.card = card;
 		refresh();
 	}
-	
-	public void formatNotSelected(){
+
+	public void formatNotSelected() {
 		this.setScaleX(1.0);
 		this.setScaleY(1.0);
 	}
-	
-	public void formatSelected(){
+
+	public void formatSelected() {
 		this.setStyle("-fx-border-color: lightblue; -fx-border-width: 50;");
 		this.setScaleX(0.3);
 		this.setScaleY(0.3);
 	}
-	
-	public void refresh(){
-		if (game.getPlayers().get(0).getSelectedCard()!=this.card) formatNotSelected();
-		else formatSelected();
-		if (orientation) drawCard();
-		else drawCPUCard();
+
+	public void refresh() {
+		if (game.getPlayers().get(0).getSelectedCard() != this.card)
+			formatNotSelected();
+		else
+			formatSelected();
+		if (orientation)
+			drawCard();
+		else
+			drawCPUCard();
 	}
-	
-	public String getPath(){
-		if(card==null){
+
+	public String getPath() {
+		if (card == null) {
 			return "cardss/baby.jpg";
 		}
-		String path ="cardss/";
-		if ( this.card instanceof Standard ){
-			Standard c = (Standard) this.card ; 
-			if (c.getRank()>=2 && c.getRank()<=10){
-				path += ""+c.getRank();
+		String path = "cardss/";
+		if (this.card instanceof Standard) {
+			Standard c = (Standard) this.card;
+			if (c.getRank() >= 2 && c.getRank() <= 10) {
+				path += "" + c.getRank();
 			}
-			if(c.getRank() == 1 )path+="A";
-			if(c.getRank() == 11 )path+="J";
-			if(c.getRank() == 12 )path+="Q";
-			if(c.getRank() == 13 )path+="K";
-			
-			if(c.getSuit() ==  Suit.CLUB)path+="1";
-			if(c.getSuit() ==  Suit.SPADE)path+="2";
-			if(c.getSuit() ==  Suit.HEART)path+="3";
-			if(c.getSuit() ==  Suit.DIAMOND)path+="4";
-		}else{
-			 if ( this.card instanceof Burner)path+="A1";
-			 if ( this.card instanceof Saver)path+="A1";
+			if (c.getRank() == 1)
+				path += "A";
+			if (c.getRank() == 11)
+				path += "J";
+			if (c.getRank() == 12)
+				path += "Q";
+			if (c.getRank() == 13)
+				path += "K";
+
+			if (c.getSuit() == Suit.CLUB)
+				path += "1";
+			if (c.getSuit() == Suit.SPADE)
+				path += "2";
+			if (c.getSuit() == Suit.HEART)
+				path += "3";
+			if (c.getSuit() == Suit.DIAMOND)
+				path += "4";
+		} else {
+			if (this.card instanceof Burner)
+				path += "A1";
+			if (this.card instanceof Saver)
+				path += "A1";
 		}
 		path += ".png";
 		return path;
 	}
+
 	public Card getCard() {
 		return card;
 	}
 
-
-	
 }
