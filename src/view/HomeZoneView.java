@@ -34,7 +34,7 @@ public class HomeZoneView extends GridPane {
 		int[] dy ={0,-1,0,1};
 		ArrayList<Marble> marbles=player.getMarbles();
 		for (int i =0; i < 4; i++){
-			Cell c = new Cell(CellType.BASE);
+			Cell c = new Cell(CellType.NORMAL);
 			CellView cv;
 			if (i < num){
 				c.setMarble(marbles.get(i));
