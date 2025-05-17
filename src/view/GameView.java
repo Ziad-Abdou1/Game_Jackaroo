@@ -1,24 +1,9 @@
 package view;
 
-import java.security.acl.Group;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import java.util.ArrayList;
 
-import model.card.Card;
+import model.card.standard.*;
+import model.card.*;
 import model.player.Marble;
 import model.player.Player;
 import javafx.animation.Animation;
@@ -33,12 +18,27 @@ import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import javafx.scene.input.KeyCode;
+
 import engine.Game;
 import engine.board.Board;
 import engine.board.Cell;
@@ -74,7 +74,6 @@ public class GameView extends StackPane {
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), e -> {
 			if (!game.canPlayTurn() && game.getActivePlayerColour()==game.getPlayers().get(0).getColour()){
 				game.endPlayerTurn();
-				
 				playCPU();
 			}
 		}));
@@ -84,41 +83,7 @@ public class GameView extends StackPane {
 	
 		
 		PlayButton.setOnMouseClicked(e -> {
-			try{
-				if (game.canPlayTurn()){
-//					PauseTransition pause = new PauseTransition(Duration.seconds(1));
-//					pause.setOnFinished(event -> {
-//					    // this code runs 1 second later, on the JavaFX thread
-//					});
-//					pause.play();
-
-//					MarbleView mv = this.getBoardView()
-//	                        .getCellToView()    // your Map<Cell,CellView>
-//	                        .get(modelCell)     // the Cell the marble *left*
-//	                        .getMarbleView();   // add a getter for this in CellView
-					game.playPlayerTurn();
-//					
-//
-//					CellView cv = this.getBoardView()
-//					                      .getCellToView()
-//					                      .get(targetCell);
-					//Card store =firePitView.topCardView.getCard();
-					draw();
-					
-//					playerViews.getPlayerViews().get(0).setActive(false);
-				}
-				
-				game.endPlayerTurn();
-				draw();
-			System.out.println(game.getFirePit().size()+" "+game.getFirePit().get(game.getFirePit().size()-1).getName());
-					
-					playCPU();
-
-
-			}catch (Exception ex){
-				game.deselectAll();
-				System.out.println(ex.getMessage());
-			}
+			playAll();
 		});
 		PlayButton.setOnMouseEntered(e -> {
 			PlayButton.setScaleX(0.5);
@@ -129,7 +94,48 @@ public class GameView extends StackPane {
 			PlayButton.setScaleY(0.4);
 		});
 	}
+	public void playAll() {
+		try{
+			playPlayer();
+		System.out.println(game.getFirePit().size()+" "+game.getFirePit().get(game.getFirePit().size()-1).getName());
+				
+				playCPU();
 
+
+		}catch (Exception ex){
+			game.deselectAll();
+			System.out.println(ex.getMessage());
+			makeExceptionWindow(ex.getMessage());
+		}
+	
+	}
+	public void playPlayer() throws Exception{
+		if (game.canPlayTurn()){
+//			PauseTransition pause = new PauseTransition(Duration.seconds(1));
+//			pause.setOnFinished(event -> {
+//			    // this code runs 1 second later, on the JavaFX thread
+//			});
+//			pause.play();
+
+//			MarbleView mv = this.getBoardView()
+//                    .getCellToView()    // your Map<Cell,CellView>
+//                    .get(modelCell)     // the Cell the marble *left*
+//                    .getMarbleView();   // add a getter for this in CellView
+			game.playPlayerTurn();
+//			
+//
+//			CellView cv = this.getBoardView()
+//			                      .getCellToView()
+//			                      .get(targetCell);
+			//Card store =firePitView.topCardView.getCard();
+			draw();
+			
+//			playerViews.getPlayerViews().get(0).setActive(false);
+		}
+		
+		game.endPlayerTurn();
+		draw();
+	}
 	public void playCPU(){
 		draw();
 		Timeline replay = new Timeline(new KeyFrame(Duration.seconds(2), ev -> {
@@ -193,6 +199,45 @@ replay.play();
 		
 //		this.getChildren().add(animationLayer);
 //		this.setPadding(new Insets(10));
+	}
+	public void makeExceptionWindow(String message) {
+	    // 1) Create a new window (Stage)
+	    Stage dialog = new Stage(StageStyle.UNDECORATED);
+	    dialog.initModality(Modality.APPLICATION_MODAL);
+	    dialog.setResizable(false);
+
+	    // 2) Build the content
+	    Label lbl = new Label(message);
+	    lbl.setWrapText(true);
+	    lbl.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
+	    lbl.setTextFill(Color.DARKRED);
+	    lbl.setAlignment(Pos.CENTER);
+
+	    Button ok = new Button("OK");
+	    ok.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 12));
+	    ok.setOnAction(e -> dialog.close());
+
+	    VBox root = new VBox(20, lbl, ok);
+	    root.setPadding(new Insets(20));
+	    root.setAlignment(Pos.CENTER);
+	    root.setBackground(new Background(new BackgroundFill(
+	        Color.web("#FFF5F5"),  // very light red background
+	        new CornerRadii(10),    // rounded corners
+	        Insets.EMPTY)));
+
+	    Scene scene = new Scene(root);
+	    
+	    // 3) Close on Enter or Esc
+	    scene.setOnKeyPressed(evt -> {
+	        if (evt.getCode() == KeyCode.ENTER || evt.getCode() == KeyCode.ESCAPE) {
+	            dialog.close();
+	        }
+	    });
+
+	    // 4) Show it centered over your main window
+	    dialog.setScene(scene);
+	    dialog.centerOnScreen();
+	    dialog.showAndWait();
 	}
 	public HandsView getHandView(){return this.handsView;}
 	public Rectangle2D getScreenBounds() {
@@ -274,6 +319,8 @@ replay.play();
 //        });
 //        tt.play();
 //    }
+	
+
 	
 	
 }
