@@ -44,6 +44,8 @@ public class MarbleView extends StackPane {
 					//game.selectMarble(this.marble);
 				} catch (Exception exc) {
 					System.out.println(exc.getMessage());
+					((GameView)this.getScene().getRoot()).showExceptionWindow(exc.getMessage());
+					
 				}
 			});
 

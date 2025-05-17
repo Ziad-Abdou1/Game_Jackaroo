@@ -50,6 +50,7 @@ public class CardView extends ImageView {
 				System.out.println("card is selected");
 			} catch (Exception exc) {
 				System.out.println(exc.getMessage());
+				((GameView)this.getScene().getRoot()).showExceptionWindow(exc.getMessage());
 			}
 		    ((GameView)this.getScene().getRoot()).refresh();
 		});

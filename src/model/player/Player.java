@@ -32,7 +32,6 @@ public class Player {
         for (int i = 0; i < 4; i++) {
             this.marbles.add(new Marble(colour));
         }
-        
         //default value
         this.selectedCard = null;
     }

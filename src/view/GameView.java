@@ -1,6 +1,9 @@
 package view;
 
 import java.util.ArrayList;
+import java.util.Objects;
+
+import com.sun.javafx.scene.control.SelectedCellsMap;
 
 import model.card.standard.*;
 import model.card.*;
@@ -82,6 +85,7 @@ public class GameView extends StackPane {
 					System.out.println("card is selected");
 				} catch (Exception exc) {
 					System.out.println(exc.getMessage());
+					showExceptionWindow(exc.getMessage());
 				}
 			});
 		}
@@ -98,6 +102,7 @@ public class GameView extends StackPane {
 					if (!game.canPlayTurn()
 							&& game.getActivePlayerColour() == game
 									.getPlayers().get(0).getColour()) {
+						cleanFirePitFromNull();
 						game.endPlayerTurn();
 						playCPU();
 					}
@@ -164,6 +169,7 @@ public class GameView extends StackPane {
 				if (discard) {
 					game.getPlayers().get(0).getHand().remove(selected);
 					game.getFirePit().add(selected);
+					cleanFirePitFromNull();
 					game.endPlayerTurn();
 					this.refresh();
 					done = true;
@@ -178,10 +184,11 @@ public class GameView extends StackPane {
 	}
 
 	public void playPlayer() throws Exception {
+		ArrayList<Marble> selectedMarbles = new ArrayList<>();
 		if (game.canPlayTurn()) {
 			ArrayList<CellView> cellViews = boardView.getTrackView();
 			ArrayList<CellView>[] safeZoneViews = boardView.getSafeZoneView();
-			ArrayList<Marble> selectedMarbles = new ArrayList<>();
+
 			for (int i = 0; i < safeZoneViews.length; i++){
 				for (CellView cv : safeZoneViews[i]) cellViews.add(cv);
 			}
@@ -207,12 +214,25 @@ public class GameView extends StackPane {
 		}
 		 ArrayList<Cell> track = game.getBoard().getTrack();
 		 ArrayList<SafeZone> safeZones = game.getBoard().getSafeZones();
-		 for(Cell c : track){
-			// if(c.getMarble()!=null && c.getMarble()){
-				 
+		 for(int i=0;i<safeZones.size();i++){
+			 for(Cell cell:safeZones.get(i).getCells()){
+				 track.add(cell);
 			 }
 		 }
-		
+		 int trap=0;
+		 loop:for(Marble m:selectedMarbles){
+			 boolean found=false;
+			 for(Cell cell:track){
+				 if(cell.getMarble()==m){
+					break loop;
+				 }
+			 }
+			 trap++;
+		 }
+		if(trap>0){
+			showExceptionWindow(trap+" marbles fell into trap");
+		}
+		cleanFirePitFromNull();
 		game.endPlayerTurn();
 		game.deselectAll();
 		if (efficient)
@@ -232,11 +252,12 @@ public class GameView extends StackPane {
 					if (game.canPlayTurn()) {
 						try {
 							game.playPlayerTurn();
-						} catch (Exception e1) {
-
+						} catch (Exception exc) {
+							showExceptionWindow(exc.getMessage());
 						}
 
 					}
+					cleanFirePitFromNull();
 					game.endPlayerTurn();
 					if (efficient)
 						refresh();
@@ -488,6 +509,11 @@ public class GameView extends StackPane {
 	public void setPlayerViews(PlayerViews playerViews) {
 		this.playerViews = playerViews;
 	}
+	public void cleanFirePitFromNull() {
+	    ArrayList<Card> firePit = game.getFirePit();
+	    firePit.removeIf(Objects::isNull);
+	}
+
 	// public void animateMove(MarbleView marble, CellView target) {
 	// // compute start/end in GameView’s local coordinates
 	// Bounds startScene = marble.localToScene(marble.getBoundsInLocal());
