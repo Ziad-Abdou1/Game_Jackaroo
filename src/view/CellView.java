@@ -43,9 +43,21 @@ public class CellView extends StackPane {
 			circle.setFill(Color.BLACK);
 		}
 	}
+	
+	public void refresh(){
+		if (cell.isTrap()){
+			circle.setFill(Color.BLACK);
+		}
+		else{
+			circle.setFill(Color.DARKGRAY);
+		}
+	}
+	
 	public void setCell(Cell cell) {
 		this.cell = cell;
-		marbleView.setMarble(cell.getMarble());
+		circle.setFill(Color.DARKGRAY);
+		marbleView.setMarble(null);   //--------------
+		refresh();
 	}
 
 

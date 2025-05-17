@@ -57,13 +57,6 @@ public class CardView extends ImageView{
 		});
 	}
 	
-//	public boolean canWork(){
-//		ArrayList<Marble> activeMarbles = game.getBoard().getActionableMarbles();
-//		//sz=0
-//		if (card.validateMarbleSize(new ArrayList<Marble>()) && card.validateMarbleColours(new ArrayList<Marble>()));
-//		
-//		//sz=1
-//	}
 	
 	public void hover(boolean f){
 		if (game.getPlayers().get(0).getHand().contains(card)){

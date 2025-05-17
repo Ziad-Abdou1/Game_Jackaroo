@@ -57,7 +57,7 @@ public class GameView extends StackPane {
 	private PlayerViews playerViews;
 	private FirePitView firePitView;
 	int idx=0;
-	
+	private boolean efficient = false;
 
 	public GameView(Game game){
 		this.game = game;
@@ -157,16 +157,19 @@ public class GameView extends StackPane {
 //			                      .getCellToView()
 //			                      .get(targetCell);
 			//Card store =firePitView.topCardView.getCard();
-			draw();
+			if (efficient) refresh();
+			else draw();
 			
 //			playerViews.getPlayerViews().get(0).setActive(false);
 		}
 		
 		game.endPlayerTurn();
-		draw();
+		if (efficient) refresh();
+		else draw();
 	}
 	public void playCPU(){
-		draw();
+		if (efficient) refresh();
+		else draw();
 		Timeline replay = new Timeline(new KeyFrame(Duration.seconds(2), ev -> {
 //	    	idx++;
 //	    	playerViews.getPlayerViews().get(idx).setActive(true);
@@ -182,7 +185,8 @@ public class GameView extends StackPane {
 		    	System.out.println(game.getActivePlayerColour());
 	    	}
 	    	game.endPlayerTurn();
-	    	draw();
+			if (efficient) refresh();
+			else draw();
 	    	//----------------------
 	    	System.out.println("");
 	    	System.out.println("Current hands:");
@@ -229,6 +233,15 @@ replay.play();
 //		this.getChildren().add(animationLayer);
 //		this.setPadding(new Insets(10));
 	}
+	
+	public void refresh(){
+		boardView.refresh();
+		handsView.refresh();
+		homesView.refresh();
+		playerViews.refresh();
+		firePitView.refresh();
+	}
+	
 	public void makeExceptionWindow(String message) {
 	    // 1) Create a new window (Stage)
 	    Stage dialog = new Stage(StageStyle.UNDECORATED);

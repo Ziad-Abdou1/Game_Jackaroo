@@ -70,8 +70,10 @@ public class MarbleView extends StackPane {
 		circle.setRadius(radius);
 		if (marble==null){
 			//circle.setFill(Color.GREY);
+			circle.setOpacity(0);
 		}
 		else{
+			circle.setOpacity(1);
 			Colour clr = marble.getColour();
 			if (clr == Colour.BLUE) circle.setFill(Color.BLUE);
 			if (clr == Colour.YELLOW) circle.setFill(Color.YELLOW);

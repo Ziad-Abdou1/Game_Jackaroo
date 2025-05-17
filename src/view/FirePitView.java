@@ -50,7 +50,7 @@ public class FirePitView extends StackPane {
 		 this.setPrefWidth(screenWidth * WIDTH_RATIO);
 		 this.setPrefHeight(screenHeight *HEIGHT_RATIO);
 		this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-		refresh();
+		draw();
 	}
 
 	/**
@@ -60,7 +60,16 @@ public class FirePitView extends StackPane {
 	public void setTopCardView(CardView topCardView){
 		this.topCardView=topCardView;
 	}
-	public void refresh() {
+	
+	public Card getTopCard(){
+		Card ret = null;
+		for (Card c : game.getFirePit()){
+			if (c != null) ret = c;
+		}
+		return ret;
+	}
+	
+	public void draw() {
 		// remove old top card if present
 		if (topCardView != null) {
 			this.getChildren().remove(topCardView);
@@ -68,8 +77,8 @@ public class FirePitView extends StackPane {
 		}
 		// get the latest card
 		int size = game.getFirePit().size();
-		if (size > 0) {
-			Card topCard = game.getFirePit().get(size - 1);
+		Card topCard = getTopCard();
+		if (topCard != null) {
 			topCardView = new CardView(game, topCard, true);
 
 			// scale it down so it fits nicely inside the pit
@@ -79,5 +88,16 @@ public class FirePitView extends StackPane {
 			this.getChildren().add(topCardView);
 			StackPane.setAlignment(topCardView, Pos.CENTER);
 		}	
+	}
+	
+	public void refresh(){
+		Card topCard = getTopCard();
+		if (topCard!=null) {
+			topCardView.setCard(topCard);
+			if (this.getChildren().size()==0) this.getChildren().add(topCardView);
+		}
+		else{
+			this.getChildren().clear();
+		}
 	}
 }

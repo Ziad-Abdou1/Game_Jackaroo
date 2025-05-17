@@ -19,12 +19,15 @@ import model.card.Card;
 import model.card.Deck;
 import model.player.*;
 
-@SuppressWarnings("unused")
+
 public class Game implements GameManager {
     private final Board board;
     private final ArrayList<Player> players;
+    // representing which of the players should play next.
 	private int currentPlayerIndex;
+	//  representing the cards that have been played / discarded in the game.
     private final ArrayList<Card> firePit;
+    
     private int turn;
 
     public Game(String playerName) throws IOException {
@@ -38,8 +41,10 @@ public class Game implements GameManager {
         
         Collections.shuffle(colourOrder);
         
+        // how he send "this" 
         this.board = new Board(colourOrder, this);
         
+        // Loads the card pool from the deck to ensure all cards are ready for gameplay
         Deck.loadCardPool(this.board, (GameManager)this);
         
         this.players = new ArrayList<>();
@@ -53,132 +58,122 @@ public class Game implements GameManager {
         
     }
     
-    public Board getBoard() {
-        return board;
+  //------Milestone 2------
+    public void selectCard(Card card) throws InvalidCardException{ // selects a card to the current player
+    	players.get(currentPlayerIndex).selectCard(card); 
+    }
+    public void selectMarble(Marble marble) throws InvalidMarbleException{ // selects a marble to the current player
+    	players.get(currentPlayerIndex).selectMarble(marble);
+    }
+    public void deselectAll(){
+    	players.get(currentPlayerIndex).deselectAll();
+    }
+    public void editSplitDistance(int splitDistance) throws SplitOutOfRangeException{
+    	if(splitDistance > 6 || splitDistance <1 ){
+    		throw new SplitOutOfRangeException("The splitDistance is out of Range");
+    	}
+    	
+    	board.setSplitDistance(splitDistance); //The splitDistance represents how far the first marble moves, with the remainder applied to the second marble (7 - splitDistance).
+    	
+    }
+    public boolean canPlayTurn(){ // checks if the player still can play in this turn or not.
+    	if(players.get(currentPlayerIndex).getHand().size()+turn != 4){
+    		return false;
+    	}
+    	return true;
+    }
+    public void playPlayerTurn() throws GameException{ // starts the player's turn.
+    	players.get(currentPlayerIndex).play();
+    }
+    public void endPlayerTurn(){ // ends the player's turn.
+    	Card c=players.get(currentPlayerIndex).getSelectedCard();
+//    	if(c!=null){
+    		firePit.add(c);
+    		players.get(currentPlayerIndex).getHand().remove(c);
+//    	}
+//    	System.out.println(firePit.size());
+    	players.get(currentPlayerIndex).deselectAll();
+    	currentPlayerIndex=(currentPlayerIndex+1)%4; 
+    	if(currentPlayerIndex==0)
+    		turn++;
+    	if(turn == 4){
+    		for(int i =0;i<4;i++){
+    			if(Deck.getPoolSize()<4){
+    				Deck.refillPool(firePit);
+    				firePit.clear();
+    			}
+//    			System.out.println(Deck.getPoolSize());
+    			players.get(i).setHand(Deck.drawCards());
+    		}
+    		turn = 0;
+    	}
+    	
+    }
+    public Colour checkWin(){ //checks if anyone has won.
+    	for(SafeZone s:board.getSafeZones()){
+    		if(s.isFull())
+    			return s.getColour();
+    	}
+    	
+    	return null;
+    }
+    public void sendHome(Marble marble){ // finds who's marble and send it to his home.
+    	for(Player p :players){
+    		if(marble.getColour()==(p.getColour())){
+    			p.regainMarble(marble);
+    			break;
+    		}
+    	}
+    }
+    public void fieldMarble() throws CannotFieldException, IllegalDestroyException{ // tries to take a marble from the home zone and put it in the field(Base cell).
+    	Player p=players.get(currentPlayerIndex);
+    	Marble m=p.getOneMarble();
+    	if(m == null)
+    		throw new CannotFieldException("No Marbles left in the Home!");
+    	board.sendToBase(m);
+    	p.getMarbles().remove(m);
+    }
+    public void discardCard(Colour colour) throws CannotDiscardException{ // removes a random card from the player with the given colour.
+    	for(Player p : players){
+    		if(p.getColour()==(colour)){
+    			ArrayList<Card> temp = p.getHand();
+    			if(temp.size()==0)
+    				throw new CannotDiscardException("No Cards to be discarded!");
+    			int randomindex = (int)(Math.random()*temp.size());
+    			Card c=temp.remove(randomindex);
+    			firePit.add(c);
+    			break;
+    		}
+    		
+    	}
+    }
+    public void discardCard() throws CannotDiscardException{ //Discards a random card from the hand of a random player colour other than the current.
+    	int randomindex = currentPlayerIndex;
+    	while(randomindex==currentPlayerIndex){
+    		randomindex= (int)(Math.random()*4);
+    	}
+    	discardCard(players.get(randomindex).getColour());
+    }
+    public Colour getActivePlayerColour(){ // Returns the colour of the current player.
+    	return players.get(currentPlayerIndex).getColour();
+    }
+    public Colour getNextPlayerColour(){ // Returns the colour of the next player.
+    	return players.get((currentPlayerIndex+1)%4).getColour();
     }
 
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
+    //--------------------------------------------------------------------------
+	public ArrayList<Card> getFirePit() {
+		return firePit;
+	}
 
-    public ArrayList<Card> getFirePit() {
-        return firePit;
-    }
+	public Board getBoard() {
+		return board;
+	}
+
+	public ArrayList<Player> getPlayers() {
+		return players;
+	}
+	
+
     
-    public void selectCard(Card card) throws InvalidCardException {
-        players.get(currentPlayerIndex).selectCard(card);
-    }
-
-    public void selectMarble(Marble marble) throws InvalidMarbleException {
-        players.get(currentPlayerIndex).selectMarble(marble);
-    }
-
-    public void deselectAll() {
-        players.get(currentPlayerIndex).deselectAll();
-    }
-
-    public void editSplitDistance(int splitDistance) throws SplitOutOfRangeException {
-        if(splitDistance < 1 || splitDistance > 6)
-            throw new SplitOutOfRangeException();
-
-        board.setSplitDistance(splitDistance);
-    }
-
-    public boolean canPlayTurn() {
-        return players.get(currentPlayerIndex).getHand().size() == (4 - turn);
-    }
-
-    public void playPlayerTurn() throws GameException {
-        players.get(currentPlayerIndex).play();
-    }
-
-    public void endPlayerTurn() {
-    
-        Card selected = players.get(currentPlayerIndex).getSelectedCard();
-        if(selected!=null){
-		    players.get(currentPlayerIndex).getHand().remove(selected);
-		    firePit.add(selected);
-		   
-        }
-        players.get(currentPlayerIndex).deselectAll();
-        currentPlayerIndex = (currentPlayerIndex + 1) % 4;
-        
-        if(currentPlayerIndex == 0 && turn < 3) 
-            turn++;
-        
-        else if (currentPlayerIndex == 0 && turn == 3) {
-        	turn = 0;
-        	for (Player p : players) {
-              if(Deck.getPoolSize() < 4) {
-	              Deck.refillPool(firePit);
-	              firePit.clear();
-              }
-              ArrayList<Card> newHand = Deck.drawCards();
-              p.setHand(newHand);
-        	}
-        		
-        }
-        
-    }
-
-    public Colour checkWin() {
-        for(SafeZone safeZone : board.getSafeZones()) 
-            if(safeZone.isFull())
-                return safeZone.getColour();
-    
-        return null;
-    }
-
-    @Override
-    public void sendHome(Marble marble) {
-        for (Player player : players) {
-            if (player.getColour() == marble.getColour()) {
-                player.regainMarble(marble);
-                break;
-            }
-        }
-    }
-
-    @Override
-    public void fieldMarble() throws CannotFieldException, IllegalDestroyException {
-        Marble marble = players.get(currentPlayerIndex).getOneMarble();
-        
-        if (marble == null)
-        	throw new CannotFieldException("No marbles left in the Home Zone to field.");
-        
-        board.sendToBase(marble);
-        players.get(currentPlayerIndex).getMarbles().remove(marble);
-    }
-    
-    @Override
-    public void discardCard(Colour colour) throws CannotDiscardException {
-        for (Player player : players) {
-            if (player.getColour() == colour) {
-                int handSize = player.getHand().size();
-                if(handSize == 0)
-                    throw new CannotDiscardException("Player has no cards to discard.");
-                int randIndex = (int) (Math.random() * handSize);
-                this.firePit.add(player.getHand().remove(randIndex));
-            }
-        }
-    }
-
-    @Override
-    public void discardCard() throws CannotDiscardException {
-        int randIndex = (int) (Math.random() * 4);
-        while(randIndex == currentPlayerIndex)
-            randIndex = (int) (Math.random() * 4);
-
-        discardCard(players.get(randIndex).getColour());
-    }
-
-    @Override
-    public Colour getActivePlayerColour() {
-        return players.get(currentPlayerIndex).getColour();
-    }
-
-    @Override
-    public Colour getNextPlayerColour() {
-        return players.get((currentPlayerIndex + 1) % 4).getColour();
-    }
 }

@@ -39,14 +39,18 @@ public class HandsView extends StackPane {
         //this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         //this.setMaxWidth(1300); 
     }
+    
+    public void refresh(){
+    	for (int i =0;i<game.getPlayers().size();i++){
+    		hands.get(i).setHand(game.getPlayers().get(i).getHand());
+    	}
+    }
+    
     public ArrayList<HPlayerCardView> getHands(){return hands;}
     private Pane wrap(HPlayerCardView view, Pos alignment) {
         StackPane wrapper = new StackPane(view);
         wrapper.setAlignment(alignment);
         return wrapper;
     }
-    public void refresh(){
-    	this.getChildren().clear();
-    	draw();
-    }
+
 }

@@ -59,11 +59,30 @@ public class HomeZoneView extends GridPane {
 			    "-fx-background-radius: 5;"
 			);
 	}
+	
+	public void refresh(){
+		int num = player.getMarbles().size();
+		Colour clr = player.getColour();
+		int curi = 1, curj = 1;
+		int[] dx = {-1,0,1,0};
+		int[] dy ={0,-1,0,1};
+		ArrayList<Marble> marbles=player.getMarbles();
+		for (int i =0; i < 4; i++){
+			Cell c = cells.get(i);
+			CellView cv = cellViews.get(i);
+			if (i < num){
+				c.setMarble(marbles.get(i));
+				cv.setCell(c);
+			}
+			else{
+				cv.setCell(c);
+			}
+			curi += dy[i];
+			curj += dx[i];
+		}
+	}
     public void addNode(Node node, int col, int row) {
         this.add(node, col, row);
-    }
-    public void refresh(){
-    	draw();
     }
 	public Game getGame() {
 		return game;

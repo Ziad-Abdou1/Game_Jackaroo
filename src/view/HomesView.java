@@ -35,8 +35,12 @@ public class HomesView extends StackPane {
         this.setAlignment(homes.get(3), Pos.CENTER_RIGHT);
        
 	}
-    
 	
+	public void refresh(){
+		for (int i = 0; i < players.size(); i++){
+			homes.get(i).refresh();
+		}
+	}
 	
 	private Pane wrap(HomeZoneView view, Pos alignment) {
         StackPane wrapper = new StackPane(view);

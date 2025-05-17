@@ -27,7 +27,7 @@ public class HPlayerCardView extends HBox{
 	    	this.orientation = f;
 	    	this.hand=hand;
 	    	handView=new ArrayList<CardView>();
-	    	refresh();
+	    	draw();
 
 	    	this.setSpacing(20);
 	    	this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
@@ -36,11 +36,11 @@ public class HPlayerCardView extends HBox{
 	    public ArrayList<CardView> getCardViews(){return handView;}
 	    public void setHand(ArrayList<Card> hand){
 	    	this.hand = hand;
-	    	handView.clear();
-	    	this.getChildren().clear();
-	    	refresh();
+	    	draw();
 	    }
-	    public void refresh(){
+	   
+	    public void draw(){
+	    	handView.clear();
 	    	for(Card c:hand){
 	    		CardView cv=new CardView(game,c,orientation);
 	    		handView.add(cv);
@@ -48,19 +48,19 @@ public class HPlayerCardView extends HBox{
 	    	}
 	    }
 
-	    public void removeCard(Card card){
-	    	int idx=-1;
-	    	for(int i=0;i<hand.size();i++){
-	    		if(hand.get(i)==card){
-	    			idx=i;
-	    			break;
-	    		}
-	    	}
-	    	if(idx==-1) return; //no usage
-	    	hand.remove(idx);
-	    	handView.clear();
-	    	this.getChildren().clear();
-	    	refresh();
-	    }
+//	    public void removeCard(Card card){
+//	    	int idx=-1;
+//	    	for(int i=0;i<hand.size();i++){
+//	    		if(hand.get(i)==card){
+//	    			idx=i;
+//	    			break;
+//	    		}
+//	    	}
+//	    	if(idx==-1) return; //no usage
+//	    	hand.remove(idx);
+//	    	handView.clear();
+//	    	this.getChildren().clear();
+//	    	draw();
+//	    }
 
 }

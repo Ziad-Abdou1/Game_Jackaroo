@@ -33,7 +33,7 @@ public class BoardView extends GridPane {
     	for (int i=0; i < 4; i++) safeZoneView[i] = new ArrayList<>();
     	trackView = new ArrayList<>();
     	this.board=board;
-    	refresh();
+    	draw();
     }
     public CellView getBaseCellView(Colour clr){
     	int idx=getBasePosition(clr);
@@ -124,9 +124,22 @@ public class BoardView extends GridPane {
     ////----------------------------------------------------------------------------
     
 
-
-
     public void refresh(){
+    	for (int i = 0; i < 100; i++){
+    		Cell cell = board.getTrack().get(i);
+    		trackView.get(i).setCell(cell);
+    		cellToView.put(cell,trackView.get(i));
+    	}
+    	for (int i = 0; i < safeZoneView.length; i++){
+    		for (int j = 0; j < safeZoneView[i].size(); j++){
+    			Cell cell=board.getSafeZones().get(i).getCells().get(j);
+    			safeZoneView[i].get(j).setCell(cell);
+    			cellToView.put(cell,safeZoneView[i].get(j));
+    		}
+    	}
+    }
+
+    public void draw(){
     	
     	
     	//just making background image------------------------------------------------------------------------------------

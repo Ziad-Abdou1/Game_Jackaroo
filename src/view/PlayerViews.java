@@ -47,6 +47,12 @@ public class PlayerViews extends StackPane {
 
 	}
 
+	public void refresh(){
+		for (int i = 0; i < game.getPlayers().size(); i++){
+			playerViews.get(i).refresh();
+		}
+	}
+	
 	public ArrayList<PlayerView> getPlayerViews() {
 		return playerViews;
 	}
