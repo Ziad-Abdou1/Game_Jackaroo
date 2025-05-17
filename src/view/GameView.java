@@ -8,7 +8,9 @@ import model.player.Marble;
 import model.player.Player;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.PauseTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Bounds;
@@ -30,6 +32,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
@@ -38,7 +41,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javafx.scene.input.KeyCode;
-
 import engine.Game;
 import engine.board.Board;
 import engine.board.Cell;
@@ -83,7 +85,34 @@ public class GameView extends StackPane {
 	
 		
 		PlayButton.setOnMouseClicked(e -> {
-			playAll();
+		    playAll();
+		    
+		    // create a ripple circle at click point
+		    Circle ripple = new Circle(0, Color.web("#ffffff50"));
+		    ripple.setCenterX(e.getX());
+		    ripple.setCenterY(e.getY());
+		    ((Pane)PlayButton.getParent()).getChildren().add(ripple);
+
+		    // animate it outwards and fading
+		    Timeline tl = new Timeline(
+		      new KeyFrame(Duration.ZERO,
+		          new KeyValue(ripple.radiusProperty(), 0),
+		          new KeyValue(ripple.opacityProperty(), 0.5)
+		      ),
+		      new KeyFrame(Duration.seconds(0.4),
+		          new KeyValue(ripple.radiusProperty(), 100),
+		          new KeyValue(ripple.opacityProperty(), 0)
+		      )
+		    );
+		    tl.setOnFinished(evt -> ((Pane)PlayButton.getParent()).getChildren().remove(ripple));
+		    tl.play();
+		    
+		    ScaleTransition pulse = new ScaleTransition(Duration.seconds(1.2), PlayButton);
+		    pulse.setFromX(0.4);   pulse.setFromY(0.4);
+		    pulse.setToX(0.45);    pulse.setToY(0.45);
+		    pulse.setAutoReverse(true);
+		    pulse.setCycleCount(Animation.INDEFINITE);
+		    pulse.play();
 		});
 		PlayButton.setOnMouseEntered(e -> {
 			PlayButton.setScaleX(0.5);
