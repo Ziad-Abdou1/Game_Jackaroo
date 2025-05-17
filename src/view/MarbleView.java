@@ -3,6 +3,7 @@ package view;
 import engine.Game;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -36,7 +37,33 @@ public class MarbleView extends StackPane {
 				System.out.println(exc.getMessage()); //to be edited
 			}
 		});
+		DropShadow shadow = new DropShadow();
 		
+		shadow.setColor(getFXColor (marble.getColour()));
+		shadow.setRadius(20); 
+
+		this.setOnMouseEntered(e -> {
+		    circle.setEffect(shadow);
+		    this.setScaleX(1.3);
+			this.setScaleY(1.3);
+			
+		});
+
+		this.setOnMouseExited(e -> {
+		    circle.setEffect(null);
+		    this.setScaleX(1);
+			this.setScaleY(1);
+		});
+		
+	}
+	private Color getFXColor(Colour clr) {
+	    switch (clr) {
+	        case BLUE: return Color.BLUE;
+	        case RED: return Color.RED;
+	        case GREEN: return Color.GREEN;
+	        case YELLOW: return Color.YELLOW;
+	        default: return Color.GRAY;
+	    }
 	}
 	
 	public void refresh(){
