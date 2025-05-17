@@ -48,6 +48,7 @@ import javafx.scene.input.KeyCode;
 import engine.Game;
 import engine.board.Board;
 import engine.board.Cell;
+import engine.board.SafeZone;
 
 public class GameView extends StackPane {
 	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -180,16 +181,23 @@ public class GameView extends StackPane {
 		if (game.canPlayTurn()) {
 			ArrayList<CellView> cellViews = boardView.getTrackView();
 			ArrayList<CellView>[] safeZoneViews = boardView.getSafeZoneView();
+			ArrayList<Marble> selectedMarbles = new ArrayList<>();
 			for (int i = 0; i < safeZoneViews.length; i++){
 				for (CellView cv : safeZoneViews[i]) cellViews.add(cv);
 			}
 			
 			for (CellView cv : cellViews){
 				if (cv.getMarbleView().getMarble()!=null){
-					if (cv.getMarbleView().selected)game.selectMarble(cv.getMarbleView().getMarble());
+					if (cv.getMarbleView().selected){
+						game.selectMarble(cv.getMarbleView().getMarble());
+						selectedMarbles.add(cv.getMarbleView().getMarble());
+					}
 					cv.getMarbleView().resetSelect();
 				}
 			}
+			
+			
+			
 			game.playPlayerTurn();
 			if (efficient)
 				refresh();
@@ -197,7 +205,14 @@ public class GameView extends StackPane {
 				draw();
 
 		}
-
+		 ArrayList<Cell> track = game.getBoard().getTrack();
+		 ArrayList<SafeZone> safeZones = game.getBoard().getSafeZones();
+		 for(Cell c : track){
+			// if(c.getMarble()!=null && c.getMarble()){
+				 
+			 }
+		 }
+		
 		game.endPlayerTurn();
 		game.deselectAll();
 		if (efficient)
