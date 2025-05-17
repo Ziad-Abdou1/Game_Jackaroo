@@ -1,5 +1,7 @@
 package controller;
 
+import java.io.IOException;
+
 import model.card.Card;
 import model.player.Player;
 import view.CardView;
@@ -31,34 +33,52 @@ public class GameController extends Application {
     double screenWidth = screenBounds.getWidth();
     double screenHeight = screenBounds.getHeight();
     GameView gameView;
-	public void start(Stage stage) throws Exception{
-		name = "Adham";
-		Game game = new Game(name);
-		gameView = new GameView(game);
-		Scene scene = new Scene(gameView,screenWidth,screenHeight);
-		System.out.println("Board state:");
-        for (Cell cell : game.getBoard().getTrack()) {
-            System.out.print(cell.isTrap()?"1":"0");
-        }
-        System.out.println();
-    
-		for (int i = 0; i < 4; i++){
-			System.out.println(game.getPlayers().get(i).getColour());
-		}
-		
-		scene.setOnKeyPressed(evt -> {
-		    if (evt.getCode() == KeyCode.ENTER) {
-		        gameView.playAll();
-		    }
-		});
+    @Override
+    public void start(Stage stage) {
+        // Create input pane
+        Pane inputPane = new Pane();
+        javafx.scene.control.TextField nameField = new javafx.scene.control.TextField();
+        javafx.scene.control.Button startButton = new javafx.scene.control.Button("Start Game");
 
-		stage.setScene(scene);
-		stage.setMaxHeight(screenHeight);
-		stage.setWidth(screenWidth);
-		stage.show();
-		
-		
+        nameField.setPromptText("Enter your name");
+        nameField.setLayoutX(100);
+        nameField.setLayoutY(100);
+
+        startButton.setLayoutX(100);
+        startButton.setLayoutY(150);
+
+        inputPane.getChildren().addAll(nameField, startButton);
+        Scene inputScene = new Scene(inputPane, screenWidth, screenHeight);
+        stage.setScene(inputScene);
+        stage.show();
+
+        startButton.setOnAction(e -> {
+            name = nameField.getText().isEmpty() ? "Player" : nameField.getText();
+            try {
+				launchGame(stage);
+			} catch (Exception e1) {
+				System.out.println(e1.getMessage());
+			}
+        });
+    }
+
+	private void launchGame(Stage stage) throws IOException {
+	    Game game = new Game(name);
+	    gameView = new GameView(game);
+	    Scene scene = new Scene(gameView, screenWidth, screenHeight);
+
+	    scene.setOnKeyPressed(evt -> {
+	        if (evt.getCode() == KeyCode.ENTER) {
+	            gameView.playAll();
+	        }
+	    });
+
+	    stage.setScene(scene);
+	    stage.setMaxHeight(screenHeight);
+	    stage.setWidth(screenWidth);
+	    stage.show();
 	}
+
 	private Point2D scenePos(Node node) {
 	    Bounds b = node.localToScene(node.getBoundsInLocal());
 	    return new Point2D(b.getMinX(), b.getMinY());
