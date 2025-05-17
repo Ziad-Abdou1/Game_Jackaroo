@@ -174,11 +174,22 @@ public class GameView extends StackPane {
 			playCPU();
 			PlayButton.setDisable(true);
 		}
-
 	}
 
 	public void playPlayer() throws Exception {
 		if (game.canPlayTurn()) {
+			ArrayList<CellView> cellViews = boardView.getTrackView();
+			ArrayList<CellView>[] safeZoneViews = boardView.getSafeZoneView();
+			for (int i = 0; i < safeZoneViews.length; i++){
+				for (CellView cv : safeZoneViews[i]) cellViews.add(cv);
+			}
+			
+			for (CellView cv : cellViews){
+				if (cv.getMarbleView().getMarble()!=null){
+					if (cv.getMarbleView().selected)game.selectMarble(cv.getMarbleView().getMarble());
+					cv.getMarbleView().resetSelect();
+				}
+			}
 			game.playPlayerTurn();
 			if (efficient)
 				refresh();
@@ -188,6 +199,7 @@ public class GameView extends StackPane {
 		}
 
 		game.endPlayerTurn();
+		game.deselectAll();
 		if (efficient)
 			refresh();
 		else

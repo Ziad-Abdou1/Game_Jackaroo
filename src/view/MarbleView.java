@@ -15,7 +15,7 @@ public class MarbleView extends StackPane {
 	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 	double screenWidth = screenBounds.getWidth();
 	double screenHeight = screenBounds.getHeight();
-
+	boolean selected = false;
 	Game game;
 
 	private Marble marble;
@@ -38,7 +38,10 @@ public class MarbleView extends StackPane {
 			this.setOnMouseClicked(e -> {
 				try {
 					System.out.println("marble is selected");
-					game.selectMarble(this.marble);
+					selected = !selected;
+					if (selected) selectEffect();
+					else deselectEffect();
+					//game.selectMarble(this.marble);
 				} catch (Exception exc) {
 					System.out.println(exc.getMessage());
 				}
@@ -57,13 +60,20 @@ public class MarbleView extends StackPane {
 			});
 
 			this.setOnMouseExited(e -> {
-				circle.setEffect(null);
-				this.setScaleX(1);
-				this.setScaleY(1);
+				if (!selected){
+					circle.setEffect(null);
+					this.setScaleX(1);
+					this.setScaleY(1);
+				}
+
 			});
 		}
 	}
-
+	
+	public void resetSelect(){
+		this.selected = false;
+	}
+	
 	private Color getFXColor(Colour clr) {
 		switch (clr) {
 		case BLUE:
@@ -79,6 +89,21 @@ public class MarbleView extends StackPane {
 		}
 	}
 
+	public void selectEffect(){
+		DropShadow shadow = new DropShadow();
+		shadow.setColor(getFXColor(marble.getColour()));
+		shadow.setRadius(20);
+		circle.setEffect(shadow);
+		this.setScaleX(1.3);
+		this.setScaleY(1.3);
+	}
+	
+	public void deselectEffect(){
+		circle.setEffect(null);
+		this.setScaleX(1);
+		this.setScaleY(1);
+	}
+	
 	public void refresh() {
 		handle();
 		circle.setRadius(radius);
@@ -86,6 +111,8 @@ public class MarbleView extends StackPane {
 			circle.setOpacity(0);
 		} else {
 			circle.setOpacity(1);
+			if (selected) selectEffect();
+			else deselectEffect();
 			Colour clr = marble.getColour();
 			if (clr == Colour.BLUE)
 				circle.setFill(Color.BLUE);
