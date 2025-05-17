@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.Stack;
 
 import model.card.Card;
 import model.player.Player;
@@ -15,80 +16,85 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.geometry.Bounds;
+import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.input.KeyCode;
 
-
 public class GameController extends Application {
 	String name;
 	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-    double screenWidth = screenBounds.getWidth();
-    double screenHeight = screenBounds.getHeight();
-    GameView gameView;
-    @Override
-    public void start(Stage stage) {
-        // Create input pane
-        Pane inputPane = new Pane();
-        javafx.scene.control.TextField nameField = new javafx.scene.control.TextField();
-        javafx.scene.control.Button startButton = new javafx.scene.control.Button("Start Game");
+	double screenWidth = screenBounds.getWidth();
+	double screenHeight = screenBounds.getHeight();
+	GameView gameView;
 
-        nameField.setPromptText("Enter your name");
-        nameField.setLayoutX(100);
-        nameField.setLayoutY(100);
+	@Override
+	public void start(Stage stage) {
+	    javafx.scene.control.TextField nameField = new javafx.scene.control.TextField();
+	    javafx.scene.control.Button startButton = new javafx.scene.control.Button("Start Game");
 
-        startButton.setLayoutX(100);
-        startButton.setLayoutY(150);
+	    nameField.setPromptText("Enter your name");
+	    nameField.setMaxWidth(200);
 
-        inputPane.getChildren().addAll(nameField, startButton);
-        Scene inputScene = new Scene(inputPane, screenWidth, screenHeight);
-        stage.setScene(inputScene);
-        stage.show();
+	    VBox inputBox = new VBox(15);
+	    inputBox.setAlignment(Pos.CENTER);
+	    inputBox.getChildren().addAll(nameField, startButton);
+	    inputBox.setPadding(new Insets(20));
 
-        startButton.setOnAction(e -> {
-            name = nameField.getText().isEmpty() ? "Player" : nameField.getText();
-            try {
-				launchGame(stage);
-			} catch (Exception e1) {
-				System.out.println(e1.getMessage());
-			}
-        });
-    }
+	    Scene inputScene = new Scene(inputBox, 400, 200);
 
-	private void launchGame(Stage stage) throws IOException {
-	    Game game = new Game(name);
-	    gameView = new GameView(game);
-	    Scene scene = new Scene(gameView, screenWidth, screenHeight);
+	    stage.setScene(inputScene);
+	    stage.setTitle("Welcome");
+	    stage.centerOnScreen();
+	    stage.show();
 
-	    scene.setOnKeyPressed(evt -> {
-	        if (evt.getCode() == KeyCode.ENTER) {
-	            gameView.playAll();
+	    startButton.setOnAction(e -> {
+	        name = nameField.getText().isEmpty() ? "Player" : nameField.getText();
+	        try {
+	            launchGame(stage);
+	        } catch (Exception e1) {
+	            System.out.println(e1.getMessage());
 	        }
 	    });
+	}
 
-	    stage.setScene(scene);
-	    stage.setMaxHeight(screenHeight);
-	    stage.setWidth(screenWidth);
-	    stage.show();
+
+	private void launchGame(Stage stage) throws IOException {
+		Game game = new Game(name);
+		gameView = new GameView(game);
+		Scene scene = new Scene(gameView, screenWidth, screenHeight);
+
+		scene.setOnKeyPressed(evt -> {
+			if (evt.getCode() == KeyCode.ENTER) {
+				gameView.playAll();
+			}
+		});
+
+		stage.setScene(scene);
+		stage.setMaxHeight(screenHeight);
+		stage.setWidth(screenWidth);
+		stage.show();
 	}
 
 	private Point2D scenePos(Node node) {
-	    Bounds b = node.localToScene(node.getBoundsInLocal());
-	    return new Point2D(b.getMinX(), b.getMinY());
+		Bounds b = node.localToScene(node.getBoundsInLocal());
+		return new Point2D(b.getMinX(), b.getMinY());
 	}
 
-
-	public void redraw(){
+	public void redraw() {
 		gameView.draw();
 	}
-	public static void main(String[]args){
+
+	public static void main(String[] args) {
 		launch(args);
 	}
 }
