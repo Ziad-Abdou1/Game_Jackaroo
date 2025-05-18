@@ -74,6 +74,7 @@ public class GameView extends StackPane {
 	int idx = 0;
 	private boolean efficient = true;
 	private DetailsView detailsView;
+	private DeckView deckView;
 
 	public GameView(Game game) {
 		this.game = game;
@@ -342,17 +343,19 @@ public class GameView extends StackPane {
 		homesView.setMaxSize(700, 700);
 		playerViews = new PlayerViews(game);
 		playerViews.setMaxSize(1100, 900);
-
 		firePitView = new FirePitView(game);
+		deckView=new DeckView(game);
+		deckView.setMaxSize(500, 500);
+
 		this.getChildren().addAll(detailsView, playerViews, homesView, handsView, boardView,
-				PlayButton, firePitView);
+				PlayButton, firePitView, deckView);
 		StackPane.setAlignment(homesView, Pos.CENTER);
 		StackPane.setAlignment(handsView, Pos.CENTER);
 		StackPane.setAlignment(boardView, Pos.CENTER);
 		StackPane.setAlignment(playerViews, Pos.CENTER);
 		StackPane.setAlignment(PlayButton, Pos.BOTTOM_RIGHT);
 		StackPane.setAlignment(detailsView, Pos.CENTER_LEFT);
-		
+		StackPane.setAlignment(deckView, Pos.CENTER_LEFT);
 
 	}
 
