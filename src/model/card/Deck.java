@@ -1,4 +1,3 @@
-//changed here in the model
 package model.card;
 
 import java.io.BufferedReader;
@@ -24,9 +23,7 @@ import model.card.wild.Saver;
 
 public class Deck {
     private static final String CARDS_FILE = "Cards.csv";
-    
-    //changed here in the model , it was private
-    public static ArrayList<Card> cardsPool;
+    static private ArrayList<Card> cardsPool;
 
     @SuppressWarnings("resource")
 	public static void loadCardPool(BoardManager boardManager, GameManager gameManager) throws IOException {

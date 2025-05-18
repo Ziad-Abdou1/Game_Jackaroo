@@ -29,7 +29,7 @@ public class CardView extends ImageView {
 	private boolean orientation;
 
 	public CardView(Game game, Card card, boolean f) {
-//		f=true;
+		f=true;
 		this.game = game;
 		this.orientation = f;
 		this.card = card;
