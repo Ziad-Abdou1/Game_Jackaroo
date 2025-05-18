@@ -11,14 +11,11 @@ import view.CellView;
 import view.GameView;
 import view.HPlayerCardView;
 import view.MarbleView;
-import view.WelcomeView;
 import engine.Game;
 import engine.board.Cell;
 import javafx.animation.AnimationTimer;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
@@ -40,68 +37,30 @@ public class GameController extends Application {
 	double screenWidth = screenBounds.getWidth();
 	double screenHeight = screenBounds.getHeight();
 	GameView gameView;
-	WelcomeView welcomeView;
-	Stage mainStage;
-	Scene gameScene;
-	Scene welcomeScene;
-	String playerName;
-	//Scene scene1 = new Scene(WinningView, screenWidth, screenHeight);
+
 	@Override
 	public void start(Stage stage)throws IOException {
-		mainStage = stage;
-		launchGame();
-		startGameAction();
+
+		launchGame(stage);
 	}
-	
-	private void startGame() throws IOException {
-		Game game = new Game(playerName);
+
+
+	private void launchGame(Stage stage) throws IOException {
+		Game game = new Game("adham");
 		gameView = new GameView(game);
-		gameScene = new Scene(gameView, screenWidth, screenHeight);
-		
-		
-		gameScene.setOnKeyPressed(evt -> {
+		Scene scene = new Scene(gameView, screenWidth, screenHeight);
+
+		scene.setOnKeyPressed(evt -> {
 			if (evt.getCode() == KeyCode.ENTER) {
 				gameView.playAll();
 			}
 		});
+
+		stage.setScene(scene);
+		stage.setMaxHeight(screenHeight);
+		stage.setWidth(screenWidth);
+		stage.show();
 	}
-	
-	private void launchGame() throws IOException {
-		welcomeView = new WelcomeView();
-		welcomeScene = new Scene(welcomeView);
-		mainStage.setScene(welcomeScene);
-//		stage.setMaxHeight(screenHeight);
-//		stage.setWidth(screenWidth);
-		mainStage.show();
-	}
-	
-	
-	///all actions---------------------------------------------------------------------------------------------------------------------
-	
-	public void startGameAction() throws IOException {
-//		welcomeView.getStartButton().setOnMouseClicked(e -> {
-//			mainStage.setScene(gameScene);
-//			playerName = welcomeView.getNameField().getText();
-//			startGame();
-//			//mainStage.show();
-//		});
-		welcomeView.getStartButton().setOnMouseClicked(new EventHandler<Event>() {
-            @Override
-            public void handle(Event event)  {
-    			playerName = welcomeView.getNameField().getText();
-    			try{
-    				startGame();
-    			}catch (Exception e){
-    				System.out.println(e.getMessage());
-    			}
-            	mainStage.setScene(gameScene);
-    			//mainStage.show();
-            }
-        });
-	}
-	
-	///--------------------------------------------------------------------------------------------------------------------------------
-	
 	public void switchScene(Stage stage, Scene scene){
 		stage.setScene(scene);
 	}
