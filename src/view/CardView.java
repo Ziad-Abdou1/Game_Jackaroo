@@ -29,7 +29,7 @@ public class CardView extends ImageView {
 	private boolean orientation;
 
 	public CardView(Game game, Card card, boolean f) {
-		f=true;
+//		f=true;
 		this.game = game;
 		this.orientation = f;
 		this.card = card;
@@ -80,7 +80,7 @@ public class CardView extends ImageView {
 	}
 
 	private void drawCPUCard() {
-		this.setImage(new Image("cardss/Card back.png"));
+		this.setImage(new Image("cardss/backCard2.jpeg"));
 		this.setPreserveRatio(true);
 		this.setFitWidth(screenWidth * 0.04);
 		this.setFitHeight(screenHeight * 0.1);

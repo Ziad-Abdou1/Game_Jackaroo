@@ -78,8 +78,8 @@ public class PlayerView extends GridPane{
 		this.getChildren().clear();
 		circle.setRadius(screenWidth/70);
 		Image image = new Image(getClass().getResource("/user_icon.png").toExternalForm());
-		circle.setFill(new ImagePattern(image));
-		//circle.setFill(Color.BLACK);	
+		//circle.setFill(new ImagePattern(image));
+		circle.setFill(GameView.toFxColor(player.getColour()));	
 		wrapper1 = new StackPane(circle);
 		wrapper1.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
 		if (active()) {

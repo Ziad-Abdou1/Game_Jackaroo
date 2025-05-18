@@ -74,7 +74,9 @@ public class GameView extends StackPane {
 	int idx = 0;
 	private boolean efficient = true;
 	private DetailsView detailsView;
-
+	private DeckView deckView;
+	
+	
 	public GameView(Game game) {
 		this.game = game;
 		detailsView=new DetailsView(game);
@@ -217,6 +219,7 @@ public class GameView extends StackPane {
 			playCPU();
 			PlayButton.setDisable(true);
 		}
+		System.out.println(game.checkWin()+"------");
 	}
 
 	public void playPlayer() throws Exception {
@@ -344,15 +347,19 @@ public class GameView extends StackPane {
 		playerViews.setMaxSize(1100, 900);
 
 		firePitView = new FirePitView(game);
+		
+		deckView = new DeckView(game);
+		deckView.setMaxSize(500, 500);
+		
 		this.getChildren().addAll(detailsView, playerViews, homesView, handsView, boardView,
-				PlayButton, firePitView);
+				PlayButton, firePitView,deckView);
 		StackPane.setAlignment(homesView, Pos.CENTER);
 		StackPane.setAlignment(handsView, Pos.CENTER);
 		StackPane.setAlignment(boardView, Pos.CENTER);
 		StackPane.setAlignment(playerViews, Pos.CENTER);
 		StackPane.setAlignment(PlayButton, Pos.BOTTOM_RIGHT);
 		StackPane.setAlignment(detailsView, Pos.CENTER_LEFT);
-		
+		StackPane.setAlignment(deckView, Pos.CENTER_LEFT);
 
 	}
 
@@ -636,6 +643,22 @@ public class GameView extends StackPane {
 	    return choice[0];
 	}
 
+	public static Color toFxColor(Colour c) {
+        switch (c) {
+        case GREEN:
+            return Color.GREEN;
+        case RED:
+            return Color.RED;
+        case YELLOW:
+            return Color.YELLOW;
+        case BLUE:
+            return Color.BLUE;
+        default:
+            // fallback, though all enum values are covered
+            return Color.BLACK;
+    }
+}
+	
 	// public void animateMove(MarbleView marble, CellView target) {
 	// // compute start/end in GameView’s local coordinates
 	// Bounds startScene = marble.localToScene(marble.getBoundsInLocal());

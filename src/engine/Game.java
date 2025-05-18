@@ -110,6 +110,7 @@ public class Game implements GameManager {
     	
     }
     public Colour checkWin(){ //checks if anyone has won.
+//    	return players.get(2).getColour();
     	for(SafeZone s:board.getSafeZones()){
     		if(s.isFull())
     			return s.getColour();
