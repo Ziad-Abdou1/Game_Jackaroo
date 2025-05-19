@@ -87,18 +87,18 @@ public class GameView extends StackPane {
 
 	public void handleSelectedCards() {
 		for (CardView cv : this.getHandsView().getHands().get(0).getCardViews()) {
-			cv.setOnMouseClicked(e -> {
-				try {
-					// redraw();
-					game.deselectAll();
-					game.selectCard(cv.getCard());
-					refresh();
-					System.out.println("card is selected");
-				} catch (Exception exc) {
-					System.out.println(exc.getMessage());
-					showExceptionWindow(exc.getMessage());
-				}
-			});
+//			cv.setOnMouseClicked(e -> {
+//				try {
+//					// redraw();
+//					game.deselectAll();
+//					game.selectCard(cv.getCard());
+//					refresh();
+//					System.out.println("card is selected");
+//				} catch (Exception exc) {
+//					System.out.println(exc.getMessage());
+//					showExceptionWindow(exc.getMessage());
+//				}
+//			});
 			cv.setOnMouseEntered(e -> {
 				cv.hover(true);
 				String s = "";

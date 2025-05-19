@@ -29,7 +29,7 @@ public class CardView extends ImageView {
 	private boolean orientation;
 
 	public CardView(Game game, Card card, boolean f) {
-		f=true;
+//		f=true;
 		this.game = game;
 		this.orientation = f;
 		this.card = card;
@@ -44,8 +44,12 @@ public class CardView extends ImageView {
 
 		this.setOnMouseClicked(e -> {
 			try {
-				game.deselectAll();
-				game.selectCard(this.getCard());
+
+				if (game.getPlayers().get(0).getSelectedCard()==this.card) game.deselectAll();
+				else {
+					game.deselectAll();
+					game.selectCard(this.getCard());
+				}
 				refresh();
 				System.out.println("card is selected");
 			} catch (Exception exc) {

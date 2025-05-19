@@ -77,9 +77,9 @@ public class CellView extends StackPane {
 			circle.setFill(Color.DARKGRAY);
 
 		}
-		if (cell.isTrap()) {
-			circle.setFill(Color.BLACK);
-		}
+//		if (cell.isTrap()) {
+//			circle.setFill(Color.BLACK);
+//		}
 		this.getChildren().addAll(circle);
 		if (marbleView.getMarble() != null)
 			this.getChildren().addAll(marbleView);
@@ -102,12 +102,12 @@ public class CellView extends StackPane {
 	}
 
 	public void refresh() {
-		if (cell.isTrap()) {
-			circle.setFill(Color.BLACK);
-		} else {
-			circle.setFill(Color.DARKGRAY);
-		}
-
+//		if (cell.isTrap()) {
+//			circle.setFill(Color.BLACK);
+//		} else {
+//			circle.setFill(Color.DARKGRAY);
+//		}
+		circle.setFill(Color.DARKGRAY);
 	}
 
 	public void setCell(Cell cell) {
