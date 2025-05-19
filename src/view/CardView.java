@@ -29,7 +29,7 @@ public class CardView extends ImageView {
 	private boolean orientation;
 
 	public CardView(Game game, Card card, boolean f) {
-//		f=true;
+		f=true;
 		this.game = game;
 		this.orientation = f;
 		this.card = card;
@@ -165,13 +165,14 @@ public class CardView extends ImageView {
 				path += "3";
 			if (c.getSuit() == Suit.DIAMOND)
 				path += "4";
+			path += ".png";
 		} else {
 			if (this.card instanceof Burner)
-				path += "A1";
+				path += "Burner.jpeg";
 			if (this.card instanceof Saver)
-				path += "A1";
+				path += "Saver.jpeg";
 		}
-		path += ".png";
+
 		return path;
 	}
 

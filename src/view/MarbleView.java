@@ -35,7 +35,7 @@ public class MarbleView extends StackPane {
 
 	public void handle() {
 		if (marble != null) {
-			this.setOnMouseClicked(e -> {
+			circle.setOnMouseClicked(e -> {
 				try {
 					System.out.println("marble is selected");
 					selected = !selected;
@@ -54,14 +54,14 @@ public class MarbleView extends StackPane {
 			shadow.setColor(getFXColor(marble.getColour()));
 			shadow.setRadius(20);
 
-			this.setOnMouseEntered(e -> {
+			circle.setOnMouseEntered(e -> {
 				circle.setEffect(shadow);
 				this.setScaleX(1.3);
 				this.setScaleY(1.3);
 
 			});
 
-			this.setOnMouseExited(e -> {
+			circle.setOnMouseExited(e -> {
 				if (!selected){
 					circle.setEffect(null);
 					this.setScaleX(1);

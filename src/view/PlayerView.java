@@ -1,6 +1,7 @@
 package view;
 
 import engine.Game;
+import model.Colour;
 import model.player.Player;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -31,16 +32,19 @@ public class PlayerView extends GridPane{
 	
     StackPane wrapper1;
     StackPane wrapper;
+    StackPane wrapper2;
 	private Game game;
 	private Player player;
 	private Circle circle;
 	private Label name;
+	private Label nextLabel;
 	public PlayerView(Player player, Game game){
 		this.game = game;
 		this.player = player;
 		circle = new Circle();
 		name = new Label();
 		name.setText(player.getName());
+		nextLabel = new Label("Next");
 		draw();
 
 		
@@ -54,6 +58,21 @@ public class PlayerView extends GridPane{
 	public boolean active(){
 		return game.getActivePlayerColour()==player.getColour();
 	}
+	
+	
+	public boolean isNext(){
+		Colour nxtColour = game.getNextPlayerColour();
+        Player nxtPlayer=null;
+        for (Player p : game.getPlayers()) {
+            if (p.getColour() == nxtColour) {
+                nxtPlayer = p;
+                break;
+            }
+        }
+        if (player==nxtPlayer) return true;
+        return false;
+	}
+	
 	public void refresh(){
 		if (active()){
 			activeEffect();
@@ -72,6 +91,12 @@ public class PlayerView extends GridPane{
 		    wrapper1.setScaleX(1.0);
 		    wrapper1.setScaleY(1.0);
 		    wrapper1.setRotate(0);
+		}		
+		if (isNext()){
+			wrapper2.setOpacity(1);
+		}
+		else{
+			wrapper2.setOpacity(0);
 		}
 	}
 	private void draw(){
@@ -92,6 +117,17 @@ public class PlayerView extends GridPane{
 		// Optionally set size to fill the cell if needed
 		wrapper.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
 		addNode(wrapper,0,1);
+		
+		
+		wrapper2 = new StackPane(nextLabel);
+		wrapper2.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+		addNode(wrapper2,0,2);
+		if (isNext()){
+			wrapper2.setOpacity(1);
+		}
+		else{
+			wrapper2.setOpacity(0);
+		}
 	}
 	
 	public void activeEffect(){
@@ -113,13 +149,13 @@ public class PlayerView extends GridPane{
 		wrapper1.setEffect(glow);
 
 		// animate the glow radius
-		Timeline pulse = new Timeline(
-		    new KeyFrame(Duration.ZERO,    new KeyValue(glow.radiusProperty(), 0)),
-		    new KeyFrame(Duration.seconds(0.5), new KeyValue(glow.radiusProperty(), 70)),
-		    new KeyFrame(Duration.seconds(1),   new KeyValue(glow.radiusProperty(), 0))
-		);
-		pulse.setCycleCount(Animation.INDEFINITE);
-		pulse.play();
+//		Timeline pulse = new Timeline(
+//		    new KeyFrame(Duration.ZERO,    new KeyValue(glow.radiusProperty(), 0)),
+//		    new KeyFrame(Duration.seconds(0.5), new KeyValue(glow.radiusProperty(), 70)),
+//		    new KeyFrame(Duration.seconds(1),   new KeyValue(glow.radiusProperty(), 0))
+//		);
+//		pulse.setCycleCount(Animation.INDEFINITE);
+//		pulse.play();
 		
 		//part 3: a rotatin ring 
 		Circle ring = new Circle(circle.getRadius() + 6);
@@ -129,20 +165,20 @@ public class PlayerView extends GridPane{
 		wrapper1.getChildren().add(ring);
 
 		// rotate the ring continuously
-		RotateTransition rot = new RotateTransition(Duration.seconds(2), ring);
-		rot.setByAngle(360);
-		rot.setCycleCount(Animation.INDEFINITE);
-		rot.play();
-		
-		//part 4: scale continuously when active
-		ScaleTransition bounce = new ScaleTransition(Duration.seconds(0.5), wrapper1);
-		bounce.setFromY(1.0);
-		bounce.setToY(1.2);
-		bounce.setFromX(1.0);
-		bounce.setToX(1.2);
-		bounce.setAutoReverse(true);
-		bounce.setCycleCount(Animation.INDEFINITE);
-		bounce.play();
+//		RotateTransition rot = new RotateTransition(Duration.seconds(2), ring);
+//		rot.setByAngle(360);
+//		rot.setCycleCount(Animation.INDEFINITE);
+//		rot.play();
+//		
+//		//part 4: scale continuously when active
+//		ScaleTransition bounce = new ScaleTransition(Duration.seconds(0.5), wrapper1);
+//		bounce.setFromY(1.0);
+//		bounce.setToY(1.2);
+//		bounce.setFromX(1.0);
+//		bounce.setToX(1.2);
+//		bounce.setAutoReverse(true);
+//		bounce.setCycleCount(Animation.INDEFINITE);
+//		bounce.play();
 	}
 	
     public void addNode(Node node, int col, int row) {

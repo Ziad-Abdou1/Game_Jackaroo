@@ -75,7 +75,7 @@ public class GameController extends Application {
 			if (evt.getCode() == KeyCode.DIGIT1){
 				try{
 					game.fieldMarble();
-					game.endPlayerTurn();
+//					game.endPlayerTurn();
 					gameView.refresh();
 
 				}catch (Exception e){

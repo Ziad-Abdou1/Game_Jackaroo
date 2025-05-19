@@ -101,7 +101,12 @@ public class GameView extends StackPane {
 			});
 			cv.setOnMouseEntered(e -> {
 				cv.hover(true);
-				detailsView.setDetails(cv.getCard().getDescription());
+				String s = "";
+				if (cv.getCard() instanceof Standard){
+					s += ((Standard)cv.getCard()).getRank()+" | " + ((Standard)cv.getCard()).getSuit() + " | ";
+				}
+				s += cv.getCard().getDescription();
+				detailsView.setDetails(s);
 			});
 			cv.setOnMouseExited(e -> {
 				cv.hover(false);
@@ -136,25 +141,25 @@ public class GameView extends StackPane {
 			ripple.setCenterY(e.getY());
 			((Pane) PlayButton.getParent()).getChildren().add(ripple);
 
-			Timeline tl = new Timeline(new KeyFrame(Duration.ZERO,
-					new KeyValue(ripple.radiusProperty(), 0), new KeyValue(
-							ripple.opacityProperty(), 0.5)), new KeyFrame(
-					Duration.seconds(0.4), new KeyValue(
-							ripple.radiusProperty(), 100), new KeyValue(ripple
-							.opacityProperty(), 0)));
-			tl.setOnFinished(evt -> ((Pane) PlayButton.getParent())
-					.getChildren().remove(ripple));
-			tl.play();
-
-			ScaleTransition pulse = new ScaleTransition(Duration.seconds(1.2),
-					PlayButton);
-			pulse.setFromX(0.4);
-			pulse.setFromY(0.4);
-			pulse.setToX(0.45);
-			pulse.setToY(0.45);
-			pulse.setAutoReverse(true);
-			pulse.setCycleCount(Animation.INDEFINITE);
-			pulse.play();
+//			Timeline tl = new Timeline(new KeyFrame(Duration.ZERO,
+//					new KeyValue(ripple.radiusProperty(), 0), new KeyValue(
+//							ripple.opacityProperty(), 0.5)), new KeyFrame(
+//					Duration.seconds(0.4), new KeyValue(
+//							ripple.radiusProperty(), 100), new KeyValue(ripple
+//							.opacityProperty(), 0)));
+//			tl.setOnFinished(evt -> ((Pane) PlayButton.getParent())
+//					.getChildren().remove(ripple));
+//			tl.play();
+//
+//			ScaleTransition pulse = new ScaleTransition(Duration.seconds(1.2),
+//					PlayButton);
+//			pulse.setFromX(0.4);
+//			pulse.setFromY(0.4);
+//			pulse.setToX(0.45);
+//			pulse.setToY(0.45);
+//			pulse.setAutoReverse(true);
+//			pulse.setCycleCount(Animation.INDEFINITE);
+//			pulse.play();
 		});
 		PlayButton.setOnMouseEntered(e -> {
 			PlayButton.setScaleX(0.5);
