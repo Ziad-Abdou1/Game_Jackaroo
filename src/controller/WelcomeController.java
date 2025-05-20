@@ -8,11 +8,18 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 
 public class WelcomeController extends Application {
 
+	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+	double screenWidth = screenBounds.getWidth();
+	double screenHeight = screenBounds.getHeight();
+	double ratioScreenWidth=screenWidth/1920;
+	double ratioScreenHeight=screenHeight/1080;
 	@Override
 	public void start(Stage primaryStage) {
 		StackPane root = new StackPane();
@@ -20,17 +27,17 @@ public class WelcomeController extends Application {
 		Image boardImage = new Image("cardss/Welcome.jpg");
 
 		ImageView boardView = new ImageView(boardImage);
-		boardView.setFitWidth(1200);
+		boardView.setFitWidth(1200*ratioScreenWidth);
 		boardView.setPreserveRatio(true);
 
 		Image logo = new Image("cardss/logo.png");
 
 		ImageView logoview = new ImageView(logo);
-		logoview.setFitWidth(800);
+		logoview.setFitWidth(800*ratioScreenWidth);
 		logoview.setPreserveRatio(true);
 		Image Stbutton = new Image("cardss/bbb.png");
 		ImageView StbuttonView = new ImageView(Stbutton);
-		StbuttonView.setFitWidth(500);
+		StbuttonView.setFitWidth(500*ratioScreenWidth);
 		StbuttonView.setPreserveRatio(true);
 
 		Text label = new Text("Start Game");
@@ -65,10 +72,10 @@ public class WelcomeController extends Application {
 		StackPane InfoButton = new StackPane(InfobuttonView, label3);
 		StartButton.setAlignment(Pos.CENTER);
 
-		StartButton.setTranslateY(0);
-		SettingsButton.setTranslateY(100);
-		InfoButton.setTranslateY(200);
-		logoview.setTranslateY(350);
+		StartButton.setTranslateY(0*ratioScreenHeight);
+		SettingsButton.setTranslateY(100*ratioScreenHeight);
+		InfoButton.setTranslateY(200*ratioScreenHeight);
+		logoview.setTranslateY(350*ratioScreenHeight);
 
 		root.getChildren().addAll(boardView, logoview, StartButton,
 				SettingsButton, InfoButton);

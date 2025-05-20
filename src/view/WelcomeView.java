@@ -9,9 +9,18 @@ import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Screen;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 
 public class WelcomeView extends StackPane {
+	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+	double screenWidth = screenBounds.getWidth();
+	double screenHeight = screenBounds.getHeight();
+	double ratioScreenWidth=screenWidth/1920;
+	double ratioScreenHeight=screenHeight/1080;
+	
+	
     private String userName;
     private TextField nameField;
     StackPane startButton;
@@ -40,15 +49,15 @@ public class WelcomeView extends StackPane {
         // Background image
         Image boardImage = new Image("cardss/Welcome.jpg");
         ImageView boardView = new ImageView(boardImage);
-        boardView.setFitWidth(1200);
+        boardView.setFitWidth(1200*ratioScreenWidth);
         boardView.setPreserveRatio(true);
 
         // Logo
         Image logo = new Image("cardss/logo.png");
         ImageView logoView = new ImageView(logo);
-        logoView.setFitWidth(800);
+        logoView.setFitWidth(800*ratioScreenWidth);
         logoView.setPreserveRatio(true);
-        logoView.setTranslateY(300);
+        logoView.setTranslateY(300*ratioScreenHeight);
 
         // Name input prompt
         Text prompt = new Text("Enter your name:");
@@ -56,50 +65,50 @@ public class WelcomeView extends StackPane {
         prompt.setFill(javafx.scene.paint.Color.WHITE);
 
         nameField = new TextField();
-        nameField.setMaxWidth(300);
+        nameField.setMaxWidth(300*ratioScreenWidth);
         nameField.setPromptText("Your name");
 
-        VBox nameBox = new VBox(10, prompt, nameField);
+        VBox nameBox = new VBox(10*ratioScreenHeight, prompt, nameField);
         nameBox.setAlignment(Pos.CENTER);
-        nameBox.setTranslateY(150);
+        nameBox.setTranslateY(150*ratioScreenHeight);
 
         // Start Game button
         Image startBtnImg = new Image("cardss/bbb.png");
         ImageView startBtnView = new ImageView(startBtnImg);
-        startBtnView.setFitWidth(500);
+        startBtnView.setFitWidth(500*ratioScreenWidth);
         startBtnView.setPreserveRatio(true);
         Text startLabel = new Text("Start Game");
         startLabel.setFont(Font.font("Verdana", 24));
         startLabel.setFill(javafx.scene.paint.Color.WHITE);
         startButton = new StackPane(startBtnView, startLabel);
         startButton.setAlignment(Pos.CENTER);
-        startButton.setTranslateY(0);
+        startButton.setTranslateY(0*ratioScreenHeight);
         startButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> storeUserName());
         startButton.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
 //        // Settings button
 //        Image settingsImg = new Image("cardss/bbb.png");
 //        ImageView settingsView = new ImageView(settingsImg);
-//        settingsView.setFitWidth(500);
+//        settingsView.setFitWidth(500*ratioScreenWidth);
 //        settingsView.setPreserveRatio(true);
 //        Text settingsLabel = new Text("Settings");
 //        settingsLabel.setFont(Font.font("Verdana", 24));
 //        settingsLabel.setFill(javafx.scene.paint.Color.WHITE);
 //        StackPane settingsButton = new StackPane(settingsView, settingsLabel);
 //        settingsButton.setAlignment(Pos.CENTER);
-//        settingsButton.setTranslateY(100);
+//        settingsButton.setTranslateY(100*ratioScreenHeight);
 //
 //        // Information button
 //        Image infoImg = new Image("cardss/bbb.png");
 //        ImageView infoView = new ImageView(infoImg);
-//        infoView.setFitWidth(500);
+//        infoView.setFitWidth(500*ratioScreenWidth);
 //        infoView.setPreserveRatio(true);
 //        Text infoLabel = new Text("Information");
 //        infoLabel.setFont(Font.font("Verdana", 24));
 //        infoLabel.setFill(javafx.scene.paint.Color.WHITE);
 //        StackPane infoButton = new StackPane(infoView, infoLabel);
 //        infoButton.setAlignment(Pos.CENTER);
-//        infoButton.setTranslateY(200);
+//        infoButton.setTranslateY(200*ratioScreenHeight);
 
         // Assemble
         this.getChildren().addAll(boardView, logoView, nameBox, startButton);

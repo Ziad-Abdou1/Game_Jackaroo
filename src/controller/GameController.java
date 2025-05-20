@@ -23,11 +23,13 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import javafx.beans.binding.DoubleBinding;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -43,11 +45,21 @@ public class GameController extends Application {
 	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 	double screenWidth = screenBounds.getWidth();
 	double screenHeight = screenBounds.getHeight();
+	
+	
+//    Rectangle2D vb = Screen.getPrimary().getVisualBounds();
+//    double realW = vb.getWidth();
+//    double realH = vb.getHeight();
+//    
+//    private static final double DESIGN_W = 1920;
+//    private static final double DESIGN_H = 1080;
+    
+    
 	GameView gameView;
 	WelcomeView welcomeView;
 	WinningView winningView;
 	Scene welcomeScene,gameScene,winningScene;
-	Stage stage;
+	Stage stage;	
 	Player wonPlayer;
 	boolean gameEnded = false;
 	
@@ -66,6 +78,10 @@ public class GameController extends Application {
 		gameView = new GameView(game);
 		gameScene = new Scene(gameView, screenWidth, screenHeight);
 		
+//        DoubleBinding scaleX = gameScene.widthProperty().divide(DESIGN_W);
+//        DoubleBinding scaleY = gameScene.heightProperty().divide(DESIGN_H);
+//        gameView.scaleXProperty().bind(scaleX);
+//        gameView.scaleYProperty().bind(scaleY);
 		
 		//game actions
 		gameScene.setOnKeyPressed(evt -> {
@@ -104,8 +120,8 @@ public class GameController extends Application {
 		welcomeView = new WelcomeView();
 		welcomeScene = new Scene(welcomeView);
 		stage.setScene(welcomeScene);
-		stage.setMaxHeight(screenHeight);
-		stage.setWidth(screenWidth);
+//		stage.setMaxHeight(screenHeight);
+//		stage.setWidth(screenWidth);
 		stage.show();
 	}
 	

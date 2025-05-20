@@ -64,6 +64,16 @@ public class GameView extends StackPane {
 	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 	double screenWidth = screenBounds.getWidth();
 	double screenHeight = screenBounds.getHeight();
+	double ratioScreenWidth=screenWidth/1920;
+	double ratioScreenHeight=screenHeight/1080;
+//    Rectangle2D vb = Screen.getPrimary().getVisualBounds();
+//    double realW = vb.getWidth();
+//    double realH = vb.getHeight();
+//    
+//    private static final double DESIGN_W = 1920;
+//    private static final double DESIGN_H = 1080;
+//    
+    
 	ImageView PlayButton;
 	private Game game;
 	private BoardView boardView;
@@ -118,8 +128,8 @@ public class GameView extends StackPane {
 	public void initPlayButton() {
 		Image img = new Image("playButton.png");
 		PlayButton = new ImageView(img);
-		PlayButton.setScaleX(0.4);
-		PlayButton.setScaleY(0.4);
+		PlayButton.setScaleX(0.4*ratioScreenWidth);
+		PlayButton.setScaleY(0.4*ratioScreenHeight);
 
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),
 				e -> {
@@ -162,12 +172,12 @@ public class GameView extends StackPane {
 //			pulse.play();
 		});
 		PlayButton.setOnMouseEntered(e -> {
-			PlayButton.setScaleX(0.5);
-			PlayButton.setScaleY(0.5);
+			PlayButton.setScaleX(0.5*ratioScreenWidth);
+			PlayButton.setScaleY(0.5*ratioScreenHeight);
 		});
 		PlayButton.setOnMouseExited(e -> {
-			PlayButton.setScaleX(0.4);
-			PlayButton.setScaleY(0.4);
+			PlayButton.setScaleX(0.4*ratioScreenWidth);
+			PlayButton.setScaleY(0.4*ratioScreenHeight);
 		});
 	}
 	public void printMarbles(){
@@ -345,17 +355,18 @@ public class GameView extends StackPane {
 		boardView = new BoardView(game.getBoard(), game);
 
 		handsView = new HandsView(game);
-		handsView.setMaxSize(1300, 1000);
+		handsView.setMaxSize(1300*ratioScreenWidth, 1000*ratioScreenHeight);
 		homesView = new HomesView(game.getPlayers(), game);
-		homesView.setMaxSize(700, 700);
+		homesView.setMaxSize(700*ratioScreenWidth, 700*ratioScreenHeight);
 		playerViews = new PlayerViews(game);
-		playerViews.setMaxSize(1100, 900);
+		playerViews.setMaxSize(1100*ratioScreenWidth, 900*ratioScreenHeight);
 
 		firePitView = new FirePitView(game);
 		
 		deckView = new DeckView(game);
-		deckView.setMaxSize(500, 500);
+		deckView.setMaxSize(500*ratioScreenWidth, 500*ratioScreenHeight);
 		
+	    
 		this.getChildren().addAll(detailsView, playerViews, homesView, handsView, boardView,
 				PlayButton, firePitView,deckView);
 		StackPane.setAlignment(homesView, Pos.CENTER);
