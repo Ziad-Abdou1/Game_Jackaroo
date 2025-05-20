@@ -385,7 +385,8 @@ public class GameView extends StackPane {
 	public void showExceptionWindow(String message) {
 		// 1) Create a new window (Stage)
 		Stage dialog = new Stage(StageStyle.UNDECORATED);
-		dialog.initModality(Modality.APPLICATION_MODAL);
+		dialog.initModality(Modality.WINDOW_MODAL);
+	    dialog.initOwner(this.getScene().getWindow());
 		dialog.setResizable(false);
 
 		// 2) Build the content
@@ -437,7 +438,8 @@ public class GameView extends StackPane {
 
 		// 1) Create a new window (Stage)
 		Stage dialog = new Stage(StageStyle.UNDECORATED);
-		dialog.initModality(Modality.APPLICATION_MODAL);
+		dialog.initModality(Modality.WINDOW_MODAL);
+	    dialog.initOwner(this.getScene().getWindow());
 		dialog.setResizable(false);
 
 		// 2) Build the content

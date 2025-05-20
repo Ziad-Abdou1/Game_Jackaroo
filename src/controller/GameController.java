@@ -84,6 +84,7 @@ public class GameController extends Application {
 			}
 		});
 		stage.setScene(gameScene);
+		stage.setFullScreen(true);
 	}
 	
 	private void win() {
