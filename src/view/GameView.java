@@ -66,7 +66,7 @@ import engine.board.Board;
 import engine.board.Cell;
 import engine.board.SafeZone;
 
-public class GameView extends StackPane {
+public class GameView extends StackPane  implements BoardListener , GameListener  {
 	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 	double screenWidth = screenBounds.getWidth();
 	double screenHeight = screenBounds.getHeight();
@@ -79,7 +79,6 @@ public class GameView extends StackPane {
 	//
 	// private static final double DESIGN_W = 1920;
 	// private static final double DESIGN_H = 1080;
-	//
 
 	ImageView PlayButton;
 	private Game game;
@@ -95,8 +94,8 @@ public class GameView extends StackPane {
 
 	public GameView(Game game) {
 		this.game = game;
-		// game.addListener(this);
-		// game.getBoard().addListener(this);
+		 game.addListener(this);
+		 game.getBoard().addListener(this);
 		detailsView = new DetailsView(game);
 		initPlayButton();
 		draw();

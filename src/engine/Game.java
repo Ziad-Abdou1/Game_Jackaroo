@@ -22,7 +22,7 @@ import model.player.*;
 
 
 public class Game implements GameManager {
-//	private final List<GameListener> listeners = new ArrayList<>();
+	private final List<GameListener> listeners = new ArrayList<>();
 	
 	 
     private final Board board;
@@ -186,10 +186,10 @@ public class Game implements GameManager {
 
     
 	
-//    public void addListener(GameListener l) {
-//        listeners.add(l);
-//    }
-//    
+    public void addListener(GameListener l) {
+        listeners.add(l);
+    }
+    
     public void instantWin(){cheatWin = true;}
 
 //    /** Call this whenever you detect trapped marbles. */
