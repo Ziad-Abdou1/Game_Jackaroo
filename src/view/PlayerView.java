@@ -45,15 +45,10 @@ public class PlayerView extends GridPane{
 		name = new Label();
 		name.setText(player.getName());
 		nextLabel = new Label("Next");
+		name.getStyleClass().add("player-name");
+		nextLabel.getStyleClass().add("next-label");
 		draw();
 
-		
-//		for (int i = 0; i < 10; i++){
-//			Circle c = new Circle();
-//			c.setRadius(screenWidth/70);
-//			c.setOpacity(0);
-//			addNode(c,i,0);
-//		}
 	}
 	public boolean active(){
 		return game.getActivePlayerColour()==player.getColour();
@@ -78,16 +73,8 @@ public class PlayerView extends GridPane{
 			activeEffect();
 		}
 		else {
-		    // Remove visual effects
 		    wrapper1.setEffect(null);
-
-		    // Stop any active animations (optional if you track them)
-
-		    // Remove any extra children added during activeEffect
-		    // Keep only the circle as the base image
 		    wrapper1.getChildren().retainAll(circle);
-
-		    // Reset scale and rotation
 		    wrapper1.setScaleX(1.0);
 		    wrapper1.setScaleY(1.0);
 		    wrapper1.setRotate(0);
@@ -148,14 +135,6 @@ public class PlayerView extends GridPane{
 		glow.setRadius(0);
 		wrapper1.setEffect(glow);
 
-		// animate the glow radius
-//		Timeline pulse = new Timeline(
-//		    new KeyFrame(Duration.ZERO,    new KeyValue(glow.radiusProperty(), 0)),
-//		    new KeyFrame(Duration.seconds(0.5), new KeyValue(glow.radiusProperty(), 70)),
-//		    new KeyFrame(Duration.seconds(1),   new KeyValue(glow.radiusProperty(), 0))
-//		);
-//		pulse.setCycleCount(Animation.INDEFINITE);
-//		pulse.play();
 		
 		//part 3: a rotatin ring 
 		Circle ring = new Circle(circle.getRadius() + 6);
@@ -164,21 +143,7 @@ public class PlayerView extends GridPane{
 		ring.setFill(null);
 		wrapper1.getChildren().add(ring);
 
-		// rotate the ring continuously
-//		RotateTransition rot = new RotateTransition(Duration.seconds(2), ring);
-//		rot.setByAngle(360);
-//		rot.setCycleCount(Animation.INDEFINITE);
-//		rot.play();
-//		
-//		//part 4: scale continuously when active
-//		ScaleTransition bounce = new ScaleTransition(Duration.seconds(0.5), wrapper1);
-//		bounce.setFromY(1.0);
-//		bounce.setToY(1.2);
-//		bounce.setFromX(1.0);
-//		bounce.setToX(1.2);
-//		bounce.setAutoReverse(true);
-//		bounce.setCycleCount(Animation.INDEFINITE);
-//		bounce.play();
+
 	}
 	
     public void addNode(Node node, int col, int row) {

@@ -75,13 +75,12 @@ public class GameController extends Application {
 	private void startGame() throws IOException {
 		Game game = new Game(name);
 		gameView = new GameView(game);
+	    gameView.getStyleClass().add("game-background");
+
 		gameScene = new Scene(gameView, screenWidth, screenHeight);
-		
-//        DoubleBinding scaleX = gameScene.widthProperty().divide(DESIGN_W);
-//        DoubleBinding scaleY = gameScene.heightProperty().divide(DESIGN_H);
-//        gameView.scaleXProperty().bind(scaleX);
-//        gameView.scaleYProperty().bind(scaleY);
-		
+		gameScene.getStylesheets().add(getClass().getResource("/view/style.css").toExternalForm());
+
+
 		//game actions
 		gameScene.setOnKeyPressed(evt -> {
 			if (evt.getCode() == KeyCode.ENTER) {
@@ -116,6 +115,7 @@ public class GameController extends Application {
 		}
 		winningView = new WinningView(wonPlayer);
 		winningScene = new Scene(winningView,screenWidth,screenHeight);
+		winningScene.getStylesheets().add(getClass().getResource("/view/style.css").toExternalForm());
 		stage.setScene(winningScene);
 		stage.setFullScreen(true);
 	}
@@ -123,9 +123,8 @@ public class GameController extends Application {
 	private void launchGame() throws IOException {
 		welcomeView = new WelcomeView();
 		welcomeScene = new Scene(welcomeView);
+		welcomeScene.getStylesheets().add(getClass().getResource("/view/style.css").toExternalForm());
 		stage.setScene(welcomeScene);
-//		stage.setMaxHeight(screenHeight);
-//		stage.setWidth(screenWidth);
 		stage.show();
 	}
 	
@@ -163,7 +162,7 @@ public class GameController extends Application {
 			    })
 			);
 			replay.setCycleCount(Animation.INDEFINITE); 
-			replay.play(); // Starts the timeline
+			replay.play(); 
 	}
 	
 

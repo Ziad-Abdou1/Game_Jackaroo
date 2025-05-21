@@ -3,9 +3,6 @@ package view;
 import java.util.ArrayList;
 import java.util.Objects;
 
-
-
-
 import model.Colour;
 import model.card.standard.*;
 import model.card.*;
@@ -34,6 +31,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -61,27 +59,28 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javafx.scene.input.KeyCode;
-import engine.BoardListener;
+//import engine.BoardListener;
 import engine.Game;
-import engine.GameListener;
+//import engine.GameListener;
 import engine.board.Board;
 import engine.board.Cell;
 import engine.board.SafeZone;
 
-public class GameView extends StackPane implements BoardListener , GameListener{
+public class GameView extends StackPane {
 	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 	double screenWidth = screenBounds.getWidth();
 	double screenHeight = screenBounds.getHeight();
-	double ratioScreenWidth=screenWidth/1920;
-	double ratioScreenHeight=screenHeight/1080;
-//    Rectangle2D vb = Screen.getPrimary().getVisualBounds();
-//    double realW = vb.getWidth();
-//    double realH = vb.getHeight();
-//    
-//    private static final double DESIGN_W = 1920;
-//    private static final double DESIGN_H = 1080;
-//    
-    
+	double ratioScreenWidth = screenWidth / 1920;
+	double ratioScreenHeight = screenHeight / 1080;
+
+	// Rectangle2D vb = Screen.getPrimary().getVisualBounds();
+	// double realW = vb.getWidth();
+	// double realH = vb.getHeight();
+	//
+	// private static final double DESIGN_W = 1920;
+	// private static final double DESIGN_H = 1080;
+	//
+
 	ImageView PlayButton;
 	private Game game;
 	private BoardView boardView;
@@ -93,13 +92,12 @@ public class GameView extends StackPane implements BoardListener , GameListener{
 	private boolean efficient = true;
 	private DetailsView detailsView;
 	private DeckView deckView;
-	
-	
+
 	public GameView(Game game) {
 		this.game = game;
-		game.addListener(this);
-		game.getBoard().addListener(this);
-		detailsView=new DetailsView(game);
+		// game.addListener(this);
+		// game.getBoard().addListener(this);
+		detailsView = new DetailsView(game);
 		initPlayButton();
 		draw();
 		handleSelectedCards();
@@ -107,23 +105,24 @@ public class GameView extends StackPane implements BoardListener , GameListener{
 
 	public void handleSelectedCards() {
 		for (CardView cv : this.getHandsView().getHands().get(0).getCardViews()) {
-//			cv.setOnMouseClicked(e -> {
-//				try {
-//					// redraw();
-//					game.deselectAll();
-//					game.selectCard(cv.getCard());
-//					refresh();
-//					System.out.println("card is selected");
-//				} catch (Exception exc) {
-//					System.out.println(exc.getMessage());
-//					showExceptionWindow(exc.getMessage());
-//				}
-//			});
+			// cv.setOnMouseClicked(e -> {
+			// try {
+			// // redraw();
+			// game.deselectAll();
+			// game.selectCard(cv.getCard());
+			// refresh();
+			// System.out.println("card is selected");
+			// } catch (Exception exc) {
+			// System.out.println(exc.getMessage());
+			// showExceptionWindow(exc.getMessage());
+			// }
+			// });
 			cv.setOnMouseEntered(e -> {
 				cv.hover(true);
 				String s = "";
-				if (cv.getCard() instanceof Standard){
-					s += ((Standard)cv.getCard()).getRank()+" | " + ((Standard)cv.getCard()).getSuit() + " | ";
+				if (cv.getCard() instanceof Standard) {
+					s += ((Standard) cv.getCard()).getRank() + " | "
+							+ ((Standard) cv.getCard()).getSuit() + " | ";
 				}
 				s += cv.getCard().getDescription();
 				detailsView.setDetails(s);
@@ -138,9 +137,20 @@ public class GameView extends StackPane implements BoardListener , GameListener{
 	public void initPlayButton() {
 		Image img = new Image("playButton.png");
 		PlayButton = new ImageView(img);
-		PlayButton.setScaleX(0.4*ratioScreenWidth);
-		PlayButton.setScaleY(0.4*ratioScreenHeight);
+		PlayButton.setPreserveRatio(true);
 
+		// Set preferred base size
+		double baseScaleX = 0.4 * ratioScreenWidth;
+		double baseScaleY = 0.4 * ratioScreenHeight;
+		PlayButton.setFitWidth(200 * ratioScreenWidth); // Or img.getWidth() *
+														// scale
+		PlayButton.setFitHeight(200 * ratioScreenHeight);
+
+		// Subtle glow effect
+		DropShadow glow = new DropShadow(25, Color.web("#ffffff40"));
+		PlayButton.setEffect(glow);
+
+		// Game timer logic
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),
 				e -> {
 					if (!game.canPlayTurn()
@@ -154,65 +164,72 @@ public class GameView extends StackPane implements BoardListener , GameListener{
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
 
+		// Hover animation with scale transition
+		ScaleTransition hoverIn = new ScaleTransition(Duration.millis(150),
+				PlayButton);
+		hoverIn.setToX(1.15);
+		hoverIn.setToY(1.15);
+
+		ScaleTransition hoverOut = new ScaleTransition(Duration.millis(150),
+				PlayButton);
+		hoverOut.setToX(1.0);
+		hoverOut.setToY(1.0);
+
+		PlayButton.setOnMouseEntered(e -> hoverIn.playFromStart());
+		PlayButton.setOnMouseExited(e -> hoverOut.playFromStart());
+
 		PlayButton.setOnMouseClicked(e -> {
 			playAll();
-			Circle ripple = new Circle(0, Color.web("#ffffff50"));
-			ripple.setCenterX(e.getX());
-			ripple.setCenterY(e.getY());
-			((Pane) PlayButton.getParent()).getChildren().add(ripple);
 
-//			Timeline tl = new Timeline(new KeyFrame(Duration.ZERO,
-//					new KeyValue(ripple.radiusProperty(), 0), new KeyValue(
-//							ripple.opacityProperty(), 0.5)), new KeyFrame(
-//					Duration.seconds(0.4), new KeyValue(
-//							ripple.radiusProperty(), 100), new KeyValue(ripple
-//							.opacityProperty(), 0)));
-//			tl.setOnFinished(evt -> ((Pane) PlayButton.getParent())
-//					.getChildren().remove(ripple));
-//			tl.play();
-//
-//			ScaleTransition pulse = new ScaleTransition(Duration.seconds(1.2),
-//					PlayButton);
-//			pulse.setFromX(0.4);
-//			pulse.setFromY(0.4);
-//			pulse.setToX(0.45);
-//			pulse.setToY(0.45);
-//			pulse.setAutoReverse(true);
-//			pulse.setCycleCount(Animation.INDEFINITE);
-//			pulse.play();
+			Circle ripple = new Circle(0, Color.web("#ffffff60"));
+			ripple.setCenterX(PlayButton.getFitWidth() / 2);
+			ripple.setCenterY(PlayButton.getFitHeight() / 2);
+			ripple.setRadius(0);
+
+			Timeline rippleAnim = new Timeline(new KeyFrame(Duration.ZERO,
+					new KeyValue(ripple.radiusProperty(), 0), new KeyValue(
+							ripple.opacityProperty(), 1.0)),
+			// change this time
+					new KeyFrame(Duration.millis(100), new KeyValue(ripple
+							.radiusProperty(), 60), new KeyValue(ripple
+							.opacityProperty(), 0)));
+			rippleAnim.setOnFinished(ev -> {
+				((Pane) PlayButton.getParent()).getChildren().remove(ripple);
+			});
+
+			((Pane) PlayButton.getParent()).getChildren().add(ripple);
+			ripple.toBack();
+			rippleAnim.play();
 		});
-		PlayButton.setOnMouseEntered(e -> {
-			PlayButton.setScaleX(0.5*ratioScreenWidth);
-			PlayButton.setScaleY(0.5*ratioScreenHeight);
-		});
-		PlayButton.setOnMouseExited(e -> {
-			PlayButton.setScaleX(0.4*ratioScreenWidth);
-			PlayButton.setScaleY(0.4*ratioScreenHeight);
-		});
+
 	}
-	public void printMarbles(){
-		for(Player p: game.getPlayers()){
+
+	public void printMarbles() {
+		for (Player p : game.getPlayers()) {
 			System.out.println(p.getName());
-			for(int i=0;i<game.getBoard().getTrack().size();i++){
-				Cell c=game.getBoard().getTrack().get(i);
-				Marble m=c.getMarble();
-				if(m!=null && m.getColour()==p.getColour()) System.out.print("track_"+i+" ");
+			for (int i = 0; i < game.getBoard().getTrack().size(); i++) {
+				Cell c = game.getBoard().getTrack().get(i);
+				Marble m = c.getMarble();
+				if (m != null && m.getColour() == p.getColour())
+					System.out.print("track_" + i + " ");
 			}
-			ArrayList<SafeZone> safeZones=game.getBoard().getSafeZones();
-			SafeZone sfCur=null;
-			for(SafeZone sf:safeZones){
-				if(sf.getColour()==p.getColour()) sfCur=sf;
+			ArrayList<SafeZone> safeZones = game.getBoard().getSafeZones();
+			SafeZone sfCur = null;
+			for (SafeZone sf : safeZones) {
+				if (sf.getColour() == p.getColour())
+					sfCur = sf;
 			}
-			for(int i=0;i<sfCur.getCells().size();i++){
-				Marble m=sfCur.getCells().get(i).getMarble();
-				if(m!=null) System.out.print("safe_"+i+" ");
+			for (int i = 0; i < sfCur.getCells().size(); i++) {
+				Marble m = sfCur.getCells().get(i).getMarble();
+				if (m != null)
+					System.out.print("safe_" + i + " ");
 			}
 			System.out.println();
 		}
 	}
+
 	public void playAll() {
-//		SequentialTransition seq=showDimmedMessage("ok", 1000);
-//		seq.play();
+
 		boolean done = false;
 		try {
 			System.out.println("selectd card is "
@@ -240,40 +257,41 @@ public class GameView extends StackPane implements BoardListener , GameListener{
 				}
 			}
 		}
-		 ((GameView)this.getScene().getRoot()).refresh();
+		((GameView) this.getScene().getRoot()).refresh();
 		if (done) {
 			playCPU();
 			PlayButton.setDisable(true);
 		}
-		System.out.println(game.checkWin()+"------");
+		System.out.println(game.checkWin() + "------");
 	}
 
 	public void playPlayer() throws Exception {
 		ArrayList<Marble> selectedMarbles = new ArrayList<>();
 		if (game.canPlayTurn()) {
-			//to select marbles at the real game model
+			// to select marbles at the real game model
 			ArrayList<CellView> cellViewsOriginal = boardView.getTrackView();
 			ArrayList<CellView>[] safeZoneViews = boardView.getSafeZoneView();
-			ArrayList<CellView> cellViews=new ArrayList<CellView>();
-			for(int i=0;i<cellViewsOriginal.size();i++) cellViews.add(cellViewsOriginal.get(i));
-			for (int i = 0; i < safeZoneViews.length; i++){
-				for (CellView cv : safeZoneViews[i]) cellViews.add(cv);
+			ArrayList<CellView> cellViews = new ArrayList<CellView>();
+			for (int i = 0; i < cellViewsOriginal.size(); i++)
+				cellViews.add(cellViewsOriginal.get(i));
+			for (int i = 0; i < safeZoneViews.length; i++) {
+				for (CellView cv : safeZoneViews[i])
+					cellViews.add(cv);
 			}
-			
-			for (CellView cv : cellViews){
-				if (cv.getMarbleView().getMarble()!=null){
-					if (cv.getMarbleView().selected){
+
+			for (CellView cv : cellViews) {
+				if (cv.getMarbleView().getMarble() != null) {
+					if (cv.getMarbleView().selected) {
 						game.selectMarble(cv.getMarbleView().getMarble());
 						selectedMarbles.add(cv.getMarbleView().getMarble());
 					}
 					cv.getMarbleView().resetSelect();
 				}
 			}
-			
-			
-			//handle 7 card
-			Card selected=game.getPlayers().get(0).getSelectedCard();
-			if(selected instanceof Seven && selectedMarbles.size()==2){
+
+			// handle 7 card
+			Card selected = game.getPlayers().get(0).getSelectedCard();
+			if (selected instanceof Seven && selectedMarbles.size() == 2) {
 				game.getBoard().setSplitDistance(handle7Window());
 			}
 			game.playPlayerTurn();
@@ -283,30 +301,31 @@ public class GameView extends StackPane implements BoardListener , GameListener{
 				draw();
 
 		}
-		
-		//handle trap logic
-//		 ArrayList<Cell> trackOrigianl = game.getBoard().getTrack();
-//		 ArrayList<SafeZone> safeZones = game.getBoard().getSafeZones();
-//		 ArrayList<Cell> track=new ArrayList<Cell>();
-//		 for(int i=0;i<trackOrigianl.size();i++) track.add(trackOrigianl.get(i));
-//		 for(int i=0;i<safeZones.size();i++){
-//			 for(Cell cell:safeZones.get(i).getCells()){
-//				 track.add(cell);
-//			 }
-//		 }
-//		 int trap=0;
-//		 loop:for(Marble m:selectedMarbles){
-//			 boolean found=false;
-//			 for(Cell cell:track){
-//				 if(cell.getMarble()==m){
-//					break loop;
-//				 }
-//			 }
-//			 trap++;
-//		 }
-//		if(trap>0){
-//			showExceptionWindow(trap+" marbles fell into trap");
-//		}
+
+		// handle trap logic
+		// ArrayList<Cell> trackOrigianl = game.getBoard().getTrack();
+		// ArrayList<SafeZone> safeZones = game.getBoard().getSafeZones();
+		// ArrayList<Cell> track=new ArrayList<Cell>();
+		// for(int i=0;i<trackOrigianl.size();i++)
+		// track.add(trackOrigianl.get(i));
+		// for(int i=0;i<safeZones.size();i++){
+		// for(Cell cell:safeZones.get(i).getCells()){
+		// track.add(cell);
+		// }
+		// }
+		// int trap=0;
+		// loop:for(Marble m:selectedMarbles){
+		// boolean found=false;
+		// for(Cell cell:track){
+		// if(cell.getMarble()==m){
+		// break loop;
+		// }
+		// }
+		// trap++;
+		// }
+		// if(trap>0){
+		// showExceptionWindow(trap+" marbles fell into trap");
+		// }
 		cleanFirePitFromNull();
 		game.endPlayerTurn();
 		game.deselectAll();
@@ -314,7 +333,7 @@ public class GameView extends StackPane implements BoardListener , GameListener{
 			refresh();
 		else
 			draw();
-		
+
 		printMarbles();
 	}
 
@@ -364,30 +383,39 @@ public class GameView extends StackPane implements BoardListener , GameListener{
 	public void draw() {
 		this.getChildren().clear();
 		boardView = new BoardView(game.getBoard(), game);
-
+		Image logo = new Image("cardss/background2.jpg");
+		ImageView logoView = new ImageView(logo);
+		logoView.setFitWidth(1980 * ratioScreenWidth);
+		logoView.setFitHeight(1080 * ratioScreenHeight);
+		logoView.setPreserveRatio(false); // important: disables maintaining
+											// original aspect ratio
 		handsView = new HandsView(game);
-		handsView.setMaxSize(1300*ratioScreenWidth, 1000*ratioScreenHeight);
+		handsView.setMaxSize(1300 * ratioScreenWidth, 1000 * ratioScreenHeight);
 		homesView = new HomesView(game.getPlayers(), game);
-		homesView.setMaxSize(700*ratioScreenWidth, 700*ratioScreenHeight);
+		homesView.setMaxSize(700 * ratioScreenWidth, 700 * ratioScreenHeight);
 		playerViews = new PlayerViews(game);
-		playerViews.setMaxSize(1100*ratioScreenWidth, 900*ratioScreenHeight);
+		playerViews
+				.setMaxSize(1100 * ratioScreenWidth, 900 * ratioScreenHeight);
 
 		firePitView = new FirePitView(game);
-		
+
 		deckView = new DeckView(game);
-		deckView.setMaxSize(500*ratioScreenWidth, 500*ratioScreenHeight);
+		deckView.setMaxSize(500 * ratioScreenWidth, 500 * ratioScreenHeight);
+
+		this.getChildren().addAll(logoView, detailsView, playerViews,
+				homesView, handsView, boardView, PlayButton, firePitView,
+				deckView);
 		
-	    
-		this.getChildren().addAll(detailsView, playerViews, homesView, handsView, boardView,
-				PlayButton, firePitView,deckView);
-//		boardView.setRotate(45);
-//		homesView.setRotate(45);
+		
+		// Insets(top, right, bottom, left)
+		
 		StackPane.setAlignment(homesView, Pos.CENTER);
 		StackPane.setAlignment(handsView, Pos.CENTER);
 		StackPane.setAlignment(boardView, Pos.CENTER);
 		StackPane.setAlignment(playerViews, Pos.CENTER);
 		StackPane.setAlignment(PlayButton, Pos.BOTTOM_RIGHT);
-		StackPane.setAlignment(detailsView, Pos.CENTER_LEFT);
+		StackPane.setMargin(PlayButton, new Insets(0,250 , 75 , 0 ));
+		StackPane.setAlignment(detailsView, Pos.TOP_LEFT);
 		StackPane.setAlignment(deckView, Pos.CENTER_LEFT);
 
 	}
@@ -410,7 +438,7 @@ public class GameView extends StackPane implements BoardListener , GameListener{
 		// 1) Create a new window (Stage)
 		Stage dialog = new Stage(StageStyle.UNDECORATED);
 		dialog.initModality(Modality.WINDOW_MODAL);
-	    dialog.initOwner(this.getScene().getWindow());
+		dialog.initOwner(this.getScene().getWindow());
 		dialog.setResizable(false);
 
 		// 2) Build the content
@@ -463,7 +491,7 @@ public class GameView extends StackPane implements BoardListener , GameListener{
 		// 1) Create a new window (Stage)
 		Stage dialog = new Stage(StageStyle.UNDECORATED);
 		dialog.initModality(Modality.WINDOW_MODAL);
-	    dialog.initOwner(this.getScene().getWindow());
+		dialog.initOwner(this.getScene().getWindow());
 		dialog.setResizable(false);
 
 		// 2) Build the content
@@ -533,6 +561,149 @@ public class GameView extends StackPane implements BoardListener , GameListener{
 		return discardCard[0]; // true if user chose "Discard Card"
 	}
 
+	public int handle7Window() {
+		// we'll stash the result here
+		final int[] choice = { 1 };
+
+		// 1) Build the modal stage
+		Stage dialog = new Stage(StageStyle.UNDECORATED);
+		dialog.initModality(Modality.WINDOW_MODAL);
+		dialog.initOwner(this.getScene().getWindow());
+		dialog.setResizable(false);
+
+		// 2) Create and style the prompt label
+		Label prompt = new Label("Roll the die: pick a number 1–6");
+		prompt.setFont(Font.font("ArcadeClassic", FontWeight.BOLD, 20));
+		prompt.setTextFill(Color.web("#222222"));
+
+		// 3) Create the combo-box
+		ComboBox<Integer> combo = new ComboBox<>(
+				FXCollections.observableArrayList(1, 2, 3, 4, 5, 6));
+		combo.setValue(1);
+		combo.setStyle("-fx-font-family: 'ArcadeClassic';"
+				+ "-fx-font-weight: bold;" + "-fx-font-size: 18px;"
+				+ "-fx-background-radius: 5;" + "-fx-border-radius: 5;"
+				+ "-fx-border-color: #333333;" + "-fx-border-width: 2;");
+
+		// 4) OK button
+		Button ok = new Button("OK");
+		ok.setFont(Font.font("ArcadeClassic", FontWeight.BOLD, 18));
+		ok.setTextFill(Color.WHITE);
+		ok.setBackground(new Background(new BackgroundFill(
+				Color.web("#4A90E2"), new CornerRadii(5), Insets.EMPTY)));
+		ok.setOnAction(e -> {
+			choice[0] = combo.getValue();
+			dialog.close();
+		});
+
+		HBox controls = new HBox(10, combo, ok);
+		controls.setAlignment(Pos.CENTER);
+
+		// 5) Put it all in a VBox with a gradient background and rounded box
+		VBox root = new VBox(20, prompt, controls);
+		root.setPadding(new Insets(20));
+		root.setAlignment(Pos.CENTER);
+		root.setBackground(new Background(new BackgroundFill(
+				new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE,
+						new Stop(0, Color.web("#FFF5E5")), new Stop(1, Color
+								.web("#FFD88C"))), new CornerRadii(10),
+				Insets.EMPTY)));
+		root.setBorder(new Border(new BorderStroke(Color.web("#333333"),
+				BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(
+						2))));
+
+		// 6) Show it
+		Scene scene = new Scene(root);
+		dialog.setScene(scene);
+		dialog.centerOnScreen();
+		dialog.showAndWait();
+
+		return choice[0];
+	}
+
+	public static Color toFxColor(Colour c) {
+		switch (c) {
+		case GREEN:
+			return Color.GREEN;
+		case RED:
+			return Color.RED;
+		case YELLOW:
+			return Color.YELLOW;
+		case BLUE:
+			return Color.BLUE;
+		default:
+			// fallback, though all enum values are covered
+			return Color.BLACK;
+		}
+	}
+
+	public SequentialTransition showDimmedMessage(String message,
+			long visibleMillis) {
+		// 1) Create a transparent Pane to hold overlay content
+		Pane overlayPane = new Pane();
+		overlayPane.setPickOnBounds(false); // Let clicks go through
+		overlayPane.prefWidthProperty().bind(widthProperty());
+		overlayPane.prefHeightProperty().bind(heightProperty());
+
+		// 2) Full-screen dark rectangle (mask)
+		Rectangle mask = new Rectangle();
+		mask.setFill(Color.web("#000000", 0.6)); // 60% opaque black
+		mask.widthProperty().bind(widthProperty());
+		mask.heightProperty().bind(heightProperty());
+		mask.setMouseTransparent(true);
+
+		// 3) Centered label
+		Label lbl = new Label(message);
+		lbl.setTextFill(Color.WHITE);
+		lbl.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+		lbl.setMouseTransparent(true);
+
+		// 4) Bind label position AFTER scene is rendered
+		Platform.runLater(() -> {
+			lbl.layoutXProperty().bind(
+					widthProperty().subtract(lbl.widthProperty()).divide(2));
+			lbl.layoutYProperty().bind(
+					heightProperty().subtract(lbl.heightProperty()).divide(2));
+		});
+
+		// 5) Add everything to overlay pane, then to this parent
+		overlayPane.getChildren().addAll(mask, lbl);
+		this.getChildren().add(overlayPane);
+
+		// 6) Transitions (fade in, pause, fade out)
+		FadeTransition inMask = new FadeTransition(Duration.millis(300), mask);
+		FadeTransition inLabel = new FadeTransition(Duration.millis(300), lbl);
+		inMask.setFromValue(0);
+		inMask.setToValue(0.6);
+		inLabel.setFromValue(0);
+		inLabel.setToValue(1);
+
+		PauseTransition wait = new PauseTransition(
+				Duration.millis(visibleMillis));
+
+		FadeTransition outMask = new FadeTransition(Duration.millis(300), mask);
+		FadeTransition outLabel = new FadeTransition(Duration.millis(300), lbl);
+		outMask.setFromValue(0.6);
+		outMask.setToValue(0);
+		outLabel.setFromValue(1);
+		outLabel.setToValue(0);
+
+		outLabel.setOnFinished(e -> this.getChildren().remove(overlayPane));
+
+		SequentialTransition seq = new SequentialTransition(
+				new ParallelTransition(inMask, inLabel), wait,
+				new ParallelTransition(outMask, outLabel));
+		return seq;
+	}
+
+	// @Override
+	public void onTrap() {
+		Platform.runLater(() -> {
+			String msg = "A marble fell into trap!";
+			showDimmedMessage(msg, 1500).play();
+		});
+	}
+
 	public HandsView getHandView() {
 		return this.handsView;
 	}
@@ -600,191 +771,10 @@ public class GameView extends StackPane implements BoardListener , GameListener{
 	public void setPlayerViews(PlayerViews playerViews) {
 		this.playerViews = playerViews;
 	}
+
 	public void cleanFirePitFromNull() {
-	    ArrayList<Card> firePit = game.getFirePit();
-	    firePit.removeIf(Objects::isNull);
+		ArrayList<Card> firePit = game.getFirePit();
+		firePit.removeIf(Objects::isNull);
 	}
-	public int handle7Window() {
-	    // we'll stash the result here
-	    final int[] choice = {1};
-
-	    // 1) Build the modal stage
-	    Stage dialog = new Stage(StageStyle.UNDECORATED);
-	    dialog.initModality(Modality.WINDOW_MODAL);
-	    dialog.initOwner(this.getScene().getWindow());
-	    dialog.setResizable(false);
-
-	    // 2) Create and style the prompt label
-	    Label prompt = new Label("Roll the die: pick a number 1–6");
-	    prompt.setFont(Font.font("ArcadeClassic", FontWeight.BOLD, 20));
-	    prompt.setTextFill(Color.web("#222222"));
-
-	    // 3) Create the combo-box
-	    ComboBox<Integer> combo = new ComboBox<>(
-	        FXCollections.observableArrayList(1,2,3,4,5,6)
-	    );
-	    combo.setValue(1);
-	    combo.setStyle(
-	      "-fx-font-family: 'ArcadeClassic';" +
-	      "-fx-font-weight: bold;" +
-	      "-fx-font-size: 18px;" +
-	      "-fx-background-radius: 5;" +
-	      "-fx-border-radius: 5;" +
-	      "-fx-border-color: #333333;" +
-	      "-fx-border-width: 2;"
-	    );
-
-	    // 4) OK button
-	    Button ok = new Button("OK");
-	    ok.setFont(Font.font("ArcadeClassic", FontWeight.BOLD, 18));
-	    ok.setTextFill(Color.WHITE);
-	    ok.setBackground(new Background(new BackgroundFill(
-	      Color.web("#4A90E2"), new CornerRadii(5), Insets.EMPTY
-	    )));
-	    ok.setOnAction(e -> {
-	      choice[0] = combo.getValue();
-	      dialog.close();
-	    });
-
-	    HBox controls = new HBox(10, combo, ok);
-	    controls.setAlignment(Pos.CENTER);
-
-	    // 5) Put it all in a VBox with a gradient background and rounded box
-	    VBox root = new VBox(20, prompt, controls);
-	    root.setPadding(new Insets(20));
-	    root.setAlignment(Pos.CENTER);
-	    root.setBackground(new Background(new BackgroundFill(
-	      new LinearGradient(
-	        0,0,1,1,true,CycleMethod.NO_CYCLE,
-	        new Stop(0, Color.web("#FFF5E5")),
-	        new Stop(1, Color.web("#FFD88C"))
-	      ),
-	      new CornerRadii(10), Insets.EMPTY
-	    )));
-	    root.setBorder(new Border(new BorderStroke(
-	      Color.web("#333333"), BorderStrokeStyle.SOLID,
-	      new CornerRadii(10), new BorderWidths(2)
-	    )));
-
-	    // 6) Show it
-	    Scene scene = new Scene(root);
-	    dialog.setScene(scene);
-	    dialog.centerOnScreen();
-	    dialog.showAndWait();
-
-	    return choice[0];
-	}
-
-	public static Color toFxColor(Colour c) {
-        switch (c) {
-        case GREEN:
-            return Color.GREEN;
-        case RED:
-            return Color.RED;
-        case YELLOW:
-            return Color.YELLOW;
-        case BLUE:
-            return Color.BLUE;
-        default:
-            // fallback, though all enum values are covered
-            return Color.BLACK;
-        }
-	}
-	public SequentialTransition showDimmedMessage(String message, long visibleMillis) {
-	    // 1) Create a transparent Pane to hold overlay content
-	    Pane overlayPane = new Pane();
-	    overlayPane.setPickOnBounds(false); // Let clicks go through
-	    overlayPane.prefWidthProperty().bind(widthProperty());
-	    overlayPane.prefHeightProperty().bind(heightProperty());
-
-	    // 2) Full-screen dark rectangle (mask)
-	    Rectangle mask = new Rectangle();
-	    mask.setFill(Color.web("#000000", 0.6)); // 60% opaque black
-	    mask.widthProperty().bind(widthProperty());
-	    mask.heightProperty().bind(heightProperty());
-	    mask.setMouseTransparent(true);
-
-	    // 3) Centered label
-	    Label lbl = new Label(message);
-	    lbl.setTextFill(Color.WHITE);
-	    lbl.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
-	    lbl.setMouseTransparent(true);
-
-	    // 4) Bind label position AFTER scene is rendered
-	    Platform.runLater(() -> {
-	        lbl.layoutXProperty().bind(widthProperty().subtract(lbl.widthProperty()).divide(2));
-	        lbl.layoutYProperty().bind(heightProperty().subtract(lbl.heightProperty()).divide(2));
-	    });
-
-	    // 5) Add everything to overlay pane, then to this parent
-	    overlayPane.getChildren().addAll(mask, lbl);
-	    this.getChildren().add(overlayPane);
-
-	    // 6) Transitions (fade in, pause, fade out)
-	    FadeTransition inMask = new FadeTransition(Duration.millis(300), mask);
-	    FadeTransition inLabel = new FadeTransition(Duration.millis(300), lbl);
-	    inMask.setFromValue(0); inMask.setToValue(0.6);
-	    inLabel.setFromValue(0); inLabel.setToValue(1);
-
-	    PauseTransition wait = new PauseTransition(Duration.millis(visibleMillis));
-
-	    FadeTransition outMask = new FadeTransition(Duration.millis(300), mask);
-	    FadeTransition outLabel = new FadeTransition(Duration.millis(300), lbl);
-	    outMask.setFromValue(0.6); outMask.setToValue(0);
-	    outLabel.setFromValue(1); outLabel.setToValue(0);
-
-	    outLabel.setOnFinished(e -> this.getChildren().remove(overlayPane));
-
-	    SequentialTransition seq = new SequentialTransition(
-	        new ParallelTransition(inMask, inLabel),
-	        wait,
-	        new ParallelTransition(outMask, outLabel)
-	    );
-	    return seq;
-	}
-
-    @Override
-    public void onTrap() {
-        // Always wrap in Platform.runLater so this runs on the FX thread
-        Platform.runLater(() -> {
-            String msg = "A marble fell into trap!";
-            showDimmedMessage(msg, 1500).play();
-        });
-    }
-
-	// public void animateMove(MarbleView marble, CellView target) {
-	// // compute start/end in GameView’s local coordinates
-	// Bounds startScene = marble.localToScene(marble.getBoundsInLocal());
-	// Bounds endScene = target.localToScene(target.getBoundsInLocal());
-	// Point2D startLocal = this.sceneToLocal(startScene.getMinX(),
-	// startScene.getMinY());
-	// Point2D endLocal = this.sceneToLocal(endScene.getMinX(),
-	// endScene.getMinY());
-	//
-	// // 1) detach marble out of its cell into the animation layer
-	// Parent oldParent = marble.getParent();
-	// ((Pane)oldParent).getChildren().remove(marble);
-	// animationLayer.getChildren().add(marble);
-	//
-	// // 2) place it at the exact starting spot
-	// marble.setLayoutX(startLocal.getX());
-	// marble.setLayoutY(startLocal.getY());
-	//
-	// // 3) animate to the end spot
-	// TranslateTransition tt = new TranslateTransition(Duration.seconds(0.5),
-	// marble);
-	// tt.setToX(endLocal.getX() - startLocal.getX());
-	// tt.setToY(endLocal.getY() - startLocal.getY());
-	// tt.setOnFinished(e -> {
-	// // 4) snap it back into the target cell
-	// animationLayer.getChildren().remove(marble);
-	// target.getChildren().add(marble);
-	// marble.setTranslateX(0);
-	// marble.setTranslateY(0);
-	// marble.setLayoutX(0);
-	// marble.setLayoutY(0);
-	// });
-	// tt.play();
-	// }
 
 }

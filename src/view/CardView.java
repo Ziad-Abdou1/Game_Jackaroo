@@ -60,20 +60,22 @@ public class CardView extends ImageView {
 		});
 	}
 
-	public void hover(boolean f) {
-		if (game.getPlayers().get(0).getHand().contains(card)) {
-			if (game.getPlayers().get(0).getSelectedCard() == this.card) {
-				return;
-			}
-			if (f) {
-				this.setScaleX(1.2);
-				this.setScaleY(1.2);
-			} else {
-				this.setScaleX(1.0);
-				this.setScaleY(1.0);
-			}
-		}
-
+	public void hover(boolean isHovering) {
+	    if (game.getPlayers().get(0).getHand().contains(card)) {
+	        if (game.getPlayers().get(0).getSelectedCard() == this.card) {
+	            return; 
+	        }
+	        // change time 
+	        ScaleTransition st = new ScaleTransition(Duration.millis(200), this);
+	        if (isHovering) {
+	            st.setToX(1.2);
+	            st.setToY(1.2);
+	        } else {
+	            st.setToX(1.0);
+	            st.setToY(1.0);
+	        }
+	        st.play();
+	    }
 	}
 
 	private void drawCard() {

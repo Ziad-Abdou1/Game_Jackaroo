@@ -9,9 +9,9 @@ import java.util.Random;
 
 import javax.management.RuntimeErrorException;
 
-import engine.BoardListener;
+//import engine.BoardListener;
 import engine.Game;
-import engine.GameListener;
+//import engine.GameListener;
 import engine.GameManager;
 import exception.*;
 import model.Colour;
@@ -19,7 +19,7 @@ import model.player.Marble;
 import model.player.Player;
 
 public class Board implements BoardManager {
-	private final List<BoardListener> listeners = new ArrayList<>();
+//	private final List<BoardListener> listeners = new ArrayList<>();
 	
     private final ArrayList<Cell> track;
     private final ArrayList<SafeZone> safeZones;
@@ -349,7 +349,7 @@ public class Board implements BoardManager {
     	
     	
     	if(last.isTrap()){
-    		notifyTrap();
+//    		notifyTrap();
     		last.setMarble(null); //no usage
     		
     		last.setMarble(marble);
@@ -532,16 +532,16 @@ public class Board implements BoardManager {
     
     
     
-    public void addListener(BoardListener l) {
-        listeners.add(l);
-    }
+//    public void addListener(BoardListener l) {
+//        listeners.add(l);
+//    }
 
     /** Call this whenever you detect trapped marbles. */
-    private void notifyTrap() {
-        for (BoardListener l : listeners) {
-            l.onTrap();
-        }
-    }
+//    private void notifyTrap() {
+//        for (BoardListener l : listeners) {
+//            l.onTrap();
+//        }
+//    }
    
 
     
