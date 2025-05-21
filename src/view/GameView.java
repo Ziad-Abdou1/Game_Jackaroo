@@ -3,7 +3,8 @@ package view;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import com.sun.javafx.scene.control.SelectedCellsMap;
+
+
 
 import model.Colour;
 import model.card.standard.*;
@@ -11,12 +12,16 @@ import model.card.*;
 import model.player.Marble;
 import model.player.Player;
 import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.ParallelTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.ScaleTransition;
+import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
@@ -47,6 +52,7 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
@@ -55,12 +61,14 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javafx.scene.input.KeyCode;
+import engine.BoardListener;
 import engine.Game;
+import engine.GameListener;
 import engine.board.Board;
 import engine.board.Cell;
 import engine.board.SafeZone;
 
-public class GameView extends StackPane {
+public class GameView extends StackPane implements BoardListener , GameListener{
 	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 	double screenWidth = screenBounds.getWidth();
 	double screenHeight = screenBounds.getHeight();
@@ -89,6 +97,8 @@ public class GameView extends StackPane {
 	
 	public GameView(Game game) {
 		this.game = game;
+		game.addListener(this);
+		game.getBoard().addListener(this);
 		detailsView=new DetailsView(game);
 		initPlayButton();
 		draw();
@@ -201,7 +211,8 @@ public class GameView extends StackPane {
 		}
 	}
 	public void playAll() {
-
+//		SequentialTransition seq=showDimmedMessage("ok", 1000);
+//		seq.play();
 		boolean done = false;
 		try {
 			System.out.println("selectd card is "
@@ -274,28 +285,28 @@ public class GameView extends StackPane {
 		}
 		
 		//handle trap logic
-		 ArrayList<Cell> trackOrigianl = game.getBoard().getTrack();
-		 ArrayList<SafeZone> safeZones = game.getBoard().getSafeZones();
-		 ArrayList<Cell> track=new ArrayList<Cell>();
-		 for(int i=0;i<trackOrigianl.size();i++) track.add(trackOrigianl.get(i));
-		 for(int i=0;i<safeZones.size();i++){
-			 for(Cell cell:safeZones.get(i).getCells()){
-				 track.add(cell);
-			 }
-		 }
-		 int trap=0;
-		 loop:for(Marble m:selectedMarbles){
-			 boolean found=false;
-			 for(Cell cell:track){
-				 if(cell.getMarble()==m){
-					break loop;
-				 }
-			 }
-			 trap++;
-		 }
-		if(trap>0){
-			showExceptionWindow(trap+" marbles fell into trap");
-		}
+//		 ArrayList<Cell> trackOrigianl = game.getBoard().getTrack();
+//		 ArrayList<SafeZone> safeZones = game.getBoard().getSafeZones();
+//		 ArrayList<Cell> track=new ArrayList<Cell>();
+//		 for(int i=0;i<trackOrigianl.size();i++) track.add(trackOrigianl.get(i));
+//		 for(int i=0;i<safeZones.size();i++){
+//			 for(Cell cell:safeZones.get(i).getCells()){
+//				 track.add(cell);
+//			 }
+//		 }
+//		 int trap=0;
+//		 loop:for(Marble m:selectedMarbles){
+//			 boolean found=false;
+//			 for(Cell cell:track){
+//				 if(cell.getMarble()==m){
+//					break loop;
+//				 }
+//			 }
+//			 trap++;
+//		 }
+//		if(trap>0){
+//			showExceptionWindow(trap+" marbles fell into trap");
+//		}
 		cleanFirePitFromNull();
 		game.endPlayerTurn();
 		game.deselectAll();
@@ -674,9 +685,70 @@ public class GameView extends StackPane {
         default:
             // fallback, though all enum values are covered
             return Color.BLACK;
+        }
+	}
+	public SequentialTransition showDimmedMessage(String message, long visibleMillis) {
+	    // 1) Create a transparent Pane to hold overlay content
+	    Pane overlayPane = new Pane();
+	    overlayPane.setPickOnBounds(false); // Let clicks go through
+	    overlayPane.prefWidthProperty().bind(widthProperty());
+	    overlayPane.prefHeightProperty().bind(heightProperty());
+
+	    // 2) Full-screen dark rectangle (mask)
+	    Rectangle mask = new Rectangle();
+	    mask.setFill(Color.web("#000000", 0.6)); // 60% opaque black
+	    mask.widthProperty().bind(widthProperty());
+	    mask.heightProperty().bind(heightProperty());
+	    mask.setMouseTransparent(true);
+
+	    // 3) Centered label
+	    Label lbl = new Label(message);
+	    lbl.setTextFill(Color.WHITE);
+	    lbl.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+	    lbl.setMouseTransparent(true);
+
+	    // 4) Bind label position AFTER scene is rendered
+	    Platform.runLater(() -> {
+	        lbl.layoutXProperty().bind(widthProperty().subtract(lbl.widthProperty()).divide(2));
+	        lbl.layoutYProperty().bind(heightProperty().subtract(lbl.heightProperty()).divide(2));
+	    });
+
+	    // 5) Add everything to overlay pane, then to this parent
+	    overlayPane.getChildren().addAll(mask, lbl);
+	    this.getChildren().add(overlayPane);
+
+	    // 6) Transitions (fade in, pause, fade out)
+	    FadeTransition inMask = new FadeTransition(Duration.millis(300), mask);
+	    FadeTransition inLabel = new FadeTransition(Duration.millis(300), lbl);
+	    inMask.setFromValue(0); inMask.setToValue(0.6);
+	    inLabel.setFromValue(0); inLabel.setToValue(1);
+
+	    PauseTransition wait = new PauseTransition(Duration.millis(visibleMillis));
+
+	    FadeTransition outMask = new FadeTransition(Duration.millis(300), mask);
+	    FadeTransition outLabel = new FadeTransition(Duration.millis(300), lbl);
+	    outMask.setFromValue(0.6); outMask.setToValue(0);
+	    outLabel.setFromValue(1); outLabel.setToValue(0);
+
+	    outLabel.setOnFinished(e -> this.getChildren().remove(overlayPane));
+
+	    SequentialTransition seq = new SequentialTransition(
+	        new ParallelTransition(inMask, inLabel),
+	        wait,
+	        new ParallelTransition(outMask, outLabel)
+	    );
+	    return seq;
+	}
+
+    @Override
+    public void onTrap(int trappedCount) {
+        // Always wrap in Platform.runLater so this runs on the FX thread
+        Platform.runLater(() -> {
+            String msg = trappedCount + " marbles fell into trap!";
+            showDimmedMessage(msg, 1500).play();
+        });
     }
-}
-	
+
 	// public void animateMove(MarbleView marble, CellView target) {
 	// // compute start/end in GameView’s local coordinates
 	// Bounds startScene = marble.localToScene(marble.getBoundsInLocal());

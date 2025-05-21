@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import engine.board.Board;
 import engine.board.SafeZone;
@@ -21,6 +22,9 @@ import model.player.*;
 
 
 public class Game implements GameManager {
+	private final List<GameListener> listeners = new ArrayList<>();
+	
+	 
     private final Board board;
     private final ArrayList<Player> players;
     // representing which of the players should play next.
@@ -102,11 +106,13 @@ public class Game implements GameManager {
     				Deck.refillPool(firePit);
     				firePit.clear();
     			}
-//    			System.out.println(Deck.getPoolSize());
     			players.get(i).setHand(Deck.drawCards());
     		}
     		turn = 0;
     	}
+    	
+    	//suppose for simplicity that a trap will happen here. what should I write here as a code?
+//    	notifyTrap(1);
     	
     }
     public Colour checkWin(){ //checks if anyone has won.
@@ -177,4 +183,17 @@ public class Game implements GameManager {
 	
 
     
+	
+    public void addListener(GameListener l) {
+        listeners.add(l);
+    }
+
+//    /** Call this whenever you detect trapped marbles. */
+//    private void notifyTrap(int trappedCount) {
+//        for (GameListener l : listeners) {
+//            l.onTrap(trappedCount);
+//        }
+//    }
+
+
 }

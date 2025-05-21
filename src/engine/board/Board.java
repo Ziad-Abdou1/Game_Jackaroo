@@ -4,11 +4,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import javax.management.RuntimeErrorException;
 
+import engine.BoardListener;
 import engine.Game;
+import engine.GameListener;
 import engine.GameManager;
 import exception.*;
 import model.Colour;
@@ -16,6 +19,8 @@ import model.player.Marble;
 import model.player.Player;
 
 public class Board implements BoardManager {
+	private final List<BoardListener> listeners = new ArrayList<>();
+	
     private final ArrayList<Cell> track;
     private final ArrayList<SafeZone> safeZones;
 	private final GameManager gameManager;
@@ -344,6 +349,7 @@ public class Board implements BoardManager {
     	
     	
     	if(last.isTrap()){
+    		notifyTrap(1);
     		last.setMarble(null); //no usage
     		
     		last.setMarble(marble);
@@ -522,6 +528,19 @@ public class Board implements BoardManager {
 
     public void setSplitDistance(int splitDistance) {
         this.splitDistance = splitDistance;
+    }
+    
+    
+    
+    public void addListener(BoardListener l) {
+        listeners.add(l);
+    }
+
+    /** Call this whenever you detect trapped marbles. */
+    private void notifyTrap(int trappedCount) {
+        for (BoardListener l : listeners) {
+            l.onTrap(trappedCount);
+        }
     }
    
 
