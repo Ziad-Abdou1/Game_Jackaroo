@@ -741,10 +741,10 @@ public class GameView extends StackPane implements BoardListener , GameListener{
 	}
 
     @Override
-    public void onTrap(int trappedCount) {
+    public void onTrap() {
         // Always wrap in Platform.runLater so this runs on the FX thread
         Platform.runLater(() -> {
-            String msg = trappedCount + " marbles fell into trap!";
+            String msg = "A marble fell into trap!";
             showDimmedMessage(msg, 1500).play();
         });
     }

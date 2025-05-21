@@ -349,7 +349,7 @@ public class Board implements BoardManager {
     	
     	
     	if(last.isTrap()){
-    		notifyTrap(1);
+    		notifyTrap();
     		last.setMarble(null); //no usage
     		
     		last.setMarble(marble);
@@ -537,9 +537,9 @@ public class Board implements BoardManager {
     }
 
     /** Call this whenever you detect trapped marbles. */
-    private void notifyTrap(int trappedCount) {
+    private void notifyTrap() {
         for (BoardListener l : listeners) {
-            l.onTrap(trappedCount);
+            l.onTrap();
         }
     }
    
