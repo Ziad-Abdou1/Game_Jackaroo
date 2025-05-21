@@ -69,7 +69,6 @@ public class GameController extends Application {
 		launchGame();
 		startGameAction();
 		endGameAction();
-		replayAction();
 	}
 
 	
@@ -98,6 +97,10 @@ public class GameController extends Application {
 					gameView.showExceptionWindow(e.getMessage());
 				}
 			}
+			if (evt.getCode() == KeyCode.W) {
+				game.instantWin();
+				win();
+			}
 		});
 		stage.setScene(gameScene);
 		stage.setFullScreen(true);
@@ -114,6 +117,7 @@ public class GameController extends Application {
 		winningView = new WinningView(wonPlayer);
 		winningScene = new Scene(winningView,screenWidth,screenHeight);
 		stage.setScene(winningScene);
+		stage.setFullScreen(true);
 	}
 	
 	private void launchGame() throws IOException {
@@ -148,7 +152,7 @@ public class GameController extends Application {
 
 	public void endGameAction(){
 		Timeline replay = new Timeline(
-			    new KeyFrame(Duration.seconds(0.001), event -> {
+			    new KeyFrame(Duration.seconds(0.5), event -> {
 			        if (gameView!=null && gameView.getGame() != null && gameView.getGame().checkWin()!=null){
 			        	if (!gameEnded){
 			        		win();
@@ -162,25 +166,7 @@ public class GameController extends Application {
 			replay.play(); // Starts the timeline
 	}
 	
-	public void replayAction(){
-		Timeline replay = new Timeline(
-			    new KeyFrame(Duration.seconds(0.001), event -> {
-			        if (gameEnded){
-			    		winningView.getContinueButton().setOnMouseClicked(e->{
-			    			try{
-			    				startGame();
-			    				gameEnded = false;
-			    			}catch(Exception ex){
-			    				//
-			    			}
-			    		});
-			        }
-			    })
-			);
-			replay.setCycleCount(Animation.INDEFINITE); 
-			replay.play(); // Starts the timeline
 
-	}
 	
 	private Point2D scenePos(Node node) {
 		Bounds b = node.localToScene(node.getBoundsInLocal());

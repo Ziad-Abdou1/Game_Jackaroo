@@ -380,6 +380,8 @@ public class GameView extends StackPane implements BoardListener , GameListener{
 	    
 		this.getChildren().addAll(detailsView, playerViews, homesView, handsView, boardView,
 				PlayButton, firePitView,deckView);
+//		boardView.setRotate(45);
+//		homesView.setRotate(45);
 		StackPane.setAlignment(homesView, Pos.CENTER);
 		StackPane.setAlignment(handsView, Pos.CENTER);
 		StackPane.setAlignment(boardView, Pos.CENTER);
@@ -608,7 +610,8 @@ public class GameView extends StackPane implements BoardListener , GameListener{
 
 	    // 1) Build the modal stage
 	    Stage dialog = new Stage(StageStyle.UNDECORATED);
-	    dialog.initModality(Modality.APPLICATION_MODAL);
+	    dialog.initModality(Modality.WINDOW_MODAL);
+	    dialog.initOwner(this.getScene().getWindow());
 	    dialog.setResizable(false);
 
 	    // 2) Create and style the prompt label

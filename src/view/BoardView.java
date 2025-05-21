@@ -57,7 +57,7 @@ public class BoardView extends GridPane {
 
 	int[] dy = { 0, 1, 0, -1, -1, 1, -1, 1 };
 	int[] dx = { -1, 0, 1, 0, -1, -1, 1, 1 };
-	int[] segment = new int[] { 7, 7, 7, 4 };
+	int[] segment = new int[] { 7,7,7, 4 };
 	int[][] directions = { { 0, 4, 3, 0 }, { 1, 5, 0, 1 }, { 2, 7, 1, 2 },
 			{ 3, 6, 2, 3 } };
 

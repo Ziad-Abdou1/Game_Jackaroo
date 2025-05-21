@@ -31,6 +31,7 @@ public class Game implements GameManager {
 	private int currentPlayerIndex;
 	//  representing the cards that have been played / discarded in the game.
     private final ArrayList<Card> firePit;
+    private boolean cheatWin = false;
     
     private int turn;
 
@@ -116,7 +117,8 @@ public class Game implements GameManager {
     	
     }
     public Colour checkWin(){ //checks if anyone has won.
-//    	return players.get(2).getColour();
+//    	 return players.get(0).getColour();
+    	if(cheatWin) return Colour.BLUE;
     	for(SafeZone s:board.getSafeZones()){
     		if(s.isFull())
     			return s.getColour();
@@ -187,6 +189,8 @@ public class Game implements GameManager {
     public void addListener(GameListener l) {
         listeners.add(l);
     }
+    
+    public void instantWin(){cheatWin = true;}
 
 //    /** Call this whenever you detect trapped marbles. */
 //    private void notifyTrap(int trappedCount) {

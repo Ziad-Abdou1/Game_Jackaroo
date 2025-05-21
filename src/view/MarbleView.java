@@ -1,6 +1,9 @@
 package view;
 
 import engine.Game;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
@@ -8,6 +11,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
+import javafx.util.Duration;
 import model.Colour;
 import model.player.Marble;
 
@@ -34,19 +38,26 @@ public class MarbleView extends StackPane {
 	}
 
 	public void handle() {
+
 		if (marble != null) {
 			circle.setOnMouseClicked(e -> {
-				try {
-					System.out.println("marble is selected");
-					selected = !selected;
-					if (selected) selectEffect();
-					else deselectEffect();
-					//game.selectMarble(this.marble);
-				} catch (Exception exc) {
-					System.out.println(exc.getMessage());
-					((GameView)this.getScene().getRoot()).showExceptionWindow(exc.getMessage());
-					
+				if (game.getActivePlayerColour()==game.getPlayers().get(0).getColour()){
+					try {
+						System.out.println("marble is selected");
+						selected = !selected;
+						if (selected) {
+							circle.setEffect(null);
+							selectEffect();
+						}
+						else deselectEffect();
+						//game.selectMarble(this.marble);
+					} catch (Exception exc) {
+						System.out.println(exc.getMessage());
+						((GameView)this.getScene().getRoot()).showExceptionWindow(exc.getMessage());
+						
+					}
 				}
+				
 			});
 
 			DropShadow shadow = new DropShadow();
@@ -55,17 +66,26 @@ public class MarbleView extends StackPane {
 			shadow.setRadius(20);
 
 			circle.setOnMouseEntered(e -> {
-				circle.setEffect(shadow);
-				this.setScaleX(1.3);
-				this.setScaleY(1.3);
+				if (!selected){
+					if (game.getActivePlayerColour()==game.getPlayers().get(0).getColour()){
+						circle.setEffect(shadow);
+						this.setScaleX(1.3);
+						this.setScaleY(1.3);
+					}
+				}
+
+
 
 			});
 
 			circle.setOnMouseExited(e -> {
 				if (!selected){
-					circle.setEffect(null);
-					this.setScaleX(1);
-					this.setScaleY(1);
+					if (game.getActivePlayerColour()==game.getPlayers().get(0).getColour()){
+						circle.setEffect(null);
+						this.setScaleX(1);
+						this.setScaleY(1);
+					}
+
 				}
 
 			});
@@ -91,19 +111,20 @@ public class MarbleView extends StackPane {
 		}
 	}
 
-	public void selectEffect(){
-		DropShadow shadow = new DropShadow();
-		shadow.setColor(getFXColor(marble.getColour()));
-		shadow.setRadius(20);
-		circle.setEffect(shadow);
-		this.setScaleX(1.3);
-		this.setScaleY(1.3);
+	public void selectEffect() {
+	    // compute a lighter version of the fill colour
+	    Color fill = (Color) circle.getFill();
+	    Color lighter = fill.brighter();
+	    // apply a stroke (border) of that lighter colour
+	    circle.setStroke(Color.WHITE);
+	    circle.setStrokeWidth(radius * 0.1);  // adjust thickness as you like
+	    
 	}
-	
-	public void deselectEffect(){
-		circle.setEffect(null);
-		this.setScaleX(1);
-		this.setScaleY(1);
+
+	public void deselectEffect() {
+	    // remove the border
+	    circle.setStroke(null);
+	    circle.setStrokeWidth(0);
 	}
 	
 	public void refresh() {
