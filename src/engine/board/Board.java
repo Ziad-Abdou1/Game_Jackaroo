@@ -9,6 +9,8 @@ import java.util.Random;
 
 import javax.management.RuntimeErrorException;
 
+
+import engine.BoardListener;
 //import engine.BoardListener;
 import engine.Game;
 //import engine.GameListener;
@@ -406,7 +408,7 @@ public class Board implements BoardManager {
 		}
 
 		if (last.isTrap()) {
-			notifyTrap(1);
+			notifyTrap();
 			last.setMarble(null); // no usage
 
 			last.setMarble(marble);
