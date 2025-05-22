@@ -22,3 +22,11 @@
     -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.3), 15, 0.2, 0, 0);
     -fx-cursor: hand;
 }
+.cell-view {
+    -fx-background-radius: 50%;
+    -fx-border-radius: 50%;
+    -fx-background-color: radial-gradient(center 50% 50%, radius 50%, #ccc, #999);
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+    -fx-padding: 2;
+}

@@ -9,6 +9,9 @@ import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.RadialGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.util.Duration;
@@ -28,105 +31,29 @@ public class MarbleView extends StackPane {
 
 	public MarbleView(Marble marble, Game game) {
 		this.game = game;
-		circle = new Circle();
 		this.marble = marble;
-		refresh();
+		circle = new Circle();
+		circle.setRadius(radius);
 		this.getChildren().add(circle);
-
+		refresh();
 		handle();
-
 	}
 
-	public void handle() {
-
-		if (marble != null) {
-			circle.setOnMouseClicked(e -> {
-				if (game.getActivePlayerColour()==game.getPlayers().get(0).getColour()){
-					try {
-						System.out.println("marble is selected");
-						selected = !selected;
-						if (selected) {
-							circle.setEffect(null);
-							selectEffect();
-						}
-						else deselectEffect();
-						//game.selectMarble(this.marble);
-					} catch (Exception exc) {
-						System.out.println(exc.getMessage());
-						((GameView)this.getScene().getRoot()).showExceptionWindow(exc.getMessage());
-						
-					}
-				}
-				
-			});
-
-			DropShadow shadow = new DropShadow();
-
-			shadow.setColor(getFXColor(marble.getColour()));
-			shadow.setRadius(20);
-
-			circle.setOnMouseEntered(e -> {
-				if (!selected){
-					if (game.getActivePlayerColour()==game.getPlayers().get(0).getColour()){
-						circle.setEffect(shadow);
-						this.setScaleX(1.3);
-						this.setScaleY(1.3);
-					}
-				}
-
-
-
-			});
-
-			circle.setOnMouseExited(e -> {
-				if (!selected){
-					if (game.getActivePlayerColour()==game.getPlayers().get(0).getColour()){
-						circle.setEffect(null);
-						this.setScaleX(1);
-						this.setScaleY(1);
-					}
-
-				}
-
-			});
-		}
-	}
-	
-	public void resetSelect(){
-		this.selected = false;
-	}
-	
 	private Color getFXColor(Colour clr) {
 		switch (clr) {
 		case BLUE:
-			return Color.BLUE;
+			return Color.DODGERBLUE;
 		case RED:
-			return Color.RED;
+			return Color.CRIMSON;
 		case GREEN:
-			return Color.GREEN;
+			return Color.FORESTGREEN;
 		case YELLOW:
-			return Color.YELLOW;
+			return Color.GOLD;
 		default:
 			return Color.GRAY;
 		}
 	}
 
-	public void selectEffect() {
-	    // compute a lighter version of the fill colour
-	    Color fill = (Color) circle.getFill();
-	    Color lighter = fill.brighter();
-	    // apply a stroke (border) of that lighter colour
-	    circle.setStroke(Color.WHITE);
-	    circle.setStrokeWidth(radius * 0.1);  // adjust thickness as you like
-	    
-	}
-
-	public void deselectEffect() {
-	    // remove the border
-	    circle.setStroke(null);
-	    circle.setStrokeWidth(0);
-	}
-	
 	public void refresh() {
 		handle();
 		circle.setRadius(radius);
@@ -134,18 +61,32 @@ public class MarbleView extends StackPane {
 			circle.setOpacity(0);
 		} else {
 			circle.setOpacity(1);
-			if (selected) selectEffect();
-			else deselectEffect();
 			Colour clr = marble.getColour();
-			if (clr == Colour.BLUE)
-				circle.setFill(Color.BLUE);
-			if (clr == Colour.YELLOW)
-				circle.setFill(Color.YELLOW);
-			if (clr == Colour.GREEN)
-				circle.setFill(Color.GREEN);
-			if (clr == Colour.RED)
-				circle.setFill(Color.RED);
+			Color baseColor = getFXColor(clr);
+
+			// Simulate 3D look using RadialGradient
+			circle.setFill(new RadialGradient(0, 0, 0.3, 0.3, 1, true,
+					CycleMethod.NO_CYCLE, new Stop(0, baseColor.brighter()
+							.brighter()), new Stop(1, baseColor.darker())));
+			if (selected)
+				selectEffect();
+			else
+				deselectEffect();
 		}
+	}
+
+	public void selectEffect() {
+		circle.setStroke(Color.WHITE);
+		circle.setStrokeWidth(radius * 0.15);
+	}
+
+	public void deselectEffect() {
+		circle.setStroke(null);
+		circle.setStrokeWidth(0);
+	}
+
+	public void resetSelect() {
+		this.selected = false;
 	}
 
 	public Marble getMarble() {
@@ -157,4 +98,51 @@ public class MarbleView extends StackPane {
 		refresh();
 	}
 
+	public void handle() {
+		if (marble != null) {
+			circle.setOnMouseClicked(e -> {
+				if (game.getActivePlayerColour() == game.getPlayers().get(0)
+						.getColour()) {
+					try {
+						System.out.println("marble is selected");
+						selected = !selected;
+						if (selected) {
+							circle.setEffect(null);
+							selectEffect();
+						} else
+							deselectEffect();
+					} catch (Exception exc) {
+						System.out.println(exc.getMessage());
+						((GameView) this.getScene().getRoot())
+								.showExceptionWindow(exc.getMessage());
+					}
+				}
+			});
+
+			DropShadow shadow = new DropShadow(15,
+					getFXColor(marble.getColour()));
+			shadow.setOffsetX(2);
+			shadow.setOffsetY(2);
+			shadow.setSpread(0.2);
+			circle.setEffect(shadow);
+
+			circle.setOnMouseEntered(e -> {
+				if (!selected
+						&& game.getActivePlayerColour() == game.getPlayers()
+								.get(0).getColour()) {
+					this.setScaleX(1.3);
+					this.setScaleY(1.3);
+				}
+			});
+
+			circle.setOnMouseExited(e -> {
+				if (!selected
+						&& game.getActivePlayerColour() == game.getPlayers()
+								.get(0).getColour()) {
+					this.setScaleX(1);
+					this.setScaleY(1);
+				}
+			});
+		}
+	}
 }
