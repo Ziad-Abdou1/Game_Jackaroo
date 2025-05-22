@@ -38,13 +38,8 @@ public class CardView extends ImageView {
 	}
 
 	public void action() {
-		refresh();
-
-
-
 		this.setOnMouseClicked(e -> {
 			try {
-
 				if (game.getPlayers().get(0).getSelectedCard()==this.card) game.deselectAll();
 				else {
 					game.deselectAll();

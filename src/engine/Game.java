@@ -32,13 +32,13 @@ public class Game implements GameManager {
 	//  representing the cards that have been played / discarded in the game.
     private final ArrayList<Card> firePit;
     private boolean cheatWin = false;
-    
     private int turn;
-
+    public boolean refresh ;  
     public Game(String playerName) throws IOException {
         turn = 0;
         currentPlayerIndex = 0;
         firePit = new ArrayList<>();
+        refresh = false ; 
 
         ArrayList<Colour> colourOrder = new ArrayList<>();
         
@@ -110,6 +110,7 @@ public class Game implements GameManager {
     			players.get(i).setHand(Deck.drawCards());
     		}
     		turn = 0;
+    		refresh = true; 
     	}
     	
     	//suppose for simplicity that a trap will happen here. what should I write here as a code?
