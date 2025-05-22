@@ -5,10 +5,14 @@ import java.util.ArrayList;
 import com.sun.prism.paint.Color;
 
 import engine.Game;
+import engine.board.Cell;
 import model.card.Card;
+import model.card.standard.Standard;
+import model.player.Marble;
 import javafx.animation.ScaleTransition;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -42,6 +46,7 @@ public class HPlayerCardView extends HBox {
 
 	public void setHand(ArrayList<Card> hand) {
 		this.hand = hand;
+		
 		draw();
 	}
 
@@ -53,6 +58,7 @@ public class HPlayerCardView extends HBox {
 			handView.add(cv);
 			this.getChildren().add(cv);
 		}
+		
 	}
 	
 	public void addCardAnimated(Card card) {
@@ -70,5 +76,105 @@ public class HPlayerCardView extends HBox {
 		scale.setToY(1);
 		scale.play();
 	}
+	public void canPlayEffect() {
+	    for (CardView cv : handView) {
+	        boolean playable = canPlayCard(cv.getCard());
+	        cv.setPlayable(playable); // Triggers internal refresh
+	    }
+	}
+
+	//Can Play Card
+	public boolean canPlayCard(Card c){
+		boolean f = false;
+		if(c instanceof Standard){
+			Standard card = (Standard)c;
+			int rank =card.getRank();
+			ArrayList<Marble> marbles = game.getBoard().getActionableMarbles();
+			ArrayList<ArrayList<Cell>> fullPaths =new ArrayList<>();
+			
+			switch(rank){
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+			case 6:
+			case 8:
+			case 9:
+				for(Marble m : marbles){
+					fullPaths.add(game.getBoard().createFullPath(m, rank));
+				}
+				f=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack());
+				break;
+			case 1:
+				for(Marble m : marbles){
+					fullPaths.add(game.getBoard().createFullPath(m, rank));
+				}
+				f=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack()) || game.canField();
+				break;
+			case 10:
+			case 12:
+				f =true;
+				break;
+			case 13:
+				for(Marble m : marbles){
+					fullPaths.add(game.getBoard().createFullPath(m, rank));
+				}
+				f=card.canPlay(marbles, fullPaths,true,game.getBoard().getSafeZones(),game.getBoard().getTrack()) || game.canField();
+				break;
+			case 11:
+				canSwap();
+				break;
+			case 7: // for one marble temporarily
+				for(Marble m : marbles){
+					fullPaths.add(game.getBoard().createFullPath(m, rank));
+				}
+				f=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack());
+				break;
+			
+			}
+		}
+		else{
+			if(c.getName().equals("MarbleBurner")){
+				
+				ArrayList<Cell> track = game.getBoard().getTrack();
+				for(int i =0;i<track.size();i++){
+					Marble m = track.get(i).getMarble();
+					if(m != null && m.getColour()!=game.getPlayers().get(0).getColour() && i != game.getBoard().getBasePosition(m.getColour()))
+							f = true;
+				}
+			}
+			else{
+				ArrayList<Cell> track = game.getBoard().getTrack();
+				for(int i =0;i<track.size();i++){
+					Marble m = track.get(i).getMarble();
+					if(m != null && m.getColour()==game.getPlayers().get(0).getColour())
+							f = true;
+				}
+			}
+		}
+		
+		
+		return f;
+	}
+	// new method to check if i can swap or not
+		public boolean canSwap(){
+			boolean f = false;
+			boolean ihave = false;
+			boolean youhave = false;
+			ArrayList<Cell> track = game.getBoard().getTrack();
+			for(int i =0;i<track.size();i++){
+				Marble m = track.get(i).getMarble();
+				if(m != null){
+					if(m.getColour()==game.getPlayers().get(0).getColour())
+						ihave = true;
+					else{
+						if(i != game.getBoard().getBasePosition(m.getColour()))
+							youhave = true;
+					}
+				}
+			}
+			f = ihave && youhave;
+			return f ;
+		}
 
 }

@@ -16,5 +16,8 @@ public class Five extends Standard {
     public boolean validateMarbleColours(ArrayList<Marble> marbles) {
         return true;
     }
-
+    // OVER RIDE validateMarbleColour
+    public boolean validateMarbleColour(Marble m) {
+        return true;
+    }
 }

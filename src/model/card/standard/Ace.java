@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import engine.GameManager;
 import engine.board.BoardManager;
+import engine.board.Cell;
+import engine.board.SafeZone;
 import exception.ActionException;
 import exception.InvalidMarbleException;
 import model.player.Marble;
@@ -28,5 +30,6 @@ public class Ace extends Standard {
         else
             super.act(marbles);
     }
+    
     
 }

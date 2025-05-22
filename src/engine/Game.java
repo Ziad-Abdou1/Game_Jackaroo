@@ -192,6 +192,18 @@ public class Game implements GameManager {
     }
     
     public void instantWin(){cheatWin = true;}
+    
+    
+    // new method to check i can field of not
+    public boolean canField() { 
+    	boolean f = true;
+    	Player p=players.get(currentPlayerIndex);
+    	Marble m=p.getOneMarble();
+    	if(m == null)
+    		f=false;             // No Marbles left in the Home!
+    	f = f && board.canFielding(board.getTrack().get(board.getBasePosition(p.getColour())));
+    	return f;
+    }
 
 //    /** Call this whenever you detect trapped marbles. */
 //    private void notifyTrap(int trappedCount) {

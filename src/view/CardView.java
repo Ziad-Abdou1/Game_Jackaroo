@@ -12,6 +12,7 @@ import model.player.Marble;
 import javafx.animation.ScaleTransition;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,6 +28,17 @@ public class CardView extends ImageView {
 	double screenWidth = screenBounds.getWidth();
 	double screenHeight = screenBounds.getHeight();
 	private boolean orientation;
+	private boolean isPlayable = true;
+
+	public void setPlayable(boolean playable) {
+	    this.isPlayable = playable;
+	    refresh(); // Refresh appearance when playability changes
+	}
+
+	public boolean isPlayable() {
+	    return isPlayable;
+	}
+
 
 	public CardView(Game game, Card card, boolean f) {
 //		f=true;
@@ -129,15 +141,22 @@ public class CardView extends ImageView {
 	}
 
 	public void refresh() {
-		if (game.getPlayers().get(0).getSelectedCard() != this.card)
-			formatNotSelected();
-		else
-			formatSelected();
-		if (orientation)
-			drawCard();
-		else
-			drawCPUCard();
+	    boolean isSelected = game.getPlayers().get(0).getSelectedCard() == this.card;
+
+	    if (isSelected) {
+	        formatSelected();
+	    } else {
+	        if (isPlayable) {
+	            formatNotSelected();
+	        } else {
+	            formatUnplayable();
+	        }
+	    }
+
+	    if (orientation) drawCard();
+	    else drawCPUCard();
 	}
+
 
 	public String getPath() {
 		if (card == null) {
@@ -175,6 +194,22 @@ public class CardView extends ImageView {
 		}
 
 		return path;
+	}
+	
+	public void formatUnplayable() {
+	    // Slight darkening
+	    ColorAdjust darken = new ColorAdjust();
+	    darken.setBrightness(-0.4);
+	    this.setEffect(darken);
+
+	    // Shrink the card
+	    ScaleTransition st = new ScaleTransition(Duration.millis(200), this);
+	    st.setToX(0.85);
+	    st.setToY(0.85);
+	    st.play();
+
+	    // Optional: visually disable
+	    this.setStyle("-fx-opacity: 0.85;");
 	}
 
 	public Card getCard() {

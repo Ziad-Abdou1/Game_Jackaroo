@@ -86,7 +86,8 @@ public class Board implements BoardManager {
 		return -1;
 	}
 
-	private int getBasePosition(Colour colour) {
+	//changed to public to help in checking if the card is playable or not
+	public int getBasePosition(Colour colour) {
 		for (int i = 0; i < safeZones.size(); i++) {
 			if (safeZones.get(i) != null
 					&& safeZones.get(i).getColour() == colour) {
@@ -175,6 +176,9 @@ public class Board implements BoardManager {
 	// }
 	// return ans;
 	// }
+	
+	
+	
 	private ArrayList<Cell> validateSteps(Marble marble, int steps)
 			throws IllegalMovementException {
 		if (marble == null)
@@ -651,7 +655,104 @@ public class Board implements BoardManager {
 		}
 		return ans;
 	}
+	//-----------------------------------------------------------------------------------
+	
+	
+	//new method to create full path to help in checking if the card is playable or not
+	public ArrayList<Cell> createFullPath(Marble marble, int steps){
+		if (marble == null)
+			return new ArrayList<Cell>(); // this is to handle if there is
+											// strange test cases
+		// I handled here if steps <0
+		// if(steps<0 && steps!=-4) throw new IllegalMovementException(); // not
+		// mentioned anywhere
+		ArrayList<Cell> ans = new ArrayList<Cell>();
+		int cur = getPositionInPath(track, marble);
+		if (cur == -1) {
+			ArrayList<Cell> sf = getSafeZone(marble.getColour()); // should I
+																	// handle if
+																	// it is
+																	// null?
+			cur = getPositionInPath(sf, marble);
+			if (cur == -1)
+				return new ArrayList<Cell>();                          //the marble cannot be moved.
+			// marble now is in safe zone
+			if (steps < 0)
+				return new ArrayList<Cell>();            //marble cannot move backwards in Safe Zone
+			if (cur + steps >= 4)
+				return new ArrayList<Cell>();        //the rank of the card played is too high. // steps==5
+																		// is
+																		// included
+																		// here
+																		// automatically
+			for (int i = 0; i <= steps; i++) {
+				ans.add(sf.get(cur + i));
+			}
+			return ans;
+		}
+		// marble now is on track
+		if (steps < 0) {
+			steps = -steps;
+			for (int i = 0; i <= steps; i++) {
+				ans.add(track.get(((cur - i) % 100 + 100) % 100));
+			}
+			return ans;
+		}
+		Colour clrCurrentPlayer = gameManager.getActivePlayerColour();
 
+		int entry = getEntryPosition(marble.getColour());
+		int distanceToEnd = ((entry - cur) % 100 + 100) % 100 + 4;
+
+		// moving my own marble and steps is much higher than the end of the
+		// game
+		if (distanceToEnd < steps && clrCurrentPlayer == marble.getColour())
+			return new ArrayList<Cell>();                            //the rank of the card played is too high.
+
+		// moving an opponent
+		if (clrCurrentPlayer != marble.getColour()) {
+			for (int i = 0; i <= steps; i++) {
+				Cell cell = track.get((cur + i) % 100);
+				ans.add(cell);
+				if (i != 0 && cell.getMarble() != null && cell.getMarble().getColour() == clrCurrentPlayer) {
+					return new ArrayList<Cell>();        //can not bypass or land your own marbles
+				}
+			}
+			return ans;
+		}
+
+		int distanceToEntry = distanceToEnd - 4;
+		int initialDistance = Math.min(distanceToEntry, steps);
+		for (int i = 0; i <= initialDistance; i++) {
+			ans.add(track.get((cur + i) % 100));
+		}
+		if (distanceToEntry < steps) {
+			int remainingSteps = steps - distanceToEntry;
+			ArrayList<Cell> sf = getSafeZone(marble.getColour()); // should I
+																	// handle if
+																	// it is
+																	// null?
+			for (int i = 0; i < remainingSteps; i++) {
+				ans.add(sf.get(i));
+			}
+		}
+		return ans;
+	}
+	
+	
+	//new method to check if i can field or not
+	public boolean canFielding(Cell occupiedBaseCell){
+		boolean f = true;
+		Marble m = occupiedBaseCell.getMarble();
+		if (m != null) {
+			if (m.getColour() == gameManager.getActivePlayerColour())
+				f=false; //a marble of same colour exist in your base cell
+		}
+		return f;
+	}
+	
+	
+	
+	
 	// ----------------------------------------------------------------------------------------------------------------------------------------
 
 	public ArrayList<Cell> getTrack() {

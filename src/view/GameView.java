@@ -395,8 +395,7 @@ public class GameView extends StackPane  implements BoardListener , GameListener
 		homesView = new HomesView(game.getPlayers(), game);
 		homesView.setMaxSize(700 * ratioScreenWidth, 700 * ratioScreenHeight);
 		playerViews = new PlayerViews(game);
-		playerViews
-				.setMaxSize(1100 * ratioScreenWidth, 900 * ratioScreenHeight);
+		playerViews.setMaxSize(1100 * ratioScreenWidth, 900 * ratioScreenHeight);
 
 		firePitView = new FirePitView(game);
 
@@ -407,6 +406,8 @@ public class GameView extends StackPane  implements BoardListener , GameListener
 				homesView, handsView, boardView, PlayButton, firePitView,
 				deckView);
 		
+		 this.getHandsView().getHands().get(0).canPlayEffect();
+		 
 		
 		// Insets(top, right, bottom, left)
 		
@@ -433,6 +434,7 @@ public class GameView extends StackPane  implements BoardListener , GameListener
 		firePitView.refresh();
 		handleSelectedCards();
 		detailsView.refresh();
+		this.getHandsView().getHands().get(0).canPlayEffect();
 	}
 
 	public void showExceptionWindow(String message) {

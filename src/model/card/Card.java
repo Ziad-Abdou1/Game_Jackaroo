@@ -47,4 +47,14 @@ public abstract class Card {
         return sameColour;
     }
     
+    //adding validation for one marble to use it in CanPlayCard
+    
+    public boolean validateMarbleColour(Marble marble) {
+        Colour ownerColour = gameManager.getActivePlayerColour();
+        boolean sameColour = true;
+        if (marble.getColour() != ownerColour)
+            sameColour = false;
+        return sameColour;
+    }
+    
 }
