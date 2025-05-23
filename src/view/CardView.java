@@ -10,6 +10,7 @@ import model.card.wild.Saver;
 import model.card.wild.Wild;
 import model.player.Marble;
 import javafx.animation.ScaleTransition;
+import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.effect.ColorAdjust;
@@ -147,7 +148,14 @@ public class CardView extends ImageView {
 
 	    if (isSelected) {
 	        formatSelected();
-	    } else {
+
+	        Platform.runLater(() -> {
+	            GameView root = (GameView) this.getScene().getRoot();
+	            HPlayerCardView hand = root.getHandsView().getHands().get(0);
+	            canPlayMarbles(hand.canPlayCard(card));
+	        });
+	    }
+ else {
 	        if (isPlayable) {
 	            formatNotSelected();
 	        } else {
@@ -217,5 +225,34 @@ public class CardView extends ImageView {
 	public Card getCard() {
 		return card;
 	}
+	// new method for showing playable marbles
+	public void canPlayMarbles(ArrayList<Marble> marbles) {
+	    // Track view marbles
+	    for (CellView cellView :((GameView)this.getScene().getRoot()).getBoardView().getTrackView()) {
+	        applyEffectIfMatch(cellView, marbles);
+	    }
+
+	    // Safe zone marbles
+	    for (ArrayList<CellView> safeZone : ((GameView)this.getScene().getRoot()).getBoardView().getSafeZoneView()) {
+	        for (CellView cellView : safeZone) {
+	            applyEffectIfMatch(cellView, marbles);
+	        }
+	    }
+	}
+
+	private void applyEffectIfMatch(CellView cellView, ArrayList<Marble> marbles) {
+	    MarbleView mv = cellView.getMarbleView();
+	    if (mv != null && mv.getMarble() != null) {
+	        if (marbles.contains(mv.getMarble())) {
+	            mv.showGoldenRing();
+	        } else {
+	            mv.clearEffect();
+	        }
+	    }
+	}
+
+	
+	
+
 
 }
