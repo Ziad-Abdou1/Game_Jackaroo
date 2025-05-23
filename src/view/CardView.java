@@ -161,6 +161,7 @@ public class CardView extends ImageView {
 	        } else {
 	            formatUnplayable();
 	        }
+	        
 	    }
 
 	    if (orientation) drawCard();

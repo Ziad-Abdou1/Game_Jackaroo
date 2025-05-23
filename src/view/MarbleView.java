@@ -2,16 +2,16 @@ package view;
 
 import engine.Game;
 import javafx.animation.Animation;
+import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
-<<<<<<< Updated upstream
-=======
 import javafx.animation.KeyValue;
-import javafx.animation.ScaleTransition;
->>>>>>> Stashed changes
+import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
+import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -150,29 +150,78 @@ public class MarbleView extends StackPane {
 			});
 		}
 	}
-<<<<<<< Updated upstream
-=======
 	// added effect to playable Marbles
+	private Circle glowRing;
+
 	public void showGoldenRing() {
-	    DropShadow glow = new DropShadow();
-	    glow.setRadius(10);
-	    glow.setColor(Color.GOLD);
-	    glow.setSpread(0.5);
+	    if (glowRing != null) return;
 
-	    ScaleTransition scale = new ScaleTransition(Duration.millis(200), this);
-	    scale.setToX(1.1);
-	    scale.setToY(1.1);
-	    scale.play();
+	    // Create ring with enhanced styling
+	    glowRing = new Circle(radius * 1.4);
+	    glowRing.setStroke(Color.GOLD);
+	    glowRing.setStrokeWidth(3);
+	    glowRing.setFill(null);
+	    glowRing.setMouseTransparent(true);
+	    
+	    // Add glow effect
+	    Glow glow = new Glow(0.8);
+	    
+	    // Add drop shadow for depth
+	    DropShadow shadow = new DropShadow(BlurType.GAUSSIAN, Color.GOLDENROD, 10, 0.5, 0, 0);
+	    glowRing.setEffect(glow);
+	    
+	    this.getChildren().add(glowRing);
 
-	    this.setEffect(glow);
+	    // Create more sophisticated animation with proper interpolation
+	    Timeline pulse = new Timeline(
+	        new KeyFrame(Duration.ZERO,
+	            new KeyValue(glowRing.scaleXProperty(), 1, Interpolator.EASE_BOTH),
+	            new KeyValue(glowRing.scaleYProperty(), 1, Interpolator.EASE_BOTH),
+	            new KeyValue(glowRing.opacityProperty(), 0.8)),
+	            
+	        new KeyFrame(Duration.seconds(0.3),
+	            new KeyValue(glowRing.scaleXProperty(), 1.15, Interpolator.EASE_BOTH),
+	            new KeyValue(glowRing.scaleYProperty(), 1.15, Interpolator.EASE_BOTH),
+	            new KeyValue(glowRing.opacityProperty(), 1),
+	            new KeyValue(glowRing.strokeProperty(), Color.GOLD)),
+	            
+	        new KeyFrame(Duration.seconds(0.6),
+	            new KeyValue(glowRing.scaleXProperty(), 1.3, Interpolator.EASE_BOTH),
+	            new KeyValue(glowRing.scaleYProperty(), 1.3, Interpolator.EASE_BOTH),
+	            new KeyValue(glowRing.opacityProperty(), 0.8),
+	            new KeyValue(glowRing.strokeProperty(), Color.GOLDENROD)),
+	            
+	        new KeyFrame(Duration.seconds(1.0),
+	            new KeyValue(glowRing.scaleXProperty(), 1, Interpolator.EASE_BOTH),
+	            new KeyValue(glowRing.scaleYProperty(), 1, Interpolator.EASE_BOTH),
+	            new KeyValue(glowRing.opacityProperty(), 0.9),
+	            new KeyValue(glowRing.strokeProperty(), Color.GOLD))
+	    );
+	    
+	    // Configure animation
+	    pulse.setCycleCount(Animation.INDEFINITE);
+	    pulse.setAutoReverse(true);
+	    pulse.play();
+	    
+	    // Store animation reference
+	    glowRing.setUserData(pulse);
+	    
+	    // Add subtle rotation effect with interpolation
+	    RotateTransition rotate = new RotateTransition(Duration.seconds(8), glowRing);
+	    rotate.setByAngle(360);
+	    rotate.setCycleCount(Animation.INDEFINITE);
+	    rotate.setInterpolator(Interpolator.LINEAR);
+	    rotate.play();
 	}
 
 	public void clearEffect() {
-	    this.setEffect(null);
-	    this.setScaleX(1.0);
-	    this.setScaleY(1.0);
+	    if (glowRing != null) {
+	        Timeline pulse = (Timeline) glowRing.getUserData();
+	        if (pulse != null) pulse.stop();
+	        this.getChildren().remove(glowRing);
+	        glowRing = null;
+	    }
 	}
 
 
->>>>>>> Stashed changes
 }

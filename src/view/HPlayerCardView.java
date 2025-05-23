@@ -6,7 +6,6 @@ import com.sun.prism.paint.Color;
 
 import engine.Game;
 import engine.board.Cell;
-import model.Colour;
 import model.card.Card;
 import model.card.standard.Standard;
 import model.player.Marble;
@@ -80,7 +79,6 @@ public class HPlayerCardView extends HBox {
 	public void canPlayEffect() {
 	    for (CardView cv : handView) {
 	        boolean playable = !canPlayCard(cv.getCard()).isEmpty();
-	   
 	        cv.setPlayable(playable); // Triggers internal refresh
 	    }
 	}
@@ -116,11 +114,10 @@ public class HPlayerCardView extends HBox {
 				for(Marble m : marbles){
 					fullPaths.add(game.getBoard().createFullPath(m, rank));
 				}
-				ans=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack()); //
 				if(game.canField()){
-									ans.add(new Marble(Colour.BLUE));
+					ans.add(new Marble(null));
 				}
-				
+				ans=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack()); //
 				break;
 				
 			case 10:
@@ -128,27 +125,28 @@ public class HPlayerCardView extends HBox {
 				for(Marble m : marbles){
 					fullPaths.add(game.getBoard().createFullPath(m, rank));
 				}
-				ans=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack()); //
-				ans.add(new Marble(Colour.BLUE));
+				ans=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack());
+				ans.add(new Marble(null));
 				break;
 				
 			case 13:
 				for(Marble m : marbles){
 					fullPaths.add(game.getBoard().createFullPath(m, rank));
 				}
-				ans=card.canPlay(marbles, fullPaths,true,game.getBoard().getSafeZones(),game.getBoard().getTrack());
+				
+				ans=card.canPlay(marbles, fullPaths,true,game.getBoard().getSafeZones(),game.getBoard().getTrack()); //
 				if(game.canField()){
-					ans.add(new Marble(Colour.BLUE));
+					ans.add(new Marble(null));
 				}
-				 //
 				break;
 				
 			case 11:
 				for(Marble m : marbles){
 					fullPaths.add(game.getBoard().createFullPath(m, rank));
 				}
-				ans=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack());
+				ans=card.canPlay(marbles, fullPaths,true,game.getBoard().getSafeZones(),game.getBoard().getTrack());
 				ans.addAll(canSwap());
+				
 				break;
 				
 			case 7:                                             // for one marble 
