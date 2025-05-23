@@ -42,22 +42,20 @@ public class Standard extends Card {
     
     //showing if i can play this card edit------------------------------
     
-    public boolean canPlay(ArrayList<Marble> a,ArrayList<ArrayList<Cell>> listOfPaths,boolean destroy,ArrayList<SafeZone> safeZones, ArrayList<Cell> track){
-    	boolean can = false;
-    	ArrayList<Marble> z = new ArrayList<Marble>();
+    public ArrayList<Marble> canPlay(ArrayList<Marble> a,ArrayList<ArrayList<Cell>> listOfPaths,boolean destroy,ArrayList<SafeZone> safeZones, ArrayList<Cell> track){
+    	ArrayList<Marble> ans = new ArrayList<Marble>();
     	for(int i =0;i<a.size();i++){
-    		if(!listOfPaths.get(i).isEmpty()&& validatePlay(a.get(i),listOfPaths.get(i), destroy, safeZones, track)){
-    			can = true;
-    			z.add(a.get(i));
+    		if(!listOfPaths.get(i).isEmpty()&& validatePlay(a.get(i),listOfPaths.get(i), destroy, safeZones, track)!=null){
+    			ans.add(a.get(i));
     		}
     	}
     	
     	
-    	return can;
+    	return ans;
     }
     
     //for one Marble
-    public boolean validatePlay(Marble marble, ArrayList<Cell> fullPath,boolean destroy,ArrayList<SafeZone> safeZones, ArrayList<Cell> track){
+    public Marble validatePlay(Marble marble, ArrayList<Cell> fullPath,boolean destroy,ArrayList<SafeZone> safeZones, ArrayList<Cell> track){
 		int startIdx;
 		if(validateMarbleColour(marble)){
 			boolean f = true;
@@ -155,10 +153,10 @@ public class Standard extends Card {
 			if (mn < fullPath.size()) {
 				f = false;
 			}
-			return f ;
+			return f? marble:null ;
 		}
 		else
-			return false;
+			return null;
 	}
     
     
