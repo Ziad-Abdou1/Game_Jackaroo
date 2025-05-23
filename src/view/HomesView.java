@@ -3,6 +3,7 @@ package view;
 import java.util.ArrayList;
 
 import engine.Game;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.layout.Pane;
@@ -43,12 +44,12 @@ public class HomesView extends StackPane {
 			homes.get(i).refresh();
 		}
 	}
-
-	private Pane wrap(HomeZoneView view, Pos alignment) {
-		StackPane wrapper = new StackPane(view);
-		wrapper.setAlignment(alignment);
-		return wrapper;
-	}
+//
+//	private Pane wrap(HomeZoneView view, Pos alignment) {
+//		StackPane wrapper = new StackPane(view);
+//		wrapper.setAlignment(alignment);
+//		return wrapper;
+//	}
 
 	public Rectangle2D getScreenBounds() {
 		return screenBounds;
