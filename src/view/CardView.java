@@ -32,17 +32,16 @@ public class CardView extends ImageView {
 	private boolean isPlayable = true;
 
 	public void setPlayable(boolean playable) {
-	    this.isPlayable = playable;
-	    refresh(); // Refresh appearance when playability changes
+		this.isPlayable = playable;
+		refresh(); // Refresh appearance when playability changes
 	}
 
 	public boolean isPlayable() {
-	    return isPlayable;
+		return isPlayable;
 	}
 
-
 	public CardView(Game game, Card card, boolean f) {
-//		f=true;
+		// f=true;
 		this.game = game;
 		this.orientation = f;
 		this.card = card;
@@ -53,7 +52,8 @@ public class CardView extends ImageView {
 	public void action() {
 		this.setOnMouseClicked(e -> {
 			try {
-				if (game.getPlayers().get(0).getSelectedCard()==this.card) game.deselectAll();
+				if (game.getPlayers().get(0).getSelectedCard() == this.card)
+					game.deselectAll();
 				else {
 					game.deselectAll();
 					game.selectCard(this.getCard());
@@ -62,44 +62,45 @@ public class CardView extends ImageView {
 				System.out.println("card is selected");
 			} catch (Exception exc) {
 				System.out.println(exc.getMessage());
-				((GameView)this.getScene().getRoot()).showExceptionWindow(exc.getMessage());
+				((GameView) this.getScene().getRoot()).showExceptionWindow(exc
+						.getMessage());
 			}
-		    ((GameView)this.getScene().getRoot()).refresh();
+			((GameView) this.getScene().getRoot()).refresh();
 		});
 	}
 
 	public void hover(boolean isHovering) {
-	    if (!isPlayable) return; // Prevent hover scaling if unplayable
+		if (!isPlayable)
+			return; // Prevent hover scaling if unplayable
 
-	    if (game.getPlayers().get(0).getHand().contains(card)) {
-	        if (game.getPlayers().get(0).getSelectedCard() == this.card) {
-	            return;
-	        }
-	        ScaleTransition st = new ScaleTransition(Duration.millis(200), this);
-	        if (isHovering) {
-	            st.setToX(1.2);
-	            st.setToY(1.2);
-	        } else {
-	            st.setToX(1.0);
-	            st.setToY(1.0);
-	        }
-	        st.play();
-	    }
+		if (game.getPlayers().get(0).getHand().contains(card)) {
+			if (game.getPlayers().get(0).getSelectedCard() == this.card) {
+				return;
+			}
+			ScaleTransition st = new ScaleTransition(Duration.millis(200), this);
+			if (isHovering) {
+				st.setToX(1.2);
+				st.setToY(1.2);
+			} else {
+				st.setToX(1.0);
+				st.setToY(1.0);
+			}
+			st.play();
+		}
 	}
-
 
 	private void drawCard() {
 		this.setImage(new Image(getPath()));
 		this.setPreserveRatio(true);
 		this.setFitWidth(screenWidth * 0.04);
-		this.setFitHeight(screenHeight * 0.1);
+		this.setFitHeight(screenHeight * 0.15);
 	}
 
 	private void drawCPUCard() {
 		this.setImage(new Image("cardss/backCard2.jpeg"));
 		this.setPreserveRatio(true);
 		this.setFitWidth(screenWidth * 0.04);
-		this.setFitHeight(screenHeight * 0.1);
+		this.setFitHeight(screenHeight * 0.15);
 	}
 
 	public void setCard(Card card) {
@@ -108,65 +109,61 @@ public class CardView extends ImageView {
 	}
 
 	public void formatSelected() {
-	    // 1) Add a colored glow around the card
-	    DropShadow glow = new DropShadow();
-	    glow.setColor(Color.web("#4A90E2", 0.7)); // adjust to your theme
-	    glow.setRadius(15);
-	    glow.setSpread(0.5);
-	    this.setEffect(glow);
+		// 1) Add a colored glow around the card
+		DropShadow glow = new DropShadow();
+		glow.setColor(Color.web("#4A90E2", 0.7)); // adjust to your theme
+		glow.setRadius(15);
+		glow.setSpread(0.5);
+		this.setEffect(glow);
 
-	    // 2) Scale up with a smooth animation
-	    ScaleTransition st = new ScaleTransition(Duration.millis(200), this);
-	    st.setToX(1.2);
-	    st.setToY(1.2);
-	    st.play();
+		// 2) Scale up with a smooth animation
+		ScaleTransition st = new ScaleTransition(Duration.millis(200), this);
+		st.setToX(1.2);
+		st.setToY(1.2);
+		st.play();
 
-	    // 3) Optional: tint a colored border
-	    this.setStyle(
-	      "-fx-border-color: #4A90E2;" +
-	      "-fx-border-width: 4;" +
-	      "-fx-border-radius: 8;"
-	    );
+		// 3) Optional: tint a colored border
+		this.setStyle("-fx-border-color: #4A90E2;" + "-fx-border-width: 4;"
+				+ "-fx-border-radius: 8;");
 	}
 
 	public void formatNotSelected() {
-	    // 1) Remove glow
-	    this.setEffect(null);
+		// 1) Remove glow
+		this.setEffect(null);
 
-	    // 2) Scale back smoothly
-	    ScaleTransition st = new ScaleTransition(Duration.millis(200), this);
-	    st.setToX(1.0);
-	    st.setToY(1.0);
-	    st.play();
+		// 2) Scale back smoothly
+		ScaleTransition st = new ScaleTransition(Duration.millis(200), this);
+		st.setToX(1.0);
+		st.setToY(1.0);
+		st.play();
 
-	    // 3) Clear border
-	    this.setStyle("");
+		// 3) Clear border
+		this.setStyle("");
 	}
 
 	public void refresh() {
-	    boolean isSelected = game.getPlayers().get(0).getSelectedCard() == this.card;
+		boolean isSelected = game.getPlayers().get(0).getSelectedCard() == this.card;
 
+		if (isSelected) {
+			formatSelected();
+			Platform.runLater(() -> {
+				GameView root = (GameView) this.getScene().getRoot();
+				HPlayerCardView hand = root.getHandsView().getHands().get(0);
+				canPlayMarbles(hand.canPlayCard(card));
+			});
+		} else {
+			if (isPlayable) {
+				formatNotSelected();
+			} else {
+				formatUnplayable();
+			}
+		}
 
-if (isSelected) {
-	        formatSelected();
- Platform.runLater(() -> {
-	            GameView root = (GameView) this.getScene().getRoot();
-	            HPlayerCardView hand = root.getHandsView().getHands().get(0);
-	            canPlayMarbles(hand.canPlayCard(card));
-	        });
-	    }
- else {
-	        if (isPlayable) {
-	            formatNotSelected();
-	        } else {
-	            formatUnplayable();
-	        }
-	    }
-
-	    if (orientation) drawCard();
-	    else drawCPUCard();
+		if (orientation)
+			drawCard();
+		else
+			drawCPUCard();
 	}
-
 
 	public String getPath() {
 		if (card == null) {
@@ -205,49 +202,52 @@ if (isSelected) {
 
 		return path;
 	}
-	
+
 	public void formatUnplayable() {
-	    // Slight darkening
-	    ColorAdjust darken = new ColorAdjust();
-	    darken.setBrightness(-0.4);
-	    this.setEffect(darken);
+		// Slight darkening
+		ColorAdjust darken = new ColorAdjust();
+		darken.setBrightness(-0.4);
+		this.setEffect(darken);
 
-	    // Shrink the card
-	    ScaleTransition st = new ScaleTransition(Duration.millis(200), this);
-	    st.setToX(0.85);
-	    st.setToY(0.85);
-	    st.play();
+		// Shrink the card
+		ScaleTransition st = new ScaleTransition(Duration.millis(200), this);
+		st.setToX(0.85);
+		st.setToY(0.85);
+		st.play();
 
-	    // Optional: visually disable
-	    this.setStyle("-fx-opacity: 0.85;");
+		// Optional: visually disable
+		this.setStyle("-fx-opacity: 0.85;");
 	}
 
 	public Card getCard() {
 		return card;
 	}
+
 	// new method for showing playable marbles
-		public void canPlayMarbles(ArrayList<Marble> marbles) {
-		    // Track view marbles
-		    for (CellView cellView :((GameView)this.getScene().getRoot()).getBoardView().getTrackView()) {
-		        applyEffectIfMatch(cellView, marbles);
-		    }
-
-		    // Safe zone marbles
-		    for (ArrayList<CellView> safeZone : ((GameView)this.getScene().getRoot()).getBoardView().getSafeZoneView()) {
-		        for (CellView cellView : safeZone) {
-		            applyEffectIfMatch(cellView, marbles);
-		        }
-		    }
+	public void canPlayMarbles(ArrayList<Marble> marbles) {
+		// Track view marbles
+		for (CellView cellView : ((GameView) this.getScene().getRoot())
+				.getBoardView().getTrackView()) {
+			applyEffectIfMatch(cellView, marbles);
 		}
 
-		private void applyEffectIfMatch(CellView cellView, ArrayList<Marble> marbles) {
-		    MarbleView mv = cellView.getMarbleView();
-		    if (mv != null && mv.getMarble() != null) {
-		        if (marbles.contains(mv.getMarble())) {
-		            mv.showGoldenRing();
-		        } else {
-		            mv.clearEffect();
-		        }
-		    }
+		// Safe zone marbles
+		for (ArrayList<CellView> safeZone : ((GameView) this.getScene()
+				.getRoot()).getBoardView().getSafeZoneView()) {
+			for (CellView cellView : safeZone) {
+				applyEffectIfMatch(cellView, marbles);
+			}
 		}
+	}
+
+	private void applyEffectIfMatch(CellView cellView, ArrayList<Marble> marbles) {
+		MarbleView mv = cellView.getMarbleView();
+		if (mv != null && mv.getMarble() != null) {
+			if (marbles.contains(mv.getMarble())) {
+				mv.showGoldenRing();
+			} else {
+				mv.clearEffect();
+			}
+		}
+	}
 }

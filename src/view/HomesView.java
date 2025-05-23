@@ -3,6 +3,7 @@ package view;
 import java.util.ArrayList;
 
 import engine.Game;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.layout.Pane;

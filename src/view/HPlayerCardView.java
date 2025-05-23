@@ -11,6 +11,7 @@ import model.card.standard.Standard;
 import model.player.Marble;
 import javafx.animation.ScaleTransition;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
@@ -37,7 +38,10 @@ public class HPlayerCardView extends HBox {
 		draw();
 
 		this.setSpacing(20);
-		this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+//		this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+		this.setMaxHeight(100);
+		this.setMaxWidth(400);
+		this.setAlignment(Pos.BASELINE_CENTER);
 	}
 
 	public ArrayList<CardView> getCardViews() {

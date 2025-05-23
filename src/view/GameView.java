@@ -384,11 +384,11 @@ public class GameView extends StackPane  implements BoardListener , GameListener
 	public void draw() {
 		this.getChildren().clear();
 		boardView = new BoardView(game.getBoard(), game);
-		Image logo = new Image("cardss/background2.jpg");
+		Image logo = new Image("cardss/background3.jpg");
 		ImageView logoView = new ImageView(logo);
 		logoView.setFitWidth(1980 * ratioScreenWidth);
 		logoView.setFitHeight(1080 * ratioScreenHeight);
-		logoView.setPreserveRatio(false); // important: disables maintaining
+		logoView.setPreserveRatio(false ); // important: disables maintaining
 											// original aspect ratio
 		handsView = new HandsView(game);
 		handsView.setMaxSize(1300 * ratioScreenWidth, 1000 * ratioScreenHeight);
