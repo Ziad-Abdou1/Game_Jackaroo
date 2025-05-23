@@ -38,7 +38,7 @@ public class HPlayerCardView extends HBox {
 		draw();
 
 		this.setSpacing(20);
-//		this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+		// this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 		this.setMaxHeight(100);
 		this.setMaxWidth(400);
 		this.setAlignment(Pos.BASELINE_CENTER);
@@ -50,7 +50,7 @@ public class HPlayerCardView extends HBox {
 
 	public void setHand(ArrayList<Card> hand) {
 		this.hand = hand;
-		
+
 		draw();
 	}
 
@@ -62,36 +62,41 @@ public class HPlayerCardView extends HBox {
 			handView.add(cv);
 			this.getChildren().add(cv);
 		}
-		
-	}
-	
-	public void addCardAnimated(Card card) {
-		CardView cardView = new CardView(game, card, orientation); // Create card view
-		hand.add(card);                  // Add to the logical hand
-		handView.add(cardView);         // Track in visual hand view
 
-		cardView.setScaleX(0);          // Start tiny
+	}
+
+	public void addCardAnimated(Card card) {
+		CardView cardView = new CardView(game, card, orientation); // Create
+																	// card view
+		hand.add(card); // Add to the logical hand
+		handView.add(cardView); // Track in visual hand view
+
+		cardView.setScaleX(0); // Start tiny
 		cardView.setScaleY(0);
 		this.getChildren().add(cardView); // Add to UI
 
 		// Animate the scale-up (pop-in effect)
-		ScaleTransition scale = new ScaleTransition(Duration.millis(700), cardView);
+		ScaleTransition scale = new ScaleTransition(Duration.millis(700),
+				cardView);
 		scale.setToX(1);
 		scale.setToY(1);
 		scale.play();
 	}
+
 	public void canPlayEffect() {
-	    for (CardView cv : handView) {
-	        boolean playable = !canPlayCard(cv.getCard()).isEmpty();
-	        cv.setPlayable(playable); // Triggers internal refresh
-	    }
-	}
-	public void canPlayMarbleEffect(Card c){
-		ArrayList<Marble> marbles = canPlayCard(c);
-		// make the effect on the marbles in the array list of the method canPlayCard
+		for (CardView cv : handView) {
+			boolean playable = !canPlayCard(cv.getCard()).isEmpty();
+			cv.setPlayable(playable); // Triggers internal refresh
+		}
 	}
 
-	//Can Play Card
+	public void canPlayMarbleEffect(Card c) {
+		ArrayList<Marble> marbles = canPlayCard(c);
+		// make the effect on the marbles in the array list of the method
+		// canPlayCard
+	}
+
+	// Can Play Card
 	public ArrayList<Marble> canPlayCard(Card c){
 		ArrayList<Marble> ans = new ArrayList<>();
 		if(c instanceof Standard){
@@ -119,32 +124,29 @@ public class HPlayerCardView extends HBox {
 					fullPaths.add(game.getBoard().createFullPath(m, rank));
 				}
 				if(game.canField()){
-<<<<<<< HEAD
+
 					ans.add(new Marble(null));
-=======
-									//-------------------
->>>>>>> tester
 				}
-				ans=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack()); //
+				ans=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack());
+				
+				
 				break;
 				
 			case 10:
 			case 12:
-<<<<<<< HEAD
-				for(Marble m : marbles){
+for(Marble m : marbles){
 					fullPaths.add(game.getBoard().createFullPath(m, rank));
 				}
 				ans=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack());
 				ans.add(new Marble(null));
-=======
->>>>>>> tester
+
 				break;
 				
 			case 13:
 				for(Marble m : marbles){
 					fullPaths.add(game.getBoard().createFullPath(m, rank));
 				}
-<<<<<<< HEAD
+
 				
 				ans=card.canPlay(marbles, fullPaths,true,game.getBoard().getSafeZones(),game.getBoard().getTrack()); //
 				if(game.canField()){
@@ -159,17 +161,13 @@ public class HPlayerCardView extends HBox {
 				ans=card.canPlay(marbles, fullPaths,true,game.getBoard().getSafeZones(),game.getBoard().getTrack());
 				ans.addAll(canSwap());
 				
-=======
+
 				if(game.canField()){
 											//-------------------
 				}
 				ans=card.canPlay(marbles, fullPaths,true,game.getBoard().getSafeZones(),game.getBoard().getTrack()); //
 				break;
 				
-			case 11:
-				ans =canSwap();
->>>>>>> tester
-				break;
 				
 			case 7:                                             // for one marble 
 				ArrayList<Marble> mine = new ArrayList<>();
@@ -226,28 +224,29 @@ public class HPlayerCardView extends HBox {
 		
 		return ans;
 	}
+
 	// new method to check if i can swap or not
-		public ArrayList<Marble> canSwap(){
-			ArrayList<Marble> ans = new ArrayList<>();
-			ArrayList<Marble> ihave = new ArrayList<>();
-			ArrayList<Marble> youhave = new ArrayList<>();
-			ArrayList<Cell> track = game.getBoard().getTrack();
-			for(int i =0;i<track.size();i++){
-				Marble m = track.get(i).getMarble();
-				if(m != null){
-					if(m.getColour()==game.getPlayers().get(0).getColour())
-						ihave.add(m);
-					else{
-						if(i != game.getBoard().getBasePosition(m.getColour()))
-							youhave.add(m);
-					}
+	public ArrayList<Marble> canSwap() {
+		ArrayList<Marble> ans = new ArrayList<>();
+		ArrayList<Marble> ihave = new ArrayList<>();
+		ArrayList<Marble> youhave = new ArrayList<>();
+		ArrayList<Cell> track = game.getBoard().getTrack();
+		for (int i = 0; i < track.size(); i++) {
+			Marble m = track.get(i).getMarble();
+			if (m != null) {
+				if (m.getColour() == game.getPlayers().get(0).getColour())
+					ihave.add(m);
+				else {
+					if (i != game.getBoard().getBasePosition(m.getColour()))
+						youhave.add(m);
 				}
 			}
-			if(!ihave.isEmpty() && !youhave.isEmpty()){
-				ans.addAll(ihave);
-				ans.addAll(youhave);
-			}
-			return ans ;
 		}
+		if (!ihave.isEmpty() && !youhave.isEmpty()) {
+			ans.addAll(ihave);
+			ans.addAll(youhave);
+		}
+		return ans;
+	}
 
 }

@@ -36,7 +36,6 @@ public class BoardView extends GridPane {
 		trackView = new ArrayList<>();
 		this.board = board;
 		draw();
-
 	}
 
 	public CellView getBaseCellView(Colour clr) {
@@ -58,7 +57,7 @@ public class BoardView extends GridPane {
 
 	int[] dy = { 0, 1, 0, -1, -1, 1, -1, 1 };
 	int[] dx = { -1, 0, 1, 0, -1, -1, 1, 1 };
-	int[] segment = new int[] { 7, 7, 7, 4 };
+	int[] segment = new int[] { 7,7,7, 4 };
 	int[][] directions = { { 0, 4, 3, 0 }, { 1, 5, 0, 1 }, { 2, 7, 1, 2 },
 			{ 3, 6, 2, 3 } };
 
@@ -83,8 +82,6 @@ public class BoardView extends GridPane {
 					curIdx++;
 
 				}
-				curi++;
-				curj++;
 			}
 		}
 	}
@@ -197,5 +194,7 @@ public class BoardView extends GridPane {
 	public ArrayList<CellView>[] getSafeZoneView() {
 		return safeZoneView;
 	}
+
+	
 
 }

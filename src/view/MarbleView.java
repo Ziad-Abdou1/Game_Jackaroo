@@ -5,10 +5,7 @@ import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
-<<<<<<< HEAD
 import javafx.animation.RotateTransition;
-=======
->>>>>>> tester
 import javafx.animation.Timeline;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
@@ -159,16 +156,13 @@ public class MarbleView extends StackPane {
 	public void showGoldenRing() {
 	    if (glowRing != null) return;
 
-<<<<<<< HEAD
 	    // Create ring with enhanced styling
-=======
->>>>>>> tester
+
 	    glowRing = new Circle(radius * 1.4);
 	    glowRing.setStroke(Color.GOLD);
 	    glowRing.setStrokeWidth(3);
 	    glowRing.setFill(null);
 	    glowRing.setMouseTransparent(true);
-<<<<<<< HEAD
 	    
 	    // Add glow effect
 	    Glow glow = new Glow(0.8);
@@ -214,30 +208,28 @@ public class MarbleView extends StackPane {
 	    glowRing.setUserData(pulse);
 	    
 	    // Add subtle rotation effect with interpolation
-	    RotateTransition rotate = new RotateTransition(Duration.seconds(8), glowRing);
-	    rotate.setByAngle(360);
-	    rotate.setCycleCount(Animation.INDEFINITE);
-	    rotate.setInterpolator(Interpolator.LINEAR);
-	    rotate.play();
-=======
-	    this.getChildren().add(glowRing);
-
-	    Timeline pulse = new Timeline(
-	        new KeyFrame(Duration.ZERO,
-	            new KeyValue(glowRing.scaleXProperty(), 1),
-	            new KeyValue(glowRing.scaleYProperty(), 1)),
-	        new KeyFrame(Duration.seconds(0.6),
-	            new KeyValue(glowRing.scaleXProperty(), 1.3),
-	            new KeyValue(glowRing.scaleYProperty(), 1.3)),
-	        new KeyFrame(Duration.seconds(1.2),
-	            new KeyValue(glowRing.scaleXProperty(), 1),
-	            new KeyValue(glowRing.scaleYProperty(), 1))
-	    );
-	    pulse.setCycleCount(Animation.INDEFINITE);
-	    pulse.setAutoReverse(true);
-	    pulse.play();
-	    glowRing.setUserData(pulse);
->>>>>>> tester
+//	    RotateTransition rotate = new RotateTransition(Duration.seconds(8), glowRing);
+//	    rotate.setByAngle(360);
+//	    rotate.setCycleCount(Animation.INDEFINITE);
+//	    rotate.setInterpolator(Interpolator.LINEAR);
+//	    rotate.play();
+//	    this.getChildren().add(glowRing);
+//
+//	    Timeline pulse = new Timeline(
+//	        new KeyFrame(Duration.ZERO,
+//	            new KeyValue(glowRing.scaleXProperty(), 1),
+//	            new KeyValue(glowRing.scaleYProperty(), 1)),
+//	        new KeyFrame(Duration.seconds(0.6),
+//	            new KeyValue(glowRing.scaleXProperty(), 1.3),
+//	            new KeyValue(glowRing.scaleYProperty(), 1.3)),
+//	        new KeyFrame(Duration.seconds(1.2),
+//	            new KeyValue(glowRing.scaleXProperty(), 1),
+//	            new KeyValue(glowRing.scaleYProperty(), 1))
+//	    );
+//	    pulse.setCycleCount(Animation.INDEFINITE);
+//	    pulse.setAutoReverse(true);
+//	    pulse.play();
+//	    glowRing.setUserData(pulse);
 	}
 
 	public void clearEffect() {
