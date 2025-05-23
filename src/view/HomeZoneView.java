@@ -25,6 +25,11 @@ public class HomeZoneView extends GridPane {
 		cellViews=new ArrayList<CellView>();
 		draw();
 		this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+<<<<<<< Updated upstream
+=======
+		this.setAlignment(Pos.CENTER);
+	
+>>>>>>> Stashed changes
 	}
 	private void draw(){
 		int num = player.getMarbles().size();
