@@ -6,6 +6,7 @@ import com.sun.prism.paint.Color;
 
 import engine.Game;
 import engine.board.Cell;
+import model.Colour;
 import model.card.Card;
 import model.card.standard.Standard;
 import model.player.Marble;
@@ -78,7 +79,12 @@ public class HPlayerCardView extends HBox {
 	}
 	public void canPlayEffect() {
 	    for (CardView cv : handView) {
+<<<<<<< Updated upstream
 	        boolean playable = canPlayCard(cv.getCard());
+=======
+	        boolean playable = !canPlayCard(cv.getCard()).isEmpty();
+	   
+>>>>>>> Stashed changes
 	        cv.setPlayable(playable); // Triggers internal refresh
 	    }
 	}
@@ -110,23 +116,55 @@ public class HPlayerCardView extends HBox {
 				for(Marble m : marbles){
 					fullPaths.add(game.getBoard().createFullPath(m, rank));
 				}
+<<<<<<< Updated upstream
 				f=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack()) || game.canField();
+=======
+				ans=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack()); //
+				if(game.canField()){
+									ans.add(new Marble(Colour.BLUE));
+				}
+				
+>>>>>>> Stashed changes
 				break;
 				
 			case 10:
 			case 12:
+<<<<<<< Updated upstream
 				f =true;
+=======
+				for(Marble m : marbles){
+					fullPaths.add(game.getBoard().createFullPath(m, rank));
+				}
+				ans=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack()); //
+				ans.add(new Marble(Colour.BLUE));
+>>>>>>> Stashed changes
 				break;
 				
 			case 13:
 				for(Marble m : marbles){
 					fullPaths.add(game.getBoard().createFullPath(m, rank));
 				}
+<<<<<<< Updated upstream
 				f=card.canPlay(marbles, fullPaths,true,game.getBoard().getSafeZones(),game.getBoard().getTrack()) || game.canField();
 				break;
 				
 			case 11:
 				canSwap();
+=======
+				ans=card.canPlay(marbles, fullPaths,true,game.getBoard().getSafeZones(),game.getBoard().getTrack());
+				if(game.canField()){
+					ans.add(new Marble(Colour.BLUE));
+				}
+				 //
+				break;
+				
+			case 11:
+				for(Marble m : marbles){
+					fullPaths.add(game.getBoard().createFullPath(m, rank));
+				}
+				ans=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack());
+				ans.addAll(canSwap());
+>>>>>>> Stashed changes
 				break;
 				
 			case 7:                                             // for one marble 

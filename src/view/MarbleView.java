@@ -3,6 +3,11 @@ package view;
 import engine.Game;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
+<<<<<<< Updated upstream
+=======
+import javafx.animation.KeyValue;
+import javafx.animation.ScaleTransition;
+>>>>>>> Stashed changes
 import javafx.animation.Timeline;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
@@ -145,4 +150,29 @@ public class MarbleView extends StackPane {
 			});
 		}
 	}
+<<<<<<< Updated upstream
+=======
+	// added effect to playable Marbles
+	public void showGoldenRing() {
+	    DropShadow glow = new DropShadow();
+	    glow.setRadius(10);
+	    glow.setColor(Color.GOLD);
+	    glow.setSpread(0.5);
+
+	    ScaleTransition scale = new ScaleTransition(Duration.millis(200), this);
+	    scale.setToX(1.1);
+	    scale.setToY(1.1);
+	    scale.play();
+
+	    this.setEffect(glow);
+	}
+
+	public void clearEffect() {
+	    this.setEffect(null);
+	    this.setScaleX(1.0);
+	    this.setScaleY(1.0);
+	}
+
+
+>>>>>>> Stashed changes
 }
