@@ -11,6 +11,7 @@ import model.card.standard.Standard;
 import model.player.Marble;
 import javafx.animation.ScaleTransition;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
@@ -37,7 +38,10 @@ public class HPlayerCardView extends HBox {
 		draw();
 
 		this.setSpacing(20);
-		this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+//		this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+		this.setMaxHeight(100);
+		this.setMaxWidth(400);
+		this.setAlignment(Pos.BASELINE_CENTER);
 	}
 
 	public ArrayList<CardView> getCardViews() {
@@ -115,24 +119,32 @@ public class HPlayerCardView extends HBox {
 					fullPaths.add(game.getBoard().createFullPath(m, rank));
 				}
 				if(game.canField()){
+<<<<<<< HEAD
 					ans.add(new Marble(null));
+=======
+									//-------------------
+>>>>>>> tester
 				}
 				ans=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack()); //
 				break;
 				
 			case 10:
 			case 12:
+<<<<<<< HEAD
 				for(Marble m : marbles){
 					fullPaths.add(game.getBoard().createFullPath(m, rank));
 				}
 				ans=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack());
 				ans.add(new Marble(null));
+=======
+>>>>>>> tester
 				break;
 				
 			case 13:
 				for(Marble m : marbles){
 					fullPaths.add(game.getBoard().createFullPath(m, rank));
 				}
+<<<<<<< HEAD
 				
 				ans=card.canPlay(marbles, fullPaths,true,game.getBoard().getSafeZones(),game.getBoard().getTrack()); //
 				if(game.canField()){
@@ -147,6 +159,16 @@ public class HPlayerCardView extends HBox {
 				ans=card.canPlay(marbles, fullPaths,true,game.getBoard().getSafeZones(),game.getBoard().getTrack());
 				ans.addAll(canSwap());
 				
+=======
+				if(game.canField()){
+											//-------------------
+				}
+				ans=card.canPlay(marbles, fullPaths,true,game.getBoard().getSafeZones(),game.getBoard().getTrack()); //
+				break;
+				
+			case 11:
+				ans =canSwap();
+>>>>>>> tester
 				break;
 				
 			case 7:                                             // for one marble 
