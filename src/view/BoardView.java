@@ -36,6 +36,7 @@ public class BoardView extends GridPane {
 		trackView = new ArrayList<>();
 		this.board = board;
 		draw();
+
 	}
 
 	public CellView getBaseCellView(Colour clr) {
@@ -57,7 +58,7 @@ public class BoardView extends GridPane {
 
 	int[] dy = { 0, 1, 0, -1, -1, 1, -1, 1 };
 	int[] dx = { -1, 0, 1, 0, -1, -1, 1, 1 };
-	int[] segment = new int[] { 7,7,7, 4 };
+	int[] segment = new int[] { 7, 7, 7, 4 };
 	int[][] directions = { { 0, 4, 3, 0 }, { 1, 5, 0, 1 }, { 2, 7, 1, 2 },
 			{ 3, 6, 2, 3 } };
 
@@ -82,6 +83,8 @@ public class BoardView extends GridPane {
 					curIdx++;
 
 				}
+				curi++;
+				curj++;
 			}
 		}
 	}
@@ -191,64 +194,8 @@ public class BoardView extends GridPane {
 		return trackView;
 	}
 
-	public void setTrackView(ArrayList<CellView> trackView) {
-		this.trackView = trackView;
-	}
-
-	public int[] getDy() {
-		return dy;
-	}
-
-	public void setDy(int[] dy) {
-		this.dy = dy;
-	}
-
-	public int[] getDx() {
-		return dx;
-	}
-
-	public void setDx(int[] dx) {
-		this.dx = dx;
-	}
-
-	public int[] getSegment() {
-		return segment;
-	}
-
-	public void setSegment(int[] segment) {
-		this.segment = segment;
-	}
-
-	public int[][] getDirections() {
-		return directions;
-	}
-
-	public void setDirections(int[][] directions) {
-		this.directions = directions;
-	}
-
-	public int getInitI() {
-		return initI;
-	}
-
-	public void setInitI(int initI) {
-		this.initI = initI;
-	}
-
-	public int getInitJ() {
-		return initJ;
-	}
-
-	public void setInitJ(int initJ) {
-		this.initJ = initJ;
-	}
-
 	public ArrayList<CellView>[] getSafeZoneView() {
 		return safeZoneView;
-	}
-
-	public void setSafeZoneView(ArrayList<CellView>[] safeZoneView) {
-		this.safeZoneView = safeZoneView;
 	}
 
 }
