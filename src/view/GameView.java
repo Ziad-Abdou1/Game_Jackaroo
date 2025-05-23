@@ -698,6 +698,9 @@ public class GameView extends StackPane  implements BoardListener , GameListener
 				new ParallelTransition(outMask, outLabel));
 		return seq;
 	}
+	// new method to add effect on the playable marbles
+	
+
 
 	// @Override
 	public void onTrap() {

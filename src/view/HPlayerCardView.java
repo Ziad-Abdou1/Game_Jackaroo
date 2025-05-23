@@ -78,14 +78,18 @@ public class HPlayerCardView extends HBox {
 	}
 	public void canPlayEffect() {
 	    for (CardView cv : handView) {
-	        boolean playable = canPlayCard(cv.getCard());
+	        boolean playable = !canPlayCard(cv.getCard()).isEmpty();
 	        cv.setPlayable(playable); // Triggers internal refresh
 	    }
 	}
+	public void canPlayMarbleEffect(Card c){
+		ArrayList<Marble> marbles = canPlayCard(c);
+		// make the effect on the marbles in the array list of the method canPlayCard
+	}
 
 	//Can Play Card
-	public boolean canPlayCard(Card c){
-		boolean f = false;
+	public ArrayList<Marble> canPlayCard(Card c){
+		ArrayList<Marble> ans = new ArrayList<>();
 		if(c instanceof Standard){
 			Standard card = (Standard)c;
 			int rank =card.getRank();
@@ -103,30 +107,35 @@ public class HPlayerCardView extends HBox {
 				for(Marble m : marbles){
 					fullPaths.add(game.getBoard().createFullPath(m, rank));
 				}
-				f=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack());
+				ans=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack());
 				break;
 				
 			case 1:
 				for(Marble m : marbles){
 					fullPaths.add(game.getBoard().createFullPath(m, rank));
 				}
-				f=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack()) || game.canField();
+				if(game.canField()){
+									//-------------------
+				}
+				ans=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack()); //
 				break;
 				
 			case 10:
 			case 12:
-				f =true;
 				break;
 				
 			case 13:
 				for(Marble m : marbles){
 					fullPaths.add(game.getBoard().createFullPath(m, rank));
 				}
-				f=card.canPlay(marbles, fullPaths,true,game.getBoard().getSafeZones(),game.getBoard().getTrack()) || game.canField();
+				if(game.canField()){
+											//-------------------
+				}
+				ans=card.canPlay(marbles, fullPaths,true,game.getBoard().getSafeZones(),game.getBoard().getTrack()); //
 				break;
 				
 			case 11:
-				canSwap();
+				ans =canSwap();
 				break;
 				
 			case 7:                                             // for one marble 
@@ -137,16 +146,21 @@ public class HPlayerCardView extends HBox {
 						mine.add(m);
 					}
 				}
-				f=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack());
+				ans.addAll(card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack()));
 				                                                 //for two marbles 
 				boolean a=false,b=false;
 				if(mine.size()>1){
 					for(int i =0;i<mine.size()-1;i++){
 						for(int j =i+1;j<mine.size();j++){
 							for(int z =1;z<7;z++){
-								a =card.validatePlay(mine.get(i), game.getBoard().createFullPath(mine.get(i), z), false,game.getBoard().getSafeZones(),game.getBoard().getTrack());
-								b =card.validatePlay(mine.get(i), game.getBoard().createFullPath(mine.get(i), 7-z), false,game.getBoard().getSafeZones(),game.getBoard().getTrack());
-								f= f ||(a&&b);
+								Marble a1 =card.validatePlay(mine.get(i), game.getBoard().createFullPath(mine.get(i), z), false,game.getBoard().getSafeZones(),game.getBoard().getTrack());
+								Marble a2 = card.validatePlay(mine.get(i), game.getBoard().createFullPath(mine.get(i), 7-z), false,game.getBoard().getSafeZones(),game.getBoard().getTrack());
+								a =a1!=null;
+								b = a2!=null;
+								if(a && b){
+								ans.add(a1);
+								ans.add(a2);
+								}
 							}
 						}
 					}
@@ -163,7 +177,7 @@ public class HPlayerCardView extends HBox {
 				for(int i =0;i<track.size();i++){
 					Marble m = track.get(i).getMarble();
 					if(m != null && m.getColour()!=game.getPlayers().get(0).getColour() && i != game.getBoard().getBasePosition(m.getColour()))
-							f = true;
+							ans.add(m);
 				}
 			}
 			else{
@@ -171,33 +185,36 @@ public class HPlayerCardView extends HBox {
 				for(int i =0;i<track.size();i++){
 					Marble m = track.get(i).getMarble();
 					if(m != null && m.getColour()==game.getPlayers().get(0).getColour())
-							f = true;
+							ans.add(m);
 				}
 			}
 		}
 		
 		
-		return f;
+		return ans;
 	}
 	// new method to check if i can swap or not
-		public boolean canSwap(){
-			boolean f = false;
-			boolean ihave = false;
-			boolean youhave = false;
+		public ArrayList<Marble> canSwap(){
+			ArrayList<Marble> ans = new ArrayList<>();
+			ArrayList<Marble> ihave = new ArrayList<>();
+			ArrayList<Marble> youhave = new ArrayList<>();
 			ArrayList<Cell> track = game.getBoard().getTrack();
 			for(int i =0;i<track.size();i++){
 				Marble m = track.get(i).getMarble();
 				if(m != null){
 					if(m.getColour()==game.getPlayers().get(0).getColour())
-						ihave = true;
+						ihave.add(m);
 					else{
 						if(i != game.getBoard().getBasePosition(m.getColour()))
-							youhave = true;
+							youhave.add(m);
 					}
 				}
 			}
-			f = ihave && youhave;
-			return f ;
+			if(!ihave.isEmpty() && !youhave.isEmpty()){
+				ans.addAll(ihave);
+				ans.addAll(youhave);
+			}
+			return ans ;
 		}
 
 }

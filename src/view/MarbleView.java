@@ -3,6 +3,7 @@ package view;
 import engine.Game;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
@@ -145,4 +146,44 @@ public class MarbleView extends StackPane {
 			});
 		}
 	}
+	// added effect to playable Marbles
+	private Circle glowRing;
+
+	public void showGoldenRing() {
+	    if (glowRing != null) return;
+
+	    glowRing = new Circle(radius * 1.4);
+	    glowRing.setStroke(Color.GOLD);
+	    glowRing.setStrokeWidth(3);
+	    glowRing.setFill(null);
+	    glowRing.setMouseTransparent(true);
+	    this.getChildren().add(glowRing);
+
+	    Timeline pulse = new Timeline(
+	        new KeyFrame(Duration.ZERO,
+	            new KeyValue(glowRing.scaleXProperty(), 1),
+	            new KeyValue(glowRing.scaleYProperty(), 1)),
+	        new KeyFrame(Duration.seconds(0.6),
+	            new KeyValue(glowRing.scaleXProperty(), 1.3),
+	            new KeyValue(glowRing.scaleYProperty(), 1.3)),
+	        new KeyFrame(Duration.seconds(1.2),
+	            new KeyValue(glowRing.scaleXProperty(), 1),
+	            new KeyValue(glowRing.scaleYProperty(), 1))
+	    );
+	    pulse.setCycleCount(Animation.INDEFINITE);
+	    pulse.setAutoReverse(true);
+	    pulse.play();
+	    glowRing.setUserData(pulse);
+	}
+
+	public void clearEffect() {
+	    if (glowRing != null) {
+	        Timeline pulse = (Timeline) glowRing.getUserData();
+	        if (pulse != null) pulse.stop();
+	        this.getChildren().remove(glowRing);
+	        glowRing = null;
+	    }
+	}
+
+
 }
