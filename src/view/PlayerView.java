@@ -45,20 +45,15 @@ public class PlayerView extends GridPane {
 		name = new Label(player.getName());
 		nextLabel = new Label("Next");
 
-		// Style player name label
 		name.getStyleClass().add("player-name");
 		name.setTextFill(Color.LIGHTBLUE);
 
-		// Style next label
 		nextLabel = new Label("Next");
 
-		// Remove style class or id if they override color (test this first)
 		nextLabel.getStyleClass().removeAll("next-label");
 		nextLabel.setId(null);
 
-		// Set color directly:
-		nextLabel.setTextFill(Color.LIGHTBLUE); // or any bright color visible
-												// on dark background
+		nextLabel.setTextFill(Color.LIGHTBLUE);
 		nextLabel.setAlignment(Pos.CENTER);
 		draw();
 	}
@@ -87,8 +82,24 @@ public class PlayerView extends GridPane {
 		double radius = screenWidth / 40;
 
 		try {
-			Image image = new Image(getClass().getResource("/player1.jpg")
-					.toExternalForm());
+			Image image = null ; 
+			if (player.getColour() == Colour.BLUE) {
+				 image = new Image(getClass().getResource("/playerBlue.jpg")
+						.toExternalForm());
+			}
+			if (player.getColour() == Colour.GREEN) {
+				 image = new Image(getClass().getResource("/playerGreen.jpg")
+						.toExternalForm());
+			}
+			if (player.getColour() == Colour.RED) {
+				 image = new Image(getClass().getResource("/playerRed.jpg")
+						.toExternalForm());
+			}
+			if (player.getColour() == Colour.YELLOW) {
+				 image = new Image(getClass().getResource("/playeryellow.jpg")
+						.toExternalForm());
+			}
+			
 			playerImageView = new ImageView(image);
 			playerImageView.setFitWidth(radius * 2);
 			playerImageView.setFitHeight(radius * 2);
@@ -139,7 +150,7 @@ public class PlayerView extends GridPane {
 
 		glowEffect = new DropShadow();
 		glowEffect.setColor(GameView.toFxColor(player.getColour()));
-		glowEffect.setRadius(17);
+		glowEffect.setRadius(20);
 		glowEffect.setSpread(0.5);
 		glowEffect.setOffsetX(0);
 		glowEffect.setOffsetY(0);

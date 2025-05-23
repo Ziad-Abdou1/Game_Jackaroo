@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import engine.Game;
 import engine.board.Cell;
 import engine.board.CellType;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
@@ -25,6 +26,7 @@ public class HomeZoneView extends GridPane {
 		cellViews=new ArrayList<CellView>();
 		draw();
 		this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+		this.setAlignment(Pos.CENTER);
 	}
 	private void draw(){
 		int num = player.getMarbles().size();
