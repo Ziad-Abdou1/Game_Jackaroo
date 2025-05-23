@@ -57,7 +57,7 @@ public class Standard extends Card {
     }
     
     //for one Marble
-    private boolean validatePlay(Marble marble, ArrayList<Cell> fullPath,boolean destroy,ArrayList<SafeZone> safeZones, ArrayList<Cell> track){
+    public boolean validatePlay(Marble marble, ArrayList<Cell> fullPath,boolean destroy,ArrayList<SafeZone> safeZones, ArrayList<Cell> track){
 		int startIdx;
 		if(validateMarbleColour(marble)){
 			boolean f = true;

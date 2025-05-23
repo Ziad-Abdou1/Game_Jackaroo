@@ -68,11 +68,12 @@ public class CardView extends ImageView {
 	}
 
 	public void hover(boolean isHovering) {
+	    if (!isPlayable) return; // Prevent hover scaling if unplayable
+
 	    if (game.getPlayers().get(0).getHand().contains(card)) {
 	        if (game.getPlayers().get(0).getSelectedCard() == this.card) {
-	            return; 
+	            return;
 	        }
-	        // change time 
 	        ScaleTransition st = new ScaleTransition(Duration.millis(200), this);
 	        if (isHovering) {
 	            st.setToX(1.2);
@@ -84,6 +85,7 @@ public class CardView extends ImageView {
 	        st.play();
 	    }
 	}
+
 
 	private void drawCard() {
 		this.setImage(new Image(getPath()));

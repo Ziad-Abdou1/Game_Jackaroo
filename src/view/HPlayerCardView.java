@@ -105,30 +105,53 @@ public class HPlayerCardView extends HBox {
 				}
 				f=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack());
 				break;
+				
 			case 1:
 				for(Marble m : marbles){
 					fullPaths.add(game.getBoard().createFullPath(m, rank));
 				}
 				f=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack()) || game.canField();
 				break;
+				
 			case 10:
 			case 12:
 				f =true;
 				break;
+				
 			case 13:
 				for(Marble m : marbles){
 					fullPaths.add(game.getBoard().createFullPath(m, rank));
 				}
 				f=card.canPlay(marbles, fullPaths,true,game.getBoard().getSafeZones(),game.getBoard().getTrack()) || game.canField();
 				break;
+				
 			case 11:
 				canSwap();
 				break;
-			case 7: // for one marble temporarily
+				
+			case 7:                                             // for one marble 
+				ArrayList<Marble> mine = new ArrayList<>();
 				for(Marble m : marbles){
 					fullPaths.add(game.getBoard().createFullPath(m, rank));
+					if(m.getColour().equals(game.getPlayers().get(0))){
+						mine.add(m);
+					}
 				}
 				f=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack());
+				                                                 //for two marbles 
+				boolean a=false,b=false;
+				if(mine.size()>1){
+					for(int i =0;i<mine.size()-1;i++){
+						for(int j =i+1;j<mine.size();j++){
+							for(int z =1;z<7;z++){
+								a =card.validatePlay(mine.get(i), game.getBoard().createFullPath(mine.get(i), z), false,game.getBoard().getSafeZones(),game.getBoard().getTrack());
+								b =card.validatePlay(mine.get(i), game.getBoard().createFullPath(mine.get(i), 7-z), false,game.getBoard().getSafeZones(),game.getBoard().getTrack());
+								f= f ||(a&&b);
+							}
+						}
+					}
+				}
+				
 				break;
 			
 			}
