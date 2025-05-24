@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import view.GameView;
 import engine.board.Board;
 import engine.board.SafeZone;
 import exception.CannotDiscardException;
@@ -23,7 +24,7 @@ import model.player.*;
 
 public class Game implements GameManager {
 	private final List<GameListener> listeners = new ArrayList<>();
-	
+	private final List<GameControllerListener> controllerListeners=new ArrayList<>();
 	 
     private final Board board;
     private final ArrayList<Player> players;
@@ -205,6 +206,13 @@ public class Game implements GameManager {
     	return f;
     }
 
+    
+    public void addControllerListener(GameControllerListener l){
+    	controllerListeners.add(l);
+    }
+    public GameView getGameView(){
+    	return controllerListeners.get(0).getGameView();
+    }
 //    /** Call this whenever you detect trapped marbles. */
 //    private void notifyTrap(int trappedCount) {
 //        for (GameListener l : listeners) {

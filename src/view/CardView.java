@@ -66,7 +66,7 @@ public class CardView extends ImageView {
 				((GameView) this.getScene().getRoot()).showExceptionWindow(exc
 						.getMessage());
 			}
-			((GameView) this.getScene().getRoot()).refresh();
+			this.getGameView().refresh();
 		});
 	}
 
@@ -149,8 +149,9 @@ public class CardView extends ImageView {
 		if (isSelected) {
 			formatSelected();
 			Platform.runLater(() -> {
-				Scene scene=this.getScene();
-				GameView root = (GameView) scene.getRoot();
+//				Scene scene=this.getScene();
+//				GameView root = (GameView) scene.getRoot();
+				GameView root=game.getGameView();
 				HPlayerCardView hand = root.getHandsView().getHands().get(0);
 				canPlayMarbles(hand.canPlayCard(card));
 			});
@@ -229,14 +230,13 @@ public class CardView extends ImageView {
 	// new method for showing playable marbles
 	public void canPlayMarbles(ArrayList<Marble> marbles) {
 		// Track view marbles
-		for (CellView cellView : ((GameView) this.getScene().getRoot()).boardAndHomeView
+		for (CellView cellView : this.getGameView().boardAndHomeView
 				.boardView.getTrackView()) {
 			applyEffectIfMatch(cellView, marbles);
 		}
 
 		// Safe zone marbles
-		for (ArrayList<CellView> safeZone : ((GameView) this.getScene()
-				.getRoot()).boardAndHomeView
+		for (ArrayList<CellView> safeZone : this.getGameView().boardAndHomeView
 				.boardView.getSafeZoneView()) {
 			for (CellView cellView : safeZone) {
 				applyEffectIfMatch(cellView, marbles);
@@ -253,5 +253,8 @@ public class CardView extends ImageView {
 				mv.clearEffect();
 			}
 		}
+	}
+	public GameView getGameView(){
+		return game.getGameView();
 	}
 }

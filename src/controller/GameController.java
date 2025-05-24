@@ -16,6 +16,7 @@ import view.MarbleView;
 import view.WelcomeView;
 import view.WinningView;
 import engine.Game;
+import engine.GameControllerListener;
 import engine.board.Cell;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
@@ -40,7 +41,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.input.KeyCode;
 
-public class GameController extends Application {
+public class GameController extends Application implements GameControllerListener {
 	String name;
 	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 	double screenWidth = screenBounds.getWidth();
@@ -76,9 +77,11 @@ public class GameController extends Application {
 		Game game = new Game(name);
 		gameView = new GameView(game);
 	    gameView.getStyleClass().add("game-background");
+	    game.addControllerListener(this);
 
 		gameScene = new Scene(gameView, screenWidth, screenHeight);
 		gameScene.getStylesheets().add(getClass().getResource("/view/style.css").toExternalForm());
+		System.out.println("here the scene has the gameView as root");
 
 
 		//game actions
@@ -175,6 +178,17 @@ public class GameController extends Application {
 	public void redraw() {
 		gameView.draw();
 	}
+	
+
+	public GameView getGameView() {
+		return gameView;
+	}
+
+
+	public void setGameView(GameView gameView) {
+		this.gameView = gameView;
+	}
+
 
 	public static void main(String[] args) {
 		launch(args);
