@@ -127,7 +127,7 @@ public class HPlayerCardView extends HBox {
 
 					ans.add(new Marble(null));
 				}
-				ans=card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack());
+				ans.addAll(card.canPlay(marbles, fullPaths,false,game.getBoard().getSafeZones(),game.getBoard().getTrack()));
 				
 				
 				break;
