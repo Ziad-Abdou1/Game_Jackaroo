@@ -274,9 +274,9 @@ public class HPlayerCardView extends HBox {
 
 			game.refresh = false;
 		} else {
-			for (int i = 0; i < game.getPlayers().size(); i++) {
-				this.setHand(game.getPlayers().get(i).getHand());
-			}
+			
+				this.setHand(game.getPlayers().get(idx).getHand());
+			
 		}
 
 	}

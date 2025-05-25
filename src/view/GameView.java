@@ -78,7 +78,7 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 	double ratioScreenHeight = screenHeight / 1080;
 
 	ImageView PlayButton;
-	static Game game;
+	Game game;
 	BoardView boardView;
 	HomesView homesView;
 	BoardAndHomeView boardAndHomeView;
@@ -93,8 +93,6 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 	HPlayerCardView handPlayer2;
 	HPlayerCardView handPlayer3;
 	HPlayerCardView handPlayer4;
-
-	// what i add
 	boardView2 boardView2;
 
 	public GameView(Game game) {
@@ -153,11 +151,11 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
 
-		// Hover animation with scale transition
+		
 		ScaleTransition hoverIn = new ScaleTransition(Duration.millis(150),
 				PlayButton);
-		hoverIn.setToX(1.15);
-		hoverIn.setToY(1.15);
+		hoverIn.setToX(1.2);
+		hoverIn.setToY(1.2);
 
 		ScaleTransition hoverOut = new ScaleTransition(Duration.millis(150),
 				PlayButton);
@@ -348,11 +346,11 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 		handPlayer1 = new HPlayerCardView(game, game.getPlayers().get(0)
 				.getHand(), true, 0);
 		handPlayer2 = new HPlayerCardView(game, game.getPlayers().get(1)
-				.getHand(), false, 1);
+				.getHand(), true, 1);
 		handPlayer3 = new HPlayerCardView(game, game.getPlayers().get(2)
-				.getHand(), false, 2);
+				.getHand(), true, 2);
 		handPlayer4 = new HPlayerCardView(game, game.getPlayers().get(3)
-				.getHand(), false, 3);
+				.getHand(), true, 3);
 		handPlayer2.setRotate(270);
 		handPlayer3.setRotate(180);
 		handPlayer4.setRotate(90);
@@ -680,8 +678,6 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 		return seq;
 	}
 
-	// new method to add effect on the playable marbles
-
 	// @Override
 	public void onTrap() {
 		Platform.runLater(() -> {
@@ -689,7 +685,6 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 			showDimmedMessage(msg, 1500).play();
 		});
 	}
-
 
 	public Game getGame() {
 		return game;
