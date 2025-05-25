@@ -139,13 +139,9 @@ public class BoardView extends GridPane {
 
 		Image backgroundImage = new Image("/wood2.png");
 
-		BackgroundSize backgroundSize = new BackgroundSize(100, 100, // width
-																		// and
-																		// height
-																		// as
-																		// percentages
-				true, true, // width and height are percentages
-				true, true // preserveRatio = true, cover = false
+		BackgroundSize backgroundSize = new BackgroundSize(100, 100,
+				true, true,
+				true, true 
 		);
 
 		BackgroundImage background = new BackgroundImage(backgroundImage,

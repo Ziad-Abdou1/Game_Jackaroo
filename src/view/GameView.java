@@ -3,6 +3,8 @@ package view;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import org.omg.CORBA.MARSHAL;
+
 import model.Colour;
 import model.card.standard.*;
 import model.card.*;
@@ -68,37 +70,34 @@ import engine.board.Board;
 import engine.board.Cell;
 import engine.board.SafeZone;
 
-public class GameView extends StackPane  implements BoardListener , GameListener  {
+public class GameView extends StackPane implements BoardListener, GameListener {
 	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 	double screenWidth = screenBounds.getWidth();
 	double screenHeight = screenBounds.getHeight();
 	double ratioScreenWidth = screenWidth / 1920;
 	double ratioScreenHeight = screenHeight / 1080;
 
-	// Rectangle2D vb = Screen.getPrimary().getVisualBounds();
-	// double realW = vb.getWidth();
-	// double realH = vb.getHeight();
-	//
-	// private static final double DESIGN_W = 1920;
-	// private static final double DESIGN_H = 1080;
-
 	ImageView PlayButton;
-	private Game game;
-//	private BoardView boardView;
-//	private HomesView homesView;
-	BoardAndHomeView boardAndHomeView ; 
-	private HandsView handsView;
-	private PlayerViews playerViews;
-	private FirePitView firePitView;
+	static Game game;
+	BoardView boardView;
+	HomesView homesView;
+	BoardAndHomeView boardAndHomeView;
+	HandsView handsView;
+	PlayerViews playerViews;
+	FirePitView firePitView;
 	int idx = 0;
-	private boolean efficient = true;
-	private DetailsView detailsView;
-	private DeckView deckView;
+	boolean efficient = true;
+	DetailsView detailsView;
+	DeckView deckView;
+	MarblesView marblesView ;
+
+	// what i add  
+	boardView2 boardView2; 
 
 	public GameView(Game game) {
 		this.game = game;
-		 game.addListener(this);
-		 game.getBoard().addListener(this);
+		game.addListener(this);
+		game.getBoard().addListener(this);
 		detailsView = new DetailsView(game);
 		initPlayButton();
 		draw();
@@ -259,8 +258,10 @@ public class GameView extends StackPane  implements BoardListener , GameListener
 		ArrayList<Marble> selectedMarbles = new ArrayList<>();
 		if (game.canPlayTurn()) {
 			// to select marbles at the real game model
-			ArrayList<CellView> cellViewsOriginal = boardAndHomeView.boardView.getTrackView();
-			ArrayList<CellView>[] safeZoneViews = boardAndHomeView.boardView.getSafeZoneView();
+			ArrayList<CellView> cellViewsOriginal = boardAndHomeView.boardView
+					.getTrackView();
+			ArrayList<CellView>[] safeZoneViews = boardAndHomeView.boardView
+					.getSafeZoneView();
 			ArrayList<CellView> cellViews = new ArrayList<CellView>();
 			for (int i = 0; i < cellViewsOriginal.size(); i++)
 				cellViews.add(cellViewsOriginal.get(i));
@@ -291,31 +292,6 @@ public class GameView extends StackPane  implements BoardListener , GameListener
 				draw();
 
 		}
-
-		// handle trap logic
-		// ArrayList<Cell> trackOrigianl = game.getBoard().getTrack();
-		// ArrayList<SafeZone> safeZones = game.getBoard().getSafeZones();
-		// ArrayList<Cell> track=new ArrayList<Cell>();
-		// for(int i=0;i<trackOrigianl.size();i++)
-		// track.add(trackOrigianl.get(i));
-		// for(int i=0;i<safeZones.size();i++){
-		// for(Cell cell:safeZones.get(i).getCells()){
-		// track.add(cell);
-		// }
-		// }
-		// int trap=0;
-		// loop:for(Marble m:selectedMarbles){
-		// boolean found=false;
-		// for(Cell cell:track){
-		// if(cell.getMarble()==m){
-		// break loop;
-		// }
-		// }
-		// trap++;
-		// }
-		// if(trap>0){
-		// showExceptionWindow(trap+" marbles fell into trap");
-		// }
 		cleanFirePitFromNull();
 		game.endPlayerTurn();
 		game.deselectAll();
@@ -372,42 +348,59 @@ public class GameView extends StackPane  implements BoardListener , GameListener
 
 	public void draw() {
 		this.getChildren().clear();
-//		boardView = new BoardView(game.getBoard(), game);
-		boardAndHomeView = new BoardAndHomeView(game.getPlayers() , game.getBoard(), game);
+		
+		boardAndHomeView = new BoardAndHomeView(game.getPlayers(),
+				game.getBoard(), game);
 		Image logo = new Image("cardss/background3.jpg");
 		ImageView logoView = new ImageView(logo);
 		logoView.setFitWidth(1980 * ratioScreenWidth);
 		logoView.setFitHeight(1080 * ratioScreenHeight);
-		logoView.setPreserveRatio(false ); // important: disables maintaining
+		logoView.setPreserveRatio(false); // important: disables maintaining
 											// original aspect ratio
 		handsView = new HandsView(game);
 		handsView.setMaxSize(1300 * ratioScreenWidth, 1000 * ratioScreenHeight);
-//		homesView = new HomesView(game.getPlayers(), game);
-//		homesView.setMaxSize(700 * ratioScreenWidth, 700 * ratioScreenHeight);
-		boardAndHomeView.setMaxSize(500* ratioScreenWidth, 500 *ratioScreenHeight  );
+		
+		boardAndHomeView.setMaxSize(500 * ratioScreenWidth,
+				500 * ratioScreenHeight);
 		playerViews = new PlayerViews(game);
-		playerViews.setMaxSize(1100 * ratioScreenWidth, 900 * ratioScreenHeight);
+		playerViews
+				.setMaxSize(1100 * ratioScreenWidth, 900 * ratioScreenHeight);
 
 		firePitView = new FirePitView(game);
 
 		deckView = new DeckView(game);
 		deckView.setMaxSize(500 * ratioScreenWidth, 500 * ratioScreenHeight);
 
-		this.getChildren().addAll(logoView, detailsView, playerViews,
-				 handsView, boardAndHomeView , PlayButton, firePitView,
-				deckView);
 		
-		 this.getHandsView().getHands().get(0).canPlayEffect();
-		 
+		// what i  add 
+		int startx = 912;
+		int starty = 827;
+		int step = 22;
+		int strokeWidth = 3;
+		int r = 9;
+		boardView2 = new boardView2(game, game.getBoard(), 9 );
+		boardView2.initTrackCells(startx, starty, step, r);
+		boardView2.initHomecells(step, r, strokeWidth);
+		boardView2.initSafeZone(step, r, strokeWidth);
+
+		marblesView = new MarblesView(game, boardView2);
+		marblesView.update();
+		
+		this.getChildren().addAll(logoView, detailsView, playerViews,
+				handsView, boardAndHomeView,   boardView2 ,  PlayButton, firePitView, deckView );
+
+		this.getHandsView().getHands().get(0).canPlayEffect();
+		
+		
+	
+		
 		
 		// Insets(top, right, bottom, left)
-		
 		StackPane.setAlignment(boardAndHomeView, Pos.CENTER);
 		StackPane.setAlignment(handsView, Pos.CENTER);
-//		StackPane.setAlignment(boardView, Pos.CENTER);
 		StackPane.setAlignment(playerViews, Pos.CENTER);
 		StackPane.setAlignment(PlayButton, Pos.BOTTOM_RIGHT);
-		StackPane.setMargin(PlayButton, new Insets(0,250 , 75 , 0 ));
+		StackPane.setMargin(PlayButton, new Insets(0, 250, 75, 0));
 		StackPane.setAlignment(detailsView, Pos.TOP_LEFT);
 		StackPane.setAlignment(deckView, Pos.CENTER_LEFT);
 
@@ -420,7 +413,7 @@ public class GameView extends StackPane  implements BoardListener , GameListener
 		System.out.println();
 		boardAndHomeView.refresh();
 		handsView.refresh();
-//		homesView.refresh();
+		// homesView.refresh();
 		playerViews.refresh();
 		firePitView.refresh();
 		handleSelectedCards();
@@ -689,9 +682,8 @@ public class GameView extends StackPane  implements BoardListener , GameListener
 				new ParallelTransition(outMask, outLabel));
 		return seq;
 	}
-	// new method to add effect on the playable marbles
-	
 
+	// new method to add effect on the playable marbles
 
 	// @Override
 	public void onTrap() {
@@ -736,7 +728,6 @@ public class GameView extends StackPane  implements BoardListener , GameListener
 	public void setGame(Game game) {
 		this.game = game;
 	}
-
 
 	public HandsView getHandsView() {
 		return handsView;
