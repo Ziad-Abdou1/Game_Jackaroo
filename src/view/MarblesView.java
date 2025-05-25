@@ -17,10 +17,10 @@ import model.player.Marble;
 import model.player.Player;
 
 public class MarblesView extends Pane {
-	public static ArrayList<Cell> trackCells;
-	public static ArrayList<SafeZone> safeZones;
-	public static ArrayList<ArrayList<Marble>> homeZones;
-	public static Map<Marble, Pair> previousMarblePositions = new HashMap<>();
+	ArrayList<Cell> trackCells;
+	ArrayList<SafeZone> safeZones;
+	ArrayList<ArrayList<Marble>> homeZones;
+	Map<Marble, Pair> previousMarblePositions = new HashMap<>();
 	Game game;
 	boardView2 boardView2;
 

@@ -82,17 +82,20 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 	BoardView boardView;
 	HomesView homesView;
 	BoardAndHomeView boardAndHomeView;
-	HandsView handsView;
 	PlayerViews playerViews;
 	FirePitView firePitView;
 	int idx = 0;
 	boolean efficient = true;
 	DetailsView detailsView;
 	DeckView deckView;
-	MarblesView marblesView ;
+	MarblesView marblesView;
+	HPlayerCardView handPlayer1;
+	HPlayerCardView handPlayer2;
+	HPlayerCardView handPlayer3;
+	HPlayerCardView handPlayer4;
 
-	// what i add  
-	boardView2 boardView2; 
+	// what i add
+	boardView2 boardView2;
 
 	public GameView(Game game) {
 		this.game = game;
@@ -105,7 +108,7 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 	}
 
 	public void handleSelectedCards() {
-		for (CardView cv : this.getHandsView().getHands().get(0).getCardViews()) {
+		for (CardView cv : handPlayer1.handView) {
 			cv.setOnMouseEntered(e -> {
 				cv.hover(true);
 				String s = "";
@@ -121,6 +124,7 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 				detailsView.setDetails("");
 			});
 		}
+
 	}
 
 	public void initPlayButton() {
@@ -128,18 +132,14 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 		PlayButton = new ImageView(img);
 		PlayButton.setPreserveRatio(true);
 
-		// Set preferred base size
 		double baseScaleX = 0.4 * ratioScreenWidth;
 		double baseScaleY = 0.4 * ratioScreenHeight;
-		PlayButton.setFitWidth(200 * ratioScreenWidth); // Or img.getWidth() *
-														// scale
+		PlayButton.setFitWidth(200 * ratioScreenWidth);
 		PlayButton.setFitHeight(200 * ratioScreenHeight);
 
-		// Subtle glow effect
 		DropShadow glow = new DropShadow(25, Color.web("#ffffff40"));
 		PlayButton.setEffect(glow);
 
-		// Game timer logic
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),
 				e -> {
 					if (!game.canPlayTurn()
@@ -191,30 +191,6 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 			rippleAnim.play();
 		});
 
-	}
-
-	public void printMarbles() {
-		for (Player p : game.getPlayers()) {
-			System.out.println(p.getName());
-			for (int i = 0; i < game.getBoard().getTrack().size(); i++) {
-				Cell c = game.getBoard().getTrack().get(i);
-				Marble m = c.getMarble();
-				if (m != null && m.getColour() == p.getColour())
-					System.out.print("track_" + i + " ");
-			}
-			ArrayList<SafeZone> safeZones = game.getBoard().getSafeZones();
-			SafeZone sfCur = null;
-			for (SafeZone sf : safeZones) {
-				if (sf.getColour() == p.getColour())
-					sfCur = sf;
-			}
-			for (int i = 0; i < sfCur.getCells().size(); i++) {
-				Marble m = sfCur.getCells().get(i).getMarble();
-				if (m != null)
-					System.out.print("safe_" + i + " ");
-			}
-			System.out.println();
-		}
 	}
 
 	public void playAll() {
@@ -280,7 +256,6 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 				}
 			}
 
-			// handle 7 card
 			Card selected = game.getPlayers().get(0).getSelectedCard();
 			if (selected instanceof Seven && selectedMarbles.size() == 2) {
 				game.getBoard().setSplitDistance(handle7Window());
@@ -300,7 +275,7 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 		else
 			draw();
 
-		printMarbles();
+		marblesView.update();
 	}
 
 	public void playCPU() {
@@ -325,7 +300,7 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 						refresh();
 					else
 						draw();
-					printMarbles();
+					marblesView.update();
 
 					System.out.println("");
 					System.out.println("Current hands:");
@@ -348,18 +323,15 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 
 	public void draw() {
 		this.getChildren().clear();
-		
+
 		boardAndHomeView = new BoardAndHomeView(game.getPlayers(),
 				game.getBoard(), game);
 		Image logo = new Image("cardss/background3.jpg");
 		ImageView logoView = new ImageView(logo);
 		logoView.setFitWidth(1980 * ratioScreenWidth);
 		logoView.setFitHeight(1080 * ratioScreenHeight);
-		logoView.setPreserveRatio(false); // important: disables maintaining
-											// original aspect ratio
-		handsView = new HandsView(game);
-		handsView.setMaxSize(1300 * ratioScreenWidth, 1000 * ratioScreenHeight);
-		
+		logoView.setPreserveRatio(false);
+
 		boardAndHomeView.setMaxSize(500 * ratioScreenWidth,
 				500 * ratioScreenHeight);
 		playerViews = new PlayerViews(game);
@@ -371,38 +343,59 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 		deckView = new DeckView(game);
 		deckView.setMaxSize(500 * ratioScreenWidth, 500 * ratioScreenHeight);
 
-		
-		// what i  add 
+		// what i add
+
+		handPlayer1 = new HPlayerCardView(game, game.getPlayers().get(0)
+				.getHand(), true, 0);
+		handPlayer2 = new HPlayerCardView(game, game.getPlayers().get(1)
+				.getHand(), false, 1);
+		handPlayer3 = new HPlayerCardView(game, game.getPlayers().get(2)
+				.getHand(), false, 2);
+		handPlayer4 = new HPlayerCardView(game, game.getPlayers().get(3)
+				.getHand(), false, 3);
+		handPlayer2.setRotate(270);
+		handPlayer3.setRotate(180);
+		handPlayer4.setRotate(90);
+
 		int startx = 912;
 		int starty = 827;
-		int step = 22;
+		int step = 23;
 		int strokeWidth = 3;
 		int r = 9;
-		boardView2 = new boardView2(game, game.getBoard(), 9 );
+		boardView2 = new boardView2(game, game.getBoard(), 9);
 		boardView2.initTrackCells(startx, starty, step, r);
 		boardView2.initHomecells(step, r, strokeWidth);
 		boardView2.initSafeZone(step, r, strokeWidth);
 
 		marblesView = new MarblesView(game, boardView2);
 		marblesView.update();
-		
-		this.getChildren().addAll(logoView, detailsView, playerViews,
-				handsView, boardAndHomeView,   boardView2 ,  PlayButton, firePitView, deckView );
 
-		this.getHandsView().getHands().get(0).canPlayEffect();
-		
-		
-	
-		
-		
+		this.getChildren().addAll(logoView, detailsView, playerViews,
+				boardView2, marblesView, handPlayer1, handPlayer2, handPlayer3,
+				handPlayer4, PlayButton, firePitView, deckView);
+
+		handPlayer1.canPlayEffect();
+
 		// Insets(top, right, bottom, left)
 		StackPane.setAlignment(boardAndHomeView, Pos.CENTER);
-		StackPane.setAlignment(handsView, Pos.CENTER);
 		StackPane.setAlignment(playerViews, Pos.CENTER);
 		StackPane.setAlignment(PlayButton, Pos.BOTTOM_RIGHT);
-		StackPane.setMargin(PlayButton, new Insets(0, 250, 75, 0));
+		StackPane.setMargin(PlayButton, new Insets(0, 100, 75, 0));
 		StackPane.setAlignment(detailsView, Pos.TOP_LEFT);
 		StackPane.setAlignment(deckView, Pos.CENTER_LEFT);
+
+		// what i add
+		StackPane.setAlignment(handPlayer1, Pos.BOTTOM_CENTER);
+		StackPane.setMargin(handPlayer1, new Insets(0, 0, 20, 0));
+
+		StackPane.setAlignment(handPlayer2, Pos.CENTER_LEFT);
+		StackPane.setMargin(handPlayer2, new Insets(0, 0, 0, 250));
+
+		StackPane.setAlignment(handPlayer3, Pos.TOP_CENTER);
+		StackPane.setMargin(handPlayer3, new Insets(20, 0, 0, 0));
+
+		StackPane.setAlignment(handPlayer4, Pos.CENTER_RIGHT);
+		StackPane.setMargin(handPlayer4, new Insets(0, 270, 0, 0));
 
 	}
 
@@ -412,13 +405,17 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 		}
 		System.out.println();
 		boardAndHomeView.refresh();
-		handsView.refresh();
-		// homesView.refresh();
+		handPlayer1.refresh();
+		handPlayer2.refresh();
+		handPlayer3.refresh();
+		handPlayer4.refresh();
 		playerViews.refresh();
 		firePitView.refresh();
 		handleSelectedCards();
 		detailsView.refresh();
-		this.getHandsView().getHands().get(0).canPlayEffect();
+		marblesView.update();
+
+		handPlayer1.canPlayEffect();
 	}
 
 	public void showExceptionWindow(String message) {
@@ -693,33 +690,6 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 		});
 	}
 
-	public HandsView getHandView() {
-		return this.handsView;
-	}
-
-	public Rectangle2D getScreenBounds() {
-		return screenBounds;
-	}
-
-	public void setScreenBounds(Rectangle2D screenBounds) {
-		this.screenBounds = screenBounds;
-	}
-
-	public double getScreenWidth() {
-		return screenWidth;
-	}
-
-	public void setScreenWidth(double screenWidth) {
-		this.screenWidth = screenWidth;
-	}
-
-	public double getScreenHeight() {
-		return screenHeight;
-	}
-
-	public void setScreenHeight(double screenHeight) {
-		this.screenHeight = screenHeight;
-	}
 
 	public Game getGame() {
 		return game;
@@ -727,14 +697,6 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 
 	public void setGame(Game game) {
 		this.game = game;
-	}
-
-	public HandsView getHandsView() {
-		return handsView;
-	}
-
-	public void setHandsView(HandsView handsView) {
-		this.handsView = handsView;
 	}
 
 	public PlayerViews getPlayerViews() {
