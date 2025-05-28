@@ -351,7 +351,7 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 	public void draw() {
 		this.getChildren().clear();
 
-		Image logo = new Image("cardss/background3.jpg");
+		Image logo = new Image("cardss/backgound4.jpg");
 		ImageView logoView = new ImageView(logo);
 		logoView.setFitWidth(1980 * ratioScreenWidth);
 		logoView.setFitHeight(1080 * ratioScreenHeight);
