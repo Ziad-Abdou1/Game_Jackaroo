@@ -12,6 +12,8 @@ import model.player.Marble;
 import javafx.animation.PauseTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.SequentialTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -278,6 +280,7 @@ public class HPlayerCardView extends HBox {
 				this.setHand(game.getPlayers().get(idx).getHand());
 			
 		}
+		
 
 	}
 
@@ -293,7 +296,17 @@ public class HPlayerCardView extends HBox {
 			sequence.getChildren().add(delay);
 		}
 
+//		sequence.setOnFinished(new EventHandler<ActionEvent>() {
+//			
+//			@Override
+//			public void handle(ActionEvent event) {
+//				for (Card card : newCards) {
+//					canPlayEffect();
+//				}
+//			}
+//		});
 		sequence.play();
+
 	}
 
 }

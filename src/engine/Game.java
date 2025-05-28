@@ -39,7 +39,7 @@ public class Game implements GameManager {
         turn = 0;
         currentPlayerIndex = 0;
         firePit = new ArrayList<>();
-        refresh = false ; 
+        refresh = true ; 
 
         ArrayList<Colour> colourOrder = new ArrayList<>();
         

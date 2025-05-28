@@ -105,6 +105,8 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 		draw();
 		handleSelectedCards();
 		handleSelectedMarble();
+		refresh();
+
 	}
 
 	public void handleSelectedMarble() {
@@ -444,8 +446,10 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 		detailsView.refresh();
 		marblesView.update();
 		handleSelectedMarble();
-		handPlayer1.canPlayEffect();
 		handleSelectedMarble();
+		handPlayer1.canPlayEffect();
+
+		
 	}
 
 	public void showExceptionWindow(String message) {
