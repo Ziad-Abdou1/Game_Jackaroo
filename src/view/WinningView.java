@@ -1,13 +1,10 @@
 package view;
 
 import javafx.animation.*;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.RadialGradient;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.Stop;
+import javafx.scene.layout.*;
+import javafx.scene.paint.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
@@ -23,20 +20,32 @@ public class WinningView extends StackPane {
     private static final double HEIGHT = 600;
 
     public WinningView(Player winner) {
+        if (winner == null) throw new IllegalArgumentException("Winner cannot be null");
+
         setPrefSize(WIDTH, HEIGHT);
         setAlignment(Pos.CENTER);
 
-        // Dark radial background
-        setStyle("-fx-background-color: radial-gradient(radius 80%, rgba(0,0,20,0.9) 0%, rgba(0,0,0,0.95) 100%);");
+        // Java-based radial background instead of CSS
+        setBackground(new Background(new BackgroundFill(
+            new RadialGradient(
+                0, 0, 0.5, 0.5, 1, true, CycleMethod.NO_CYCLE,
+                new Stop(0, Color.rgb(0, 0, 20, 0.9)),
+                new Stop(1, Color.rgb(0, 0, 0, 0.95))
+            ),
+            CornerRadii.EMPTY,
+            Insets.EMPTY
+        )));
 
-        // Confetti layer with capped nodes
+        // Confetti layer
         Pane confettiLayer = new Pane();
         confettiLayer.setPrefSize(WIDTH, HEIGHT);
         getChildren().add(confettiLayer);
         startConfettiAnimation(confettiLayer);
 
-        // Celebration circle colored to winner
+        // Winner color
         Color baseColor = getColorValue(winner.getColour());
+
+        // Circle effect
         RadialGradient gradient = new RadialGradient(
             0, 0,
             0.5, 0.5,
@@ -45,6 +54,7 @@ public class WinningView extends StackPane {
             new Stop(0, baseColor.brighter()),
             new Stop(1, baseColor.darker())
         );
+
         Circle circle = new Circle(150);
         circle.setFill(gradient);
         circle.setStroke(Color.WHITE);
@@ -53,14 +63,15 @@ public class WinningView extends StackPane {
         circle.setScaleY(0);
         applyPulse(circle, 1.05, 1.05);
 
-        // Texts with gentle pulsing
+        // Text elements
         Text title = new Text("Congratulations!");
         title.setFill(Color.WHITE);
         title.setFont(Font.font("Verdana", 48));
         title.setTranslateY(-400);
         applyPulse(title, 1.05, 1.5);
 
-        Text nameText = new Text(winner.getName() + " wins!");
+        String name = winner.getName() != null ? winner.getName() : "Player";
+        Text nameText = new Text(name + " wins!");
         nameText.setFill(Color.WHITE);
         nameText.setFont(Font.font("Verdana", 36));
         nameText.setTranslateY(-320);
@@ -68,7 +79,7 @@ public class WinningView extends StackPane {
 
         getChildren().addAll(circle, title, nameText);
 
-        // Entrance animation for circle
+        // Entrance animation
         ScaleTransition st = new ScaleTransition(Duration.seconds(1.2), circle);
         st.setFromX(0); st.setFromY(0);
         st.setToX(1); st.setToY(1);
@@ -121,8 +132,9 @@ public class WinningView extends StackPane {
         pulse.setAutoReverse(true);
         pulse.play();
     }
-    private void applyPulse(Circle text, double scaleTo, double duration) {
-        ScaleTransition pulse = new ScaleTransition(Duration.seconds(duration), text);
+
+    private void applyPulse(Circle circle, double scaleTo, double duration) {
+        ScaleTransition pulse = new ScaleTransition(Duration.seconds(duration), circle);
         pulse.setFromX(1); pulse.setFromY(1);
         pulse.setToX(scaleTo); pulse.setToY(scaleTo);
         pulse.setCycleCount(Animation.INDEFINITE);
@@ -131,6 +143,7 @@ public class WinningView extends StackPane {
     }
 
     private Color getColorValue(Colour colour) {
+        if (colour == null) return Color.WHITE;
         switch (colour) {
             case GREEN:  return Color.web("#4CAF50");
             case RED:    return Color.web("#F44336");
