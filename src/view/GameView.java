@@ -111,34 +111,45 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 		for (Marble marble : game.getBoard().getActionableMarbles()) {
 			// Click effect: glow + scale
 			marble.circle.setOnMouseClicked(e -> {
-				DropShadow glow = new DropShadow();
-				glow.setColor(Color.valueOf(marble.getColour().toString())
-						.deriveColor(0, 1.0, 1.5, 0.8));
-				glow.setRadius(12);
-				glow.setSpread(0.5);
-				marble.circle.setEffect(glow);
-				marble.circle.setScaleX(1.3);
-				marble.circle.setScaleY(1.3);
-				Player currPlayer = game.getPlayers().get(0);
+				if (marble.circle.getScaleX() <= 1.2) {
+					DropShadow glow = new DropShadow();
+					glow.setColor(Color.valueOf(marble.getColour().toString())
+							.deriveColor(0, 1.0, 1.5, 0.8));
+					glow.setRadius(12);
+					glow.setSpread(0.5);
+					marble.circle.setEffect(glow);
+					marble.circle.setScaleX(1.3);
+					marble.circle.setScaleY(1.3);
+
+					Player currPlayer = game.getPlayers().get(0);
+				} else {
+					marble.circle.setEffect(null);
+					marble.circle.setScaleX(1.0);
+					marble.circle.setScaleY(1.0);
+				}
 			});
+
 
 			// Hover effect: smooth scale animation
 			marble.circle.setOnMouseEntered(e -> {
 				ScaleTransition st = new ScaleTransition(Duration.millis(150),
 						marble.circle);
-				st.setToX(1.2);
-				st.setToY(1.2);
-				st.play();
+				if (marble.circle.getScaleX() == 1) {
+					st.setToX(1.2);
+					st.setToY(1.2);
+					st.play();
+				}
 			});
 
 			marble.circle.setOnMouseExited(e -> {
 				ScaleTransition st = new ScaleTransition(Duration.millis(150),
 						marble.circle);
-
-				st.setToX(1.0);
-				st.setToY(1.0);
-				if (marble.circle.getScaleX() == 1.2)
-					st.play();
+				if (marble.circle.getScaleX() != 1) {
+					st.setToX(1.0);
+					st.setToY(1.0);
+					if (marble.circle.getScaleX() == 1.2)
+						st.play();
+				}
 			});
 		}
 
@@ -270,7 +281,7 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 				if (m.circle.getScaleX() != 1) {
 					game.selectMarble(m);
 				}
-				m.circle.setEffect(null); 
+				m.circle.setEffect(null);
 				m.circle.setScaleX(1);
 				m.circle.setScaleY(1);
 
