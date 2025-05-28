@@ -623,11 +623,11 @@ public class Board implements BoardManager {
 			}
 		}
 		Collections.shuffle(sfEmpty);
-		if (sf.size() > 0) {// has no usage, because if it is =0 , then
+		if (sfEmpty.size() > 0) {// has no usage, because if it is =0 , then
 							// validateSaving() will throw exception , because
 							// all safe cells are full , so the marble is in
 							// safe zone
-			Cell target = sf.get(0);
+			Cell target = sfEmpty.get(0);
 			int idx = getPositionInPath(track, marble);
 			track.get(idx).setMarble(null);
 			target.setMarble(marble);
