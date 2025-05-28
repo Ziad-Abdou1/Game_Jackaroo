@@ -280,6 +280,7 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 			for (Marble m : game.getBoard().getActionableMarbles()) {
 				if (m.circle.getScaleX() != 1) {
 					game.selectMarble(m);
+					selectedMarbles.add(m);
 				}
 				m.circle.setEffect(null);
 				m.circle.setScaleX(1);
@@ -585,7 +586,7 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 		dialog.setResizable(false);
 
 		// 2) Create and style the prompt label
-		Label prompt = new Label("Roll the die: pick a number 1–6");
+		Label prompt = new Label("Select a Number 1–6");
 		prompt.setFont(Font.font("ArcadeClassic", FontWeight.BOLD, 20));
 		prompt.setTextFill(Color.web("#222222"));
 
