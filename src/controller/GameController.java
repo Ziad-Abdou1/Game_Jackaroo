@@ -36,6 +36,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -56,7 +58,8 @@ public class GameController extends Application implements GameControllerListene
 	Stage stage;	
 	Player wonPlayer;
 	boolean gameEnded = false;
-	
+	private MediaPlayer backgroundPlayer;
+
 	@Override
 	public void start(Stage stage)throws IOException {
 		this.stage = stage;
@@ -124,7 +127,12 @@ public class GameController extends Application implements GameControllerListene
 		gameScene.getStylesheets().add(getClass().getResource("/view/style.css").toExternalForm());
 		System.out.println("here the scene has the gameView as root");
 
-
+		String musicPath = getClass().getResource("/sound2.mp3").toExternalForm();
+        Media media = new Media(musicPath);
+        backgroundPlayer = new MediaPlayer(media);
+        backgroundPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Loop the music
+        backgroundPlayer.setVolume(0.5); // Optional: adjust volume
+        backgroundPlayer.play();
 
 		gameScene.setOnKeyPressed(evt -> {
 			if (evt.getCode() == KeyCode.ENTER) {
