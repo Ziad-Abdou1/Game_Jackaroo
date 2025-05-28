@@ -22,7 +22,7 @@
 0,3,Six,Moves one of your own marbles 6 steps forward.,6,CLUB
 0,2,Six,Moves one of your own marbles 6 steps forward.,6,DIAMOND
 0,2,Six,Moves one of your own marbles 6 steps forward.,6,HEART
-7,200,Seven,Moves two marbles a total of 7 steps forward or one of your own marbles 7 steps forward.,7,SPADE
+7,2,Seven,Moves two marbles a total of 7 steps forward or one of your own marbles 7 steps forward.,7,SPADE
 7,2,Seven,Moves two marbles a total of 7 steps forward or one of your own marbles 7 steps forward.,7,CLUB
 7,1,Seven,Moves two marbles a total of 7 steps forward or one of your own marbles 7 steps forward.,7,DIAMOND
 7,1,Seven,Moves two marbles a total of 7 steps forward or one of your own marbles 7 steps forward.,7,HEART
