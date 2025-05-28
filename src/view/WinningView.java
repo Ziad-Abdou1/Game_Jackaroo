@@ -1,62 +1,136 @@
 package view;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.ScaleTransition;
-import javafx.animation.SequentialTransition;
+import javafx.animation.*;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.RadialGradient;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import model.player.Player;
+import model.Colour;
 
+import java.util.Random;
 
 public class WinningView extends StackPane {
-    private static final double WIDTH = 600;
-    private static final double HEIGHT = 400;
+    private static final double WIDTH = 800;
+    private static final double HEIGHT = 600;
 
-	private final Player winner;
     public WinningView(Player winner) {
-        this.winner = winner;
-
-        // Configure this StackPane
         setPrefSize(WIDTH, HEIGHT);
         setAlignment(Pos.CENTER);
-        setStyle("-fx-background-color: radial-gradient(radius 100%, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.95) 100%);");
 
-        // Background circle
-        Circle bg = new Circle(1000);
-        bg.setFill(getColorValue(winner.getColour()));
-        // bg.setStroke(Color.WHITE);
-        bg.setStrokeWidth(4);
+        // Dark radial background
+        setStyle("-fx-background-color: radial-gradient(radius 80%, rgba(0,0,20,0.9) 0%, rgba(0,0,0,0.95) 100%);");
 
-        // Headline text
-        Text headline = new Text("Congratulations!");
-        headline.setFill(Color.WHITE);
-        headline.setFont(Font.font(36));
-        //headline.setOpacity(1);
-        headline.setTranslateY(-40);
+        // Confetti layer with capped nodes
+        Pane confettiLayer = new Pane();
+        confettiLayer.setPrefSize(WIDTH, HEIGHT);
+        getChildren().add(confettiLayer);
+        startConfettiAnimation(confettiLayer);
 
-        // Winner name text
+        // Celebration circle colored to winner
+        Color baseColor = getColorValue(winner.getColour());
+        RadialGradient gradient = new RadialGradient(
+            0, 0,
+            0.5, 0.5,
+            0.5, true,
+            CycleMethod.NO_CYCLE,
+            new Stop(0, baseColor.brighter()),
+            new Stop(1, baseColor.darker())
+        );
+        Circle circle = new Circle(150);
+        circle.setFill(gradient);
+        circle.setStroke(Color.WHITE);
+        circle.setStrokeWidth(6);
+        circle.setScaleX(0);
+        circle.setScaleY(0);
+        applyPulse(circle, 1.05, 1.05);
+
+        // Texts with gentle pulsing
+        Text title = new Text("Congratulations!");
+        title.setFill(Color.WHITE);
+        title.setFont(Font.font("Verdana", 48));
+        title.setTranslateY(-400);
+        applyPulse(title, 1.05, 1.5);
+
         Text nameText = new Text(winner.getName() + " wins!");
-        // nameText.setFill(getColorValue(winner.getColour()));
         nameText.setFill(Color.WHITE);
-        nameText.setFont(Font.font(28));
-        //nameText.setOpacity(1);
-        nameText.setTranslateY(10);
+        nameText.setFont(Font.font("Verdana", 36));
+        nameText.setTranslateY(-320);
+        applyPulse(nameText, 1.05, 1.5);
 
-        // Add nodes to pane
-        getChildren().addAll(bg, headline, nameText);
+        getChildren().addAll(circle, title, nameText);
 
-        // Play entrance animation with slower timing
-        //playEntranceAnimation(bg, headline, nameText);
+        // Entrance animation for circle
+        ScaleTransition st = new ScaleTransition(Duration.seconds(1.2), circle);
+        st.setFromX(0); st.setFromY(0);
+        st.setToX(1); st.setToY(1);
+        st.setInterpolator(Interpolator.EASE_OUT);
+        st.play();
     }
 
-    // Map player colour to JavaFX Color
-    private Color getColorValue(model.Colour colour) {
+    private void startConfettiAnimation(Pane layer) {
+        Random rand = new Random();
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(300), e -> {
+            if (layer.getChildren().size() > 200) layer.getChildren().clear();
+            Polygon confetto = createConfetto(rand);
+            layer.getChildren().add(confetto);
+
+            TranslateTransition fall = new TranslateTransition(Duration.seconds(2), confetto);
+            fall.setFromX(rand.nextDouble() * WIDTH);
+            fall.setFromY(-10);
+            fall.setToX(fall.getFromX() + (rand.nextDouble() - 0.5) * 60);
+            fall.setToY(HEIGHT + 10);
+
+            RotateTransition rotate = new RotateTransition(Duration.seconds(2), confetto);
+            rotate.setByAngle(360);
+
+            FadeTransition fade = new FadeTransition(Duration.seconds(2), confetto);
+            fade.setFromValue(1); fade.setToValue(0);
+
+            ParallelTransition pt = new ParallelTransition(confetto, fall, rotate, fade);
+            pt.setOnFinished(ev -> layer.getChildren().remove(confetto));
+            pt.play();
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
+
+    private Polygon createConfetto(Random rand) {
+        Polygon p = new Polygon(
+            0.0, 0.0,
+            10.0, 5.0,
+            5.0, 10.0
+        );
+        p.setFill(Color.hsb(rand.nextDouble() * 360, 0.8, 0.9));
+        return p;
+    }
+
+    private void applyPulse(Text text, double scaleTo, double duration) {
+        ScaleTransition pulse = new ScaleTransition(Duration.seconds(duration), text);
+        pulse.setFromX(1); pulse.setFromY(1);
+        pulse.setToX(scaleTo); pulse.setToY(scaleTo);
+        pulse.setCycleCount(Animation.INDEFINITE);
+        pulse.setAutoReverse(true);
+        pulse.play();
+    }
+    private void applyPulse(Circle text, double scaleTo, double duration) {
+        ScaleTransition pulse = new ScaleTransition(Duration.seconds(duration), text);
+        pulse.setFromX(1); pulse.setFromY(1);
+        pulse.setToX(scaleTo); pulse.setToY(scaleTo);
+        pulse.setCycleCount(Animation.INDEFINITE);
+        pulse.setAutoReverse(true);
+        pulse.play();
+    }
+
+    private Color getColorValue(Colour colour) {
         switch (colour) {
             case GREEN:  return Color.web("#4CAF50");
             case RED:    return Color.web("#F44336");
@@ -65,25 +139,4 @@ public class WinningView extends StackPane {
             default:     return Color.WHITE;
         }
     }
-
-    // Animate background and texts with extended durations
-//    private void playEntranceAnimation(Circle bg, Text headline, Text nameText) {
-//        ScaleTransition scale = new ScaleTransition(Duration.seconds(3), bg);
-//        scale.setFromX(0);
-//        scale.setFromY(0);
-//        scale.setToX(10);
-//        scale.setToY(10);
-//
-//        FadeTransition fadeHead = new FadeTransition(Duration.seconds(2), headline);
-//        fadeHead.setFromValue(0);
-//        fadeHead.setToValue(1);
-//
-//        FadeTransition fadeName = new FadeTransition(Duration.seconds(2), nameText);
-//        fadeName.setFromValue(0);
-//        fadeName.setToValue(1);
-//
-//        SequentialTransition seq = new SequentialTransition(scale, fadeHead, fadeName);
-//        seq.play();
-//    }
-
 }
