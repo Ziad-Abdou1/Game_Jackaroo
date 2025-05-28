@@ -69,7 +69,6 @@ public class MarbleView extends StackPane {
 			Colour clr = marble.getColour();
 			Color baseColor = getFXColor(clr);
 
-			// Simulate 3D look using RadialGradient
 			circle.setFill(new RadialGradient(0, 0, 0.3, 0.3, 1, true,
 					CycleMethod.NO_CYCLE, new Stop(0, baseColor.brighter()
 							.brighter()), new Stop(1, baseColor.darker())));

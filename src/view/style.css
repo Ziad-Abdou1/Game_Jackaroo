@@ -18,9 +18,52 @@
     -fx-background-radius: 50%;
     -fx-background-color: transparent;
 }
+.text-field {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-padding: 8;
+    -fx-font-size: 16px;
+}
+
+.stack-pane:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+}
 #play-button {
     -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.3), 15, 0.2, 0, 0);
     -fx-cursor: hand;
+}
+.text-field-default {
+    -fx-background-color: rgba(255,255,255,0.1);
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: gray;
+    -fx-background-radius: 15;
+    -fx-padding: 10;
+    -fx-border-color: white;
+    -fx-border-radius: 15;
+}
+
+.text-field-error {
+    -fx-border-color: red;
+}
+.start-button {
+    -fx-background-color: linear-gradient(to bottom, #cc0000, #990000);
+    -fx-text-fill: white;
+    -fx-font-family: "Orbitron";
+    -fx-font-size: 24px;
+    -fx-padding: 15 50;
+    -fx-background-radius: 30;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 6, 0.3, 0, 2);
+    -fx-transition: all 0.3s ease;
+}
+
+/* Hover: brighter red + glowing effect */
+.start-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #ff3333, #cc0000);
+    -fx-effect: dropshadow(gaussian, rgba(255, 0, 0, 0.8), 15, 0.6, 0, 0);
+    -fx-scale-x: 1.08;
+    -fx-scale-y: 1.08;
 }
 .cell-view {
     -fx-background-radius: 50%;

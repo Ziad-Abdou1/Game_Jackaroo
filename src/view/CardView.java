@@ -229,18 +229,18 @@ public class CardView extends ImageView {
 	// new method for showing playable marbles
 	public void canPlayMarbles(ArrayList<Marble> marbles) {
 		// Track view marbles
-		for (CellView cellView : this.getGameView().boardAndHomeView.boardView
-				.getTrackView()) {
-			applyEffectIfMatch(cellView, marbles);
-		}
+//		for (CellView cellView : this.getGameView().boardAndHomeView.boardView
+//				.getTrackView()) {
+//			applyEffectIfMatch(cellView, marbles);
+//		}
 
 		// Safe zone marbles
-		for (ArrayList<CellView> safeZone : this.getGameView().boardAndHomeView.boardView
-				.getSafeZoneView()) {
-			for (CellView cellView : safeZone) {
-				applyEffectIfMatch(cellView, marbles);
-			}
-		}
+//		for (ArrayList<CellView> safeZone : this.getGameView().boardAndHomeView.boardView
+//				.getSafeZoneView()) {
+//			for (CellView cellView : safeZone) {
+//				applyEffectIfMatch(cellView, marbles);
+//			}
+//		}
 	}
 
 	private void applyEffectIfMatch(CellView cellView, ArrayList<Marble> marbles) {

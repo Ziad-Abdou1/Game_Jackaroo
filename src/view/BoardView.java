@@ -117,15 +117,15 @@ public class BoardView extends GridPane {
 		for (int i = 0; i < 100; i++) {
 			Cell cell = board.getTrack().get(i);
 			trackView.get(i).setCell(cell);
-			if (trackView.get(i).getMarbleView().getMarble() == null)
-				System.out.print("-null-");
-			else
-				System.out.print("-"
-						+ trackView.get(i).getMarbleView().getMarble()
-								.getColour() + '-');
+//			if (trackView.get(i).getMarbleView().getMarble() == null)
+//				System.out.print("-null-");
+//			else
+//				System.out.print("-"
+//						+ trackView.get(i).getMarbleView().getMarble()
+//								.getColour() + '-');
 			cellToView.put(cell, trackView.get(i));
 		}
-		System.out.println();
+//		System.out.println();
 		for (int i = 0; i < safeZoneView.length; i++) {
 			for (int j = 0; j < safeZoneView[i].size(); j++) {
 				Cell cell = board.getSafeZones().get(i).getCells().get(j);

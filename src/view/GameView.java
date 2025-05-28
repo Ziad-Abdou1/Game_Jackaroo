@@ -1,6 +1,8 @@
 package view;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import org.omg.CORBA.MARSHAL;
@@ -79,9 +81,7 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 
 	ImageView PlayButton;
 	Game game;
-	BoardView boardView;
-	HomesView homesView;
-	BoardAndHomeView boardAndHomeView;
+	// BoardAndHomeView boardAndHomeView;
 	PlayerViews playerViews;
 	FirePitView firePitView;
 	int idx = 0;
@@ -94,6 +94,7 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 	HPlayerCardView handPlayer3;
 	HPlayerCardView handPlayer4;
 	boardView2 boardView2;
+	ArrayList<Marble> allMarble;
 
 	public GameView(Game game) {
 		this.game = game;
@@ -103,6 +104,44 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 		initPlayButton();
 		draw();
 		handleSelectedCards();
+		handleSelectedMarble();
+	}
+
+	public void handleSelectedMarble() {
+		for (Marble marble : game.getBoard().getActionableMarbles()) {
+			// Click effect: glow + scale
+			marble.circle.setOnMouseClicked(e -> {
+				DropShadow glow = new DropShadow();
+				glow.setColor(Color.valueOf(marble.getColour().toString())
+						.deriveColor(0, 1.0, 1.5, 0.8));
+				glow.setRadius(12);
+				glow.setSpread(0.5);
+				marble.circle.setEffect(glow);
+				marble.circle.setScaleX(1.3);
+				marble.circle.setScaleY(1.3);
+				Player currPlayer = game.getPlayers().get(0);
+			});
+
+			// Hover effect: smooth scale animation
+			marble.circle.setOnMouseEntered(e -> {
+				ScaleTransition st = new ScaleTransition(Duration.millis(150),
+						marble.circle);
+				st.setToX(1.2);
+				st.setToY(1.2);
+				st.play();
+			});
+
+			marble.circle.setOnMouseExited(e -> {
+				ScaleTransition st = new ScaleTransition(Duration.millis(150),
+						marble.circle);
+
+				st.setToX(1.0);
+				st.setToY(1.0);
+				if (marble.circle.getScaleX() == 1.2)
+					st.play();
+			});
+		}
+
 	}
 
 	public void handleSelectedCards() {
@@ -126,7 +165,7 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 	}
 
 	public void initPlayButton() {
-		Image img = new Image("playButton.png");
+		Image img = new Image("buttom_play.png");
 		PlayButton = new ImageView(img);
 		PlayButton.setPreserveRatio(true);
 
@@ -151,7 +190,6 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
 
-		
 		ScaleTransition hoverIn = new ScaleTransition(Duration.millis(150),
 				PlayButton);
 		hoverIn.setToX(1.2);
@@ -195,15 +233,12 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 
 		boolean done = false;
 		try {
-			System.out.println("selectd card is "
-					+ game.getPlayers().get(0).getSelectedCard().getName());
+
 			playPlayer();
 			done = true;
 		} catch (Exception ex) {
 			Card selected = game.getPlayers().get(0).getSelectedCard();
 			game.deselectAll();
-			System.out.println(ex.getMessage());
-
 			if (selected == null) {
 				showExceptionWindow(ex.getMessage());
 
@@ -215,6 +250,7 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 					game.getFirePit().add(selected);
 					cleanFirePitFromNull();
 					game.endPlayerTurn();
+					handleSelectedMarble();
 					this.refresh();
 					done = true;
 				}
@@ -225,33 +261,19 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 			playCPU();
 			PlayButton.setDisable(true);
 		}
-		System.out.println(game.checkWin() + "------");
 	}
 
 	public void playPlayer() throws Exception {
 		ArrayList<Marble> selectedMarbles = new ArrayList<>();
 		if (game.canPlayTurn()) {
-			// to select marbles at the real game model
-			ArrayList<CellView> cellViewsOriginal = boardAndHomeView.boardView
-					.getTrackView();
-			ArrayList<CellView>[] safeZoneViews = boardAndHomeView.boardView
-					.getSafeZoneView();
-			ArrayList<CellView> cellViews = new ArrayList<CellView>();
-			for (int i = 0; i < cellViewsOriginal.size(); i++)
-				cellViews.add(cellViewsOriginal.get(i));
-			for (int i = 0; i < safeZoneViews.length; i++) {
-				for (CellView cv : safeZoneViews[i])
-					cellViews.add(cv);
-			}
-
-			for (CellView cv : cellViews) {
-				if (cv.getMarbleView().getMarble() != null) {
-					if (cv.getMarbleView().selected) {
-						game.selectMarble(cv.getMarbleView().getMarble());
-						selectedMarbles.add(cv.getMarbleView().getMarble());
-					}
-					cv.getMarbleView().resetSelect();
+			for (Marble m : game.getBoard().getActionableMarbles()) {
+				if (m.circle.getScaleX() != 1) {
+					game.selectMarble(m);
 				}
+				m.circle.setEffect(null); 
+				m.circle.setScaleX(1);
+				m.circle.setScaleY(1);
+
 			}
 
 			Card selected = game.getPlayers().get(0).getSelectedCard();
@@ -259,6 +281,7 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 				game.getBoard().setSplitDistance(handle7Window());
 			}
 			game.playPlayerTurn();
+			handleSelectedMarble();
 			if (efficient)
 				refresh();
 			else
@@ -267,6 +290,7 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 		}
 		cleanFirePitFromNull();
 		game.endPlayerTurn();
+		handleSelectedMarble();
 		game.deselectAll();
 		if (efficient)
 			refresh();
@@ -294,22 +318,13 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 					}
 					cleanFirePitFromNull();
 					game.endPlayerTurn();
+					handleSelectedMarble();
 					if (efficient)
 						refresh();
 					else
 						draw();
 					marblesView.update();
 
-					System.out.println("");
-					System.out.println("Current hands:");
-					for (int i = 0; i < game.getPlayers().size(); i++) {
-						Player p = game.getPlayers().get(i);
-						System.out.print(p.getName() + ": ");
-						for (Card c : p.getHand()) {
-							System.out.print(c.getName() + " ");
-						}
-						System.out.println();
-					}
 				}));
 		replay.setCycleCount(3);
 		replay.setOnFinished(e -> {
@@ -322,16 +337,12 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 	public void draw() {
 		this.getChildren().clear();
 
-		boardAndHomeView = new BoardAndHomeView(game.getPlayers(),
-				game.getBoard(), game);
 		Image logo = new Image("cardss/background3.jpg");
 		ImageView logoView = new ImageView(logo);
 		logoView.setFitWidth(1980 * ratioScreenWidth);
 		logoView.setFitHeight(1080 * ratioScreenHeight);
 		logoView.setPreserveRatio(false);
 
-		boardAndHomeView.setMaxSize(500 * ratioScreenWidth,
-				500 * ratioScreenHeight);
 		playerViews = new PlayerViews(game);
 		playerViews
 				.setMaxSize(1100 * ratioScreenWidth, 900 * ratioScreenHeight);
@@ -375,7 +386,6 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 		handPlayer1.canPlayEffect();
 
 		// Insets(top, right, bottom, left)
-		StackPane.setAlignment(boardAndHomeView, Pos.CENTER);
 		StackPane.setAlignment(playerViews, Pos.CENTER);
 		StackPane.setAlignment(PlayButton, Pos.BOTTOM_RIGHT);
 		StackPane.setMargin(PlayButton, new Insets(0, 100, 75, 0));
@@ -395,14 +405,23 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 		StackPane.setAlignment(handPlayer4, Pos.CENTER_RIGHT);
 		StackPane.setMargin(handPlayer4, new Insets(0, 270, 0, 0));
 
+		allMarble = new ArrayList<>();
+		ArrayList<SafeZone> safeZones = game.getBoard().getSafeZones();
+		for (int i = 0; i < safeZones.size(); i++) {
+			for (int j = 0; j < safeZones.get(i).getCells().size(); j++) {
+				Marble m = safeZones.get(i).getCells().get(j).getMarble();
+				allMarble.add(m);
+			}
+		}
+
+		handleSelectedMarble();
 	}
 
 	public void refresh() {
-		for (Cell cell : game.getBoard().getTrack()) {
-			System.out.print(cell.isTrap() ? "1" : "0");
-		}
-		System.out.println();
-		boardAndHomeView.refresh();
+		// for (Cell cell : game.getBoard().getTrack()) {
+		// System.out.print(cell.isTrap() ? "1" : "0");
+		// }
+		// System.out.println();
 		handPlayer1.refresh();
 		handPlayer2.refresh();
 		handPlayer3.refresh();
@@ -412,8 +431,9 @@ public class GameView extends StackPane implements BoardListener, GameListener {
 		handleSelectedCards();
 		detailsView.refresh();
 		marblesView.update();
-
+		handleSelectedMarble();
 		handPlayer1.canPlayEffect();
+		handleSelectedMarble();
 	}
 
 	public void showExceptionWindow(String message) {

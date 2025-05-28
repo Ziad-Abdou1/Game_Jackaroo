@@ -40,22 +40,15 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
 public class GameController extends Application implements GameControllerListener {
 	String name;
 	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 	double screenWidth = screenBounds.getWidth();
 	double screenHeight = screenBounds.getHeight();
-	
-	
-//    Rectangle2D vb = Screen.getPrimary().getVisualBounds();
-//    double realW = vb.getWidth();
-//    double realH = vb.getHeight();
-//    
-//    private static final double DESIGN_W = 1920;
-//    private static final double DESIGN_H = 1080;
-    
-    
+	  
 	GameView gameView;
 	WelcomeView welcomeView;
 	WinningView winningView;
@@ -71,8 +64,56 @@ public class GameController extends Application implements GameControllerListene
 		startGameAction();
 		endGameAction();
 	}
-
+	private void launchGame() throws IOException {
+		welcomeView = new WelcomeView();
+		welcomeScene = new Scene(welcomeView);
+		welcomeScene.getStylesheets().add(getClass().getResource("/view/style.css").toExternalForm());
+		stage.setFullScreen(true);
+		stage.setFullScreenExitHint("");
+		stage.setScene(welcomeScene);
+		stage.show();
+	}
+	public void startGameAction() {
+		welcomeView.getStartButton().setOnMouseClicked(e -> {
+	        String inputName = welcomeView.getNameField().getText().trim();
+	        if (inputName.isEmpty()) {
+	            welcomeView.getNameField().setStyle("-fx-border-color: red; -fx-border-width: 2;");
+	            welcomeView.getNameField().setPromptText("Please enter a valid name");
+	        } else {
+	            welcomeView.getNameField().setStyle(""); // Reset style
+	            name = inputName;
+	            try {
+	                startGame();
+	            } catch (Exception ex) {
+	                ex.printStackTrace();
+	            }
+	        }
+	    });
 	
+	    // Handle hover animations
+	    welcomeView.getStartButton().setOnMouseEntered(e -> {
+	        welcomeView.getStartButton().setScaleX(1.2);
+	        welcomeView.getStartButton().setScaleY(1.2);
+	    });
+
+	    welcomeView.getStartButton().setOnMouseExited(e -> {
+	        welcomeView.getStartButton().setScaleX(1.0);
+	        welcomeView.getStartButton().setScaleY(1.0);
+	    });
+
+	    // Handle ENTER key to simulate Start button click
+	    welcomeView.getNameField().setOnKeyPressed(event -> {
+	        if (event.getCode() == KeyCode.ENTER) {
+	            welcomeView.getStartButton().fireEvent(
+	                new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
+	                    MouseButton.PRIMARY, 1,
+	                    true, true, true, true,
+	                    true, true, true, true, true, true, null)
+	            );
+	        }
+	    });
+	}
+
 	private void startGame() throws IOException {
 		Game game = new Game(name);
 		gameView = new GameView(game);
@@ -84,7 +125,7 @@ public class GameController extends Application implements GameControllerListene
 		System.out.println("here the scene has the gameView as root");
 
 
-		//game actions
+
 		gameScene.setOnKeyPressed(evt -> {
 			if (evt.getCode() == KeyCode.ENTER) {
 				gameView.playAll();
@@ -92,7 +133,6 @@ public class GameController extends Application implements GameControllerListene
 			if (evt.getCode() == KeyCode.DIGIT1){
 				try{
 					game.fieldMarble();
-//					game.endPlayerTurn();
 					gameView.refresh();
 
 				}catch (Exception e){
@@ -123,35 +163,9 @@ public class GameController extends Application implements GameControllerListene
 		stage.setFullScreen(true);
 	}
 	
-	private void launchGame() throws IOException {
-		welcomeView = new WelcomeView();
-		welcomeScene = new Scene(welcomeView);
-		welcomeScene.getStylesheets().add(getClass().getResource("/view/style.css").toExternalForm());
-		stage.setScene(welcomeScene);
-		stage.show();
-	}
 	
-	//handle actions
-	public void startGameAction(){
-		welcomeView.getStartButton().setOnMouseClicked(e ->{
-			name = welcomeView.getNameField().getText();
-			try{
-				startGame();
-			}catch (Exception ex){
-				//
-			}
-		});
-		welcomeView.getStartButton().setOnMouseEntered(e ->{
-			welcomeView.getStartButton().setScaleX(1.2);
-			welcomeView.getStartButton().setScaleY(1.2);
-		});
-		welcomeView.getStartButton().setOnMouseExited(e ->{
-			welcomeView.getStartButton().setScaleX(1.0);
-			welcomeView.getStartButton().setScaleY(1.0);
-		});
-		
-	}
-
+	
+	
 	public void endGameAction(){
 		Timeline replay = new Timeline(
 			    new KeyFrame(Duration.seconds(0.5), event -> {

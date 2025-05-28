@@ -2,6 +2,8 @@ package model.player;
 
 import java.util.ArrayList;
 
+import engine.Game;
+import view.GameView;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -34,16 +36,10 @@ public class Marble {
 		double radius = 9;
 
 		// Create a 3D-like gradient fill
-		RadialGradient gradient = new RadialGradient(45, // focus angle
-															// (direction of
-															// light)
-				0.1, // focus distance
-				0.3, 0.3, // center X, Y (offset for highlight)
-				1.0, // radius of the gradient
-				true, // proportional to shape size
-				CycleMethod.NO_CYCLE, new Stop(0, Color.WHITE), new Stop(0.3,
-						baseColor.brighter()),
-				new Stop(1.0, baseColor.darker()));
+		RadialGradient gradient = new RadialGradient(45, 0.1, 0.3, 0.3, 1.0,
+				true, CycleMethod.NO_CYCLE, new Stop(0, Color.WHITE), new Stop(
+						0.3, baseColor.brighter()), new Stop(1.0,
+						baseColor.darker()));
 
 		Circle marble = new Circle(radius);
 		marble.setFill(gradient);
@@ -54,11 +50,24 @@ public class Marble {
 		glow.setSpread(0.5);
 		marble.setOnMouseEntered(e -> marble.setEffect(glow));
 		marble.setOnMouseExited(e -> marble.setEffect(null));
-
 		return marble;
+	}
+
+	public void refeash (){
+			deselectEffect();
+	}
+	public void selectEffect() {
+		circle.setStroke(Color.ALICEBLUE);
+		circle.setStrokeWidth( circle.getRadius()* 0.15);
+	}
+
+	public void deselectEffect() {
+		circle.setStroke(null);
+		circle.setStrokeWidth(0);
 	}
 
 	public Colour getColour() {
 		return this.colour;
 	}
+
 }

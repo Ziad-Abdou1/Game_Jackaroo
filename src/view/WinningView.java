@@ -13,10 +13,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import model.player.Player;
 
-/**
- * A view that shows when a player wins the game.
- * Displays the player's name and colour with built-in styling and animations.
- */
+
 public class WinningView extends StackPane {
     private static final double WIDTH = 600;
     private static final double HEIGHT = 400;
