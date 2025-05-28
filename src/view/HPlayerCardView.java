@@ -2,6 +2,8 @@ package view;
 
 import java.util.ArrayList;
 
+import javax.security.auth.Refreshable;
+
 import com.sun.prism.paint.Color;
 
 import engine.Game;
@@ -296,15 +298,17 @@ public class HPlayerCardView extends HBox {
 			sequence.getChildren().add(delay);
 		}
 
-//		sequence.setOnFinished(new EventHandler<ActionEvent>() {
-//			
-//			@Override
-//			public void handle(ActionEvent event) {
-//				for (Card card : newCards) {
-//					canPlayEffect();
-//				}
-//			}
-//		});
+		sequence.setOnFinished(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				for (Card card : newCards) {
+					canPlayEffect();
+					
+				}
+//				refresh();
+			}
+		});
 		sequence.play();
 
 	}
